@@ -206,17 +206,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.1767767"
-     inkscape:cx="2766.379"
-     inkscape:cy="1855.1713"
+     inkscape:zoom="0.35355339"
+     inkscape:cx="879.35596"
+     inkscape:cy="1104.8837"
      inkscape:document-units="px"
-     inkscape:current-layer="layer3"
+     inkscape:current-layer="layer2"
      showgrid="false"
-     inkscape:window-width="2560"
-     inkscape:window-height="1387"
-     inkscape:window-x="2552"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
+     inkscape:window-width="1278"
+     inkscape:window-height="1378"
+     inkscape:window-x="-7"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
      showborder="false"
      units="px"
      fit-margin-top="0"
@@ -226,7 +226,7 @@
      inkscape:snap-bbox="true"
      inkscape:bbox-nodes="true"
      inkscape:snap-nodes="true"
-     inkscape:snap-global="false"
+     inkscape:snap-global="true"
      inkscape:snap-intersection-paths="true"
      inkscape:snap-grids="true"
      showguides="true"
@@ -265,8 +265,21 @@
      id="layer2"
      inkscape:label="Background"
      style="display:inline"
-     sodipodi:insensitive="true"
      transform="translate(0.13264951,394.28803)">
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.52916664;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect11895"
+       width="508"
+       height="285.74997"
+       x="4.8992422e-007"
+       y="369.56238" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.52916664;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect11893"
+       width="203.20001"
+       height="268.35376"
+       x="1.0419792e-009"
+       y="-8.8580723" />
     <rect
        y="14.600927"
        x="0"
@@ -384,8 +397,8 @@
        id="rect22803"
        width="99.483337"
        height="157.69167"
-       x="162.98334"
-       y="-342.69598" />
+       x="160.86665"
+       y="-369.15433" />
     <rect
        y="-383.50809"
        x="160.86665"
@@ -428,6 +441,13 @@
        width="203.20001"
        id="rect4139-1"
        style="display:inline;opacity:1;fill:#0277bd;fill-opacity:1;stroke:none;stroke-width:0.56570262;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.85098039" />
+    <rect
+       y="-369.15433"
+       x="321.73334"
+       height="157.69167"
+       width="99.483337"
+       id="rect11891"
+       style="display:inline;opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.52916664;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.85098039" />
   </g>
   <g
      inkscape:groupmode="layer"
