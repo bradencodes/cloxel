@@ -151,35 +151,40 @@ router.put('/:id', auth, async (req, res) => {
     return res.json(updatedActivity);
   } catch (err) {
     console.error(err.message);
+
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ errors: [{ msg: 'Activity not found' }] });
+    }
+
     res.status(500).send('Server error');
   }
 });
 
-// @route   DELETE api/weeks/:id
-// @desc    Delete a week
+// @route   DELETE api/activities/:id
+// @desc    Delete an activity
 // @access  Private
 router.delete('/:id', auth, async (req, res) => {
   try {
-    const week = await Week.findById(req.params.id);
+    const activity = await Activity.findById(req.params.id);
 
-    if (!week) {
-      return res.status(404).json({ errors: [{ msg: 'Week not found' }] });
+    if (!activity) {
+      return res.status(404).json({ errors: [{ msg: 'Activity not found' }] });
     }
 
-    if (req.user.id !== week.user.toString()) {
+    if (req.user.id !== activity.user.toString()) {
       return res
         .status(403)
-        .json({ errors: [{ msg: 'Week does not belong to user' }] });
+        .json({ errors: [{ msg: 'Activity does not belong to user' }] });
     }
 
-    await week.remove();
+    await activity.remove();
 
-    res.json({ successes: [{ msg: 'Week removed' }] });
+    res.json({ successes: [{ msg: 'Activity removed' }] });
   } catch (err) {
     console.error(err.message);
 
     if (err.kind === 'ObjectId') {
-      return res.status(404).json({ errors: [{ msg: 'Week not found' }] });
+      return res.status(404).json({ errors: [{ msg: 'Activity not found' }] });
     }
 
     res.status(500).send('Server error');
