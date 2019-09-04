@@ -39,6 +39,11 @@ const ActivitySchema = new Schema({
   nextReset: {
     type: Number,
     required: true
+  },
+  deleted: {
+    type: Boolean,
+    required: true,
+    default: false
   }
 });
 
