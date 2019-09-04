@@ -112,32 +112,43 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
-// @route   PUT api/weeks/:id
-// @desc    Update a week
+// @route   PUT api/activities/:id
+// @desc    Update an activity
 // @access  Private
 router.put('/:id', auth, async (req, res) => {
   try {
-    const week = await Week.findById(req.params.id);
+    const activity = await Activity.findById(req.params.id);
 
-    if (!week) {
-      return res.status(404).json({ errors: [{ msg: 'Week not found' }] });
+    if (!activity) {
+      return res.status(404).json({ errors: [{ msg: 'Activity not found' }] });
     }
 
-    if (req.user.id !== week.user.toString()) {
+    if (req.user.id !== activity.user.toString()) {
       return res
         .status(403)
-        .json({ errors: [{ msg: 'Week does not belong to user' }] });
+        .json({ errors: [{ msg: 'Activity does not belong to user' }] });
     }
 
-    const changedWeek = ({ start, end, activities, active } = req.body);
+    const changedActivity = ({
+      name,
+      color,
+      progress,
+      target,
+      start,
+      end,
+      repeat,
+      adds,
+      nextReset,
+      deleted
+    } = req.body);
 
-    const updatedWeek = await Week.findByIdAndUpdate(
+    const updatedActivity = await Activity.findByIdAndUpdate(
       req.params.id,
-      changedWeek,
+      changedActivity,
       { new: true }
     );
 
-    return res.json(updatedWeek);
+    return res.json(updatedActivity);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
