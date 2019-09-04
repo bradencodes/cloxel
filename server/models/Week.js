@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const WeekSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'user',
+    required: true
   },
   start: {
     type: Number,
@@ -14,9 +15,10 @@ const WeekSchema = new Schema({
     type: Number,
     required: true
   },
+  activities: [{ type: Schema.Types.ObjectId, ref: 'activity' }],
   active: {
     type: Schema.Types.ObjectId,
-    required: true
+    ref: 'activity'
   }
 });
 
