@@ -49,8 +49,25 @@ router.post(
   }
 );
 
-// @route   GET api/weeks/:id
-// @desc    Get week by id
+// @route   GET api/activities
+// @desc    Get all not-deleted activities of user
+// @access  Private
+router.get('/', auth, async (req, res) => {
+  try {
+    const activities = await Activity.find({
+      user: req.user.id,
+      deleted: false
+    });
+
+    res.json(activities);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// @route   GET api/activities/:id
+// @desc    Get activity by id
 // @access  Private
 router.get('/:id', auth, async (req, res) => {
   try {
