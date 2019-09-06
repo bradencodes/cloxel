@@ -1,4 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { setAlerts } from '../../actions/alerts';
+import { register } from '../../actions/auth';
+import PropTypes from 'prop-types';
+import { Link as RouterLink, Redirect } from 'react-router-dom';
 import cloxelLogo from '../../resources/cloxelLogo.svg';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -34,8 +39,44 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Register = () => {
+const Register = ({ setAlerts, register, isAuthenticated, alerts }) => {
   const classes = useStyles();
+
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    password2: ''
+  });
+
+  const { name, email, password, password2 } = formData;
+
+  const nameError = alerts.errors.filter(error => error.param === 'name')[0];
+  const emailError = alerts.errors.filter(error => error.param === 'email')[0];
+  const passwordError = alerts.errors.filter(
+    error => error.param === 'password'
+  )[0];
+  const password2Error = alerts.errors.filter(
+    error => error.param === 'password2'
+  )[0];
+
+  const onChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = async e => {
+    e.preventDefault();
+    if (password !== password2) {
+      setAlerts({
+        errors: [{ msg: 'Passwords do not match', param: 'password2' }]
+      });
+    } else {
+      register({ name, email, password });
+    }
+  };
+
+  if (isAuthenticated) {
+    return <Redirect to='/activities' />;
+  }
 
   return (
     <Container component='main' maxWidth='xs'>
@@ -45,7 +86,7 @@ const Register = () => {
         <Typography component='h1' variant='h5'>
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={e => onSubmit(e)}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -57,6 +98,9 @@ const Register = () => {
                 label='Name'
                 variant='filled'
                 autoFocus
+                onChange={e => onChange(e)}
+                error={nameError}
+                helperText={nameError && nameError.msg}
               />
             </Grid>
             <Grid item xs={12}>
@@ -68,6 +112,9 @@ const Register = () => {
                 name='email'
                 autoComplete='email'
                 variant='filled'
+                onChange={e => onChange(e)}
+                error={emailError}
+                helperText={emailError && emailError.msg}
               />
             </Grid>
             <Grid item xs={12}>
@@ -80,6 +127,24 @@ const Register = () => {
                 id='password'
                 autoComplete='current-password'
                 variant='filled'
+                onChange={e => onChange(e)}
+                error={passwordError}
+                helperText={passwordError && passwordError.msg}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name='password2'
+                label='Verify Password'
+                type='password'
+                id='password2'
+                autoComplete='current-password'
+                variant='filled'
+                onChange={e => onChange(e)}
+                error={password2Error}
+                helperText={password2Error && password2Error.msg}
               />
             </Grid>
           </Grid>
@@ -99,7 +164,7 @@ const Register = () => {
           </Button>
           <Grid container justify='flex-end'>
             <Grid item>
-              <Link href='#' variant='body2'>
+              <Link component={RouterLink} to='/signin' variant='body2'>
                 Already have an account? Sign in
               </Link>
             </Grid>
@@ -110,4 +175,18 @@ const Register = () => {
   );
 };
 
-export default Register;
+Register.propTypes = {
+  setAlerts: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  alerts: state.alerts
+});
+
+export default connect(
+  mapStateToProps,
+  { setAlerts, register }
+)(Register);

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { setAlert } from './alert';
+import { setAlerts } from './alerts';
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -52,8 +52,11 @@ export const register = ({ name, email, password }) => async dispatch => {
   } catch (err) {
     const errors = err.response.data.errors;
 
+    console.log({ errors });
+
     if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+      console.log('setAlerts if statement triggered');
+      dispatch(setAlerts({ errors }));
     }
 
     dispatch({ type: REGISTER_FAIL });
@@ -80,7 +83,7 @@ export const login = (email, password) => async dispatch => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+      setAlerts(errors);
     }
 
     dispatch({ type: LOGIN_FAIL });
