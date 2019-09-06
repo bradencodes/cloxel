@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const DB_URI = process.env.DB_URI || 'mongodb://localhost:27017/cloxel';
 
@@ -23,6 +24,7 @@ const app = express();
 })();
 
 // Init Middleware
+app.use(cors({ origin: ['http://localhost:3000'], credentials: true }));
 app.use(express.json({ extended: false }));
 
 app.get('/', (req, res) => res.send('API Running...'));

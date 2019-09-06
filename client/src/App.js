@@ -1,5 +1,10 @@
 import React, { Fragment, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+import { lightBlue, yellow } from '@material-ui/core/colors';
+
+// My Components
 import Register from './components/auth/Register';
 
 // Redux
@@ -14,6 +19,13 @@ if (localStorage.token) {
   setAuthToken(localStorage.token);
 }
 
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: lightBlue[800] },
+    secondary: { main: yellow[600] }
+  }
+});
+
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUser());
@@ -24,9 +36,11 @@ const App = () => {
       <Router>
         <Fragment>
           <section className='container'>
-            <Switch>
-              <Route exact path='/register' component={Register} />
-            </Switch>
+            <ThemeProvider theme={theme}>
+              <Switch>
+                <Route exact path='/register' component={Register} />
+              </Switch>
+            </ThemeProvider>
           </section>
         </Fragment>
       </Router>
