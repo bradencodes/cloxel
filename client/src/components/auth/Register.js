@@ -99,7 +99,7 @@ const Register = ({ setAlerts, register, isAuthenticated, alerts }) => {
                 variant='filled'
                 autoFocus
                 onChange={e => onChange(e)}
-                error={nameError}
+                error={!!nameError}
                 helperText={nameError && nameError.msg}
               />
             </Grid>
@@ -113,7 +113,7 @@ const Register = ({ setAlerts, register, isAuthenticated, alerts }) => {
                 autoComplete='email'
                 variant='filled'
                 onChange={e => onChange(e)}
-                error={emailError}
+                error={!!emailError}
                 helperText={emailError && emailError.msg}
               />
             </Grid>
@@ -128,7 +128,7 @@ const Register = ({ setAlerts, register, isAuthenticated, alerts }) => {
                 autoComplete='current-password'
                 variant='filled'
                 onChange={e => onChange(e)}
-                error={passwordError}
+                error={!!passwordError}
                 helperText={passwordError && passwordError.msg}
               />
             </Grid>
@@ -143,7 +143,7 @@ const Register = ({ setAlerts, register, isAuthenticated, alerts }) => {
                 autoComplete='current-password'
                 variant='filled'
                 onChange={e => onChange(e)}
-                error={password2Error}
+                error={!!password2Error}
                 helperText={password2Error && password2Error.msg}
               />
             </Grid>

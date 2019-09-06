@@ -11,7 +11,6 @@ export default function(state = initialState, action) {
 
   switch (type) {
     case SET_ALERTS:
-      console.log(`payload = ${payload}`);
       return { ...state, ...payload };
 
     default:

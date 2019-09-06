@@ -52,10 +52,7 @@ export const register = ({ name, email, password }) => async dispatch => {
   } catch (err) {
     const errors = err.response.data.errors;
 
-    console.log({ errors });
-
     if (errors) {
-      console.log('setAlerts if statement triggered');
       dispatch(setAlerts({ errors }));
     }
 
