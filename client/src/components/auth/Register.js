@@ -54,7 +54,6 @@ const Register = () => {
               <TextField
                 autoComplete='fname'
                 name='firstName'
-                variant='outlined'
                 required
                 fullWidth
                 id='firstName'
@@ -64,7 +63,6 @@ const Register = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                variant='outlined'
                 required
                 fullWidth
                 id='lastName'
@@ -75,7 +73,6 @@ const Register = () => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                variant='outlined'
                 required
                 fullWidth
                 id='email'
@@ -86,7 +83,6 @@ const Register = () => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                variant='outlined'
                 required
                 fullWidth
                 name='password'
