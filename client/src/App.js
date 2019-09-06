@@ -22,7 +22,10 @@ if (localStorage.token) {
 const theme = createMuiTheme({
   palette: {
     primary: { main: lightBlue[800] },
-    secondary: { main: yellow[600] }
+    secondary: {
+      main: yellow[600],
+      light: yellow[50]
+    }
   }
 });
 

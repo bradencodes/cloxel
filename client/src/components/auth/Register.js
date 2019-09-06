@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(3)
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
+    margin: theme.spacing(1, 0, 2)
   }
 }));
 
@@ -50,25 +50,16 @@ const Register = () => {
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 autoComplete='fname'
-                name='firstName'
+                name='name'
                 required
                 fullWidth
-                id='firstName'
-                label='First Name'
+                id='name'
+                label='Name'
+                variant='filled'
                 autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                id='lastName'
-                label='Last Name'
-                name='lastName'
-                autoComplete='lname'
               />
             </Grid>
             <Grid item xs={12}>
@@ -79,6 +70,7 @@ const Register = () => {
                 label='Email Address'
                 name='email'
                 autoComplete='email'
+                variant='filled'
               />
             </Grid>
             <Grid item xs={12}>
@@ -90,7 +82,13 @@ const Register = () => {
                 type='password'
                 id='password'
                 autoComplete='current-password'
+                variant='filled'
               />
+            </Grid>
+          </Grid>
+          <Grid container spacing={1} justify='flex-end'>
+            <Grid item>
+              <Typography variant='caption'>* required</Typography>
             </Grid>
           </Grid>
           <Button
