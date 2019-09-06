@@ -10,12 +10,28 @@ import setAuthToken from './utils/setAuthToken';
 
 import './App.css';
 
-function App() {
-  return (
-    <div className='App'>
-      <Register></Register>
-    </div>
-  );
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
 }
+
+const App = () => {
+  useEffect(() => {
+    store.dispatch(loadUser());
+  }, []);
+
+  return (
+    <Provider store={store}>
+      <Router>
+        <Fragment>
+          <section className='container'>
+            <Switch>
+              <Route exact path='/register' component={Register} />
+            </Switch>
+          </section>
+        </Fragment>
+      </Router>
+    </Provider>
+  );
+};
 
 export default App;
