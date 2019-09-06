@@ -80,7 +80,7 @@ export const login = (email, password) => async dispatch => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      setAlerts(errors);
+      dispatch(setAlerts({ errors }));
     }
 
     dispatch({ type: LOGIN_FAIL });

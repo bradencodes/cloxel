@@ -6,6 +6,7 @@ import { lightBlue, yellow } from '@material-ui/core/colors';
 
 // My Components
 import Register from './components/auth/Register';
+import SignIn from './components/auth/SignIn';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -42,6 +43,7 @@ const App = () => {
             <ThemeProvider theme={theme}>
               <Switch>
                 <Route exact path='/register' component={Register} />
+                <Route exact path='/signin' component={SignIn} />
               </Switch>
             </ThemeProvider>
           </section>

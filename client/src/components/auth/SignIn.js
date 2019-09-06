@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { setAlerts } from '../../actions/alerts';
-import { register } from '../../actions/auth';
+import { login } from '../../actions/auth';
 import PropTypes from 'prop-types';
 import { Link as RouterLink, Redirect } from 'react-router-dom';
 import cloxelLogo from '../../resources/cloxelLogo.svg';
@@ -39,25 +38,19 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Register = ({ setAlerts, register, isAuthenticated, alerts }) => {
+const Login = ({ login, isAuthenticated, alerts }) => {
   const classes = useStyles();
 
   const [formData, setFormData] = useState({
-    name: '',
     email: '',
-    password: '',
-    password2: ''
+    password: ''
   });
 
-  const { name, email, password, password2 } = formData;
+  const { email, password } = formData;
 
-  const nameError = alerts.errors.filter(error => error.param === 'name')[0];
   const emailError = alerts.errors.filter(error => error.param === 'email')[0];
   const passwordError = alerts.errors.filter(
     error => error.param === 'password'
-  )[0];
-  const password2Error = alerts.errors.filter(
-    error => error.param === 'password2'
   )[0];
 
   const onChange = e =>
@@ -65,13 +58,7 @@ const Register = ({ setAlerts, register, isAuthenticated, alerts }) => {
 
   const onSubmit = async e => {
     e.preventDefault();
-    if (password !== password2) {
-      setAlerts({
-        errors: [{ msg: 'Passwords do not match', param: 'password2' }]
-      });
-    } else {
-      register({ name, email, password });
-    }
+    login( email, password );
   };
 
   if (isAuthenticated) {
@@ -88,24 +75,10 @@ const Register = ({ setAlerts, register, isAuthenticated, alerts }) => {
           style={{ width: '96px', height: '96px' }}
         />
         <Typography component='h1' variant='h5'>
-          Sign up
+          Sign in
         </Typography>
         <form className={classes.form} noValidate onSubmit={e => onSubmit(e)}>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                autoComplete='fname'
-                name='name'
-                fullWidth
-                id='name'
-                label='Name'
-                variant='filled'
-                autoFocus
-                onChange={e => onChange(e)}
-                error={!!nameError}
-                helperText={nameError && nameError.msg}
-              />
-            </Grid>
             <Grid item xs={12}>
               <TextField
                 fullWidth
@@ -114,6 +87,7 @@ const Register = ({ setAlerts, register, isAuthenticated, alerts }) => {
                 name='email'
                 autoComplete='email'
                 variant='filled'
+                autoFocus
                 onChange={e => onChange(e)}
                 error={!!emailError}
                 helperText={emailError && emailError.msg}
@@ -133,20 +107,6 @@ const Register = ({ setAlerts, register, isAuthenticated, alerts }) => {
                 helperText={passwordError && passwordError.msg}
               />
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                name='password2'
-                label='Verify Password'
-                type='password'
-                id='password2'
-                autoComplete='current-password'
-                variant='filled'
-                onChange={e => onChange(e)}
-                error={!!password2Error}
-                helperText={password2Error && password2Error.msg}
-              />
-            </Grid>
           </Grid>
           <Button
             type='submit'
@@ -155,12 +115,12 @@ const Register = ({ setAlerts, register, isAuthenticated, alerts }) => {
             color='primary'
             className={classes.submit}
           >
-            Sign Up
+            Sign In
           </Button>
           <Grid container justify='flex-end'>
             <Grid item>
-              <Link component={RouterLink} to='/signin' variant='body2'>
-                Already have an account? Sign in
+              <Link component={RouterLink} to='/register' variant='body2'>
+                Don't have an account? Sign up
               </Link>
             </Grid>
           </Grid>
@@ -170,9 +130,8 @@ const Register = ({ setAlerts, register, isAuthenticated, alerts }) => {
   );
 };
 
-Register.propTypes = {
-  setAlerts: PropTypes.func.isRequired,
-  register: PropTypes.func.isRequired,
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool
 };
 
@@ -183,5 +142,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { setAlerts, register }
-)(Register);
+  { login }
+)(Login);
