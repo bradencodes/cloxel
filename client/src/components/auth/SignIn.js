@@ -15,11 +15,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 const useStyles = makeStyles(theme => ({
-  '@global': {
-    body: {
-      backgroundColor: theme.palette.common.white
-    }
-  },
   paper: {
     [theme.breakpoints.down('xs')]: {
       marginTop: theme.spacing(2)
@@ -36,6 +31,7 @@ const useStyles = makeStyles(theme => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue.
+    maxWidth: 600,
     marginTop: theme.spacing(3)
   },
   submit: {
