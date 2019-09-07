@@ -104,7 +104,7 @@ const Register = ({
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                autoComplete='fname'
+                autoComplete='given-name'
                 name='name'
                 fullWidth
                 id='name'
@@ -136,7 +136,6 @@ const Register = ({
                 label='Password'
                 type='password'
                 id='password'
-                autoComplete='current-password'
                 variant='filled'
                 onChange={e => onChange(e)}
                 error={!!passwordError}
@@ -150,7 +149,6 @@ const Register = ({
                 label='Verify Password'
                 type='password'
                 id='password2'
-                autoComplete='current-password'
                 variant='filled'
                 onChange={e => onChange(e)}
                 error={!!password2Error}
