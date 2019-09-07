@@ -17,6 +17,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { mainListItems, secondaryListItems } from './ListItems';
+import { logout } from '../../actions/auth';
 
 const drawerWidth = 256;
 
@@ -62,6 +63,16 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.leavingScreen
     })
   },
+  accountSwitcher: {
+    margin: theme.spacing(0, 2, 2)
+  },
+  signout: {
+    cursor: 'pointer',
+    display: 'inline',
+    '&:hover': {
+      textDecoration: 'underline'
+    }
+  },
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
@@ -87,7 +98,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Dashboard = ({ auth: { loading, user } }) => {
+const Dashboard = ({ auth: { loading, user }, logout }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const handleDrawerOpen = () => {
@@ -142,6 +153,13 @@ const Dashboard = ({ auth: { loading, user } }) => {
         </div>
         <div className={classes.accountSwitcher}>
           <Typography variant='h6'>{user.name}</Typography>
+          <Typography
+            variant='body2'
+            className={classes.signout}
+            onClick={logout}
+          >
+            Sign out
+          </Typography>
         </div>
         <Divider />
         <List>{mainListItems}</List>
@@ -159,11 +177,15 @@ const Dashboard = ({ auth: { loading, user } }) => {
 };
 
 Dashboard.propTypes = {
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps)(Dashboard);
+export default connect(
+  mapStateToProps,
+  { logout }
+)(Dashboard);
