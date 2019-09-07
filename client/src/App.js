@@ -7,6 +7,7 @@ import { lightBlue, yellow } from '@material-ui/core/colors';
 // My Components
 import Register from './components/auth/Register';
 import SignIn from './components/auth/SignIn';
+import TypographyTest from './components/test/TypographyTest';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -27,6 +28,40 @@ const theme = createMuiTheme({
       main: yellow[600],
       light: yellow[50]
     }
+  },
+  typography: {
+    fontFamily: [
+      'Dubai',
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"'
+    ].join(','),
+    fontSize: 15,
+    caption: {
+      fontSize: 14
+    },
+    button: {
+      fontSize: 14.5,
+      letterSpacing: 0.5
+    },
+    overline: {
+      fontSize: 13.5,
+      letterSpacing: 0.5
+    }
+  },
+  overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        '@font-face': 'Dubai'
+      }
+    }
   }
 });
 
@@ -44,6 +79,7 @@ const App = () => {
               <Switch>
                 <Route exact path='/register' component={Register} />
                 <Route exact path='/signin' component={SignIn} />
+                <Route exact path='/type-test' component={TypographyTest} />
               </Switch>
             </ThemeProvider>
           </section>
