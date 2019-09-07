@@ -21,7 +21,11 @@ const useStyles = makeStyles(theme => ({
     }
   },
   paper: {
+    [theme.breakpoints.down('xs')]: {
+      marginTop: theme.spacing(2),
+    },
     marginTop: theme.spacing(8),
+    marginBottom: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
