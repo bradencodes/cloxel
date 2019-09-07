@@ -18,6 +18,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { mainListItems, secondaryListItems } from './ListItems';
 import { logout } from '../../actions/auth';
+import cloxelLogo from '../../resources/cloxelLogo.svg';
 
 const drawerWidth = 256;
 
@@ -91,6 +92,7 @@ const useStyles = makeStyles(theme => ({
   },
   progress: {
     display: 'flex',
+    flexDirection: 'column',
     width: '100%',
     height: '100vh',
     justifyContent: 'center',
@@ -110,6 +112,11 @@ const Dashboard = ({ auth: { loading, user }, logout }) => {
 
   return loading ? (
     <div className={classes.progress}>
+      <img
+        src={cloxelLogo}
+        alt='cloxelLogo'
+        style={{ width: '192px', height: '192px' }}
+      />
       <CircularProgress />
     </div>
   ) : (
