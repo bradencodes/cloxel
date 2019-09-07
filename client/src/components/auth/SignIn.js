@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { login } from '../../actions/auth';
+import { clearAlerts } from '../../actions/alerts';
 import PropTypes from 'prop-types';
 import { Link as RouterLink, Redirect } from 'react-router-dom';
 import cloxelLogo from '../../resources/cloxelLogo.svg';
@@ -38,7 +39,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Login = ({ login, isAuthenticated, alerts }) => {
+const Login = ({ login, clearAlerts, isAuthenticated, alerts }) => {
+  useEffect(() => {
+    return () => {
+      clearAlerts();
+    };
+  }, [clearAlerts]);
+
   const classes = useStyles();
 
   const [formData, setFormData] = useState({
@@ -58,7 +65,7 @@ const Login = ({ login, isAuthenticated, alerts }) => {
 
   const onSubmit = async e => {
     e.preventDefault();
-    login( email, password );
+    login(email, password);
   };
 
   if (isAuthenticated) {
@@ -132,6 +139,7 @@ const Login = ({ login, isAuthenticated, alerts }) => {
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
+  clearAlerts: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool
 };
 
@@ -142,5 +150,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { login }
+  { login, clearAlerts }
 )(Login);

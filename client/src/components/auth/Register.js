@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { setAlerts } from '../../actions/alerts';
+import { setAlerts, clearAlerts } from '../../actions/alerts';
 import { register } from '../../actions/auth';
 import PropTypes from 'prop-types';
 import { Link as RouterLink, Redirect } from 'react-router-dom';
@@ -39,7 +39,19 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Register = ({ setAlerts, register, isAuthenticated, alerts }) => {
+const Register = ({
+  setAlerts,
+  clearAlerts,
+  register,
+  isAuthenticated,
+  alerts
+}) => {
+  useEffect(() => {
+    return () => {
+      clearAlerts();
+    };
+  }, [clearAlerts]);
+
   const classes = useStyles();
 
   const [formData, setFormData] = useState({
@@ -172,6 +184,7 @@ const Register = ({ setAlerts, register, isAuthenticated, alerts }) => {
 
 Register.propTypes = {
   setAlerts: PropTypes.func.isRequired,
+  clearAlerts: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool
 };
@@ -183,5 +196,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { setAlerts, register }
+  { setAlerts, clearAlerts, register }
 )(Register);
