@@ -24,7 +24,12 @@ const app = express();
 })();
 
 // Init Middleware
-app.use(cors({ origin: ['http://localhost:3000'], credentials: true }));
+app.use(
+  cors({
+    origin: ['http://localhost:3000', 'https://cloxel.netlify.com'],
+    credentials: true
+  })
+);
 app.use(express.json({ extended: false }));
 
 app.get('/', (req, res) => res.send('API Running...'));
