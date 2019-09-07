@@ -18,7 +18,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './ListItems';
 
-const drawerWidth = 240;
+const drawerWidth = 256;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -46,6 +46,9 @@ const useStyles = makeStyles(theme => ({
   drawerPaper: {
     position: 'relative',
     whiteSpace: 'nowrap',
+    [theme.breakpoints.down('xs')]: {
+      width: 'calc(100% - 56px)'
+    },
     width: drawerWidth,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
