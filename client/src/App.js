@@ -8,6 +8,7 @@ import { lightBlue, yellow } from '@material-ui/core/colors';
 import Register from './components/auth/Register';
 import SignIn from './components/auth/SignIn';
 import TypographyTest from './components/test/TypographyTest';
+import PrivateRoute from './components/auth/PrivateRoute';
 import Activities from './components/dashboard/Dashboard';
 
 // Redux
@@ -80,7 +81,7 @@ const App = () => {
               <Switch>
                 <Route exact path='/register' component={Register} />
                 <Route exact path='/signin' component={SignIn} />
-                <Route exact path='/activities' component={Activities} />
+                <PrivateRoute exact path='/activities' component={Activities} />
                 <Route exact path='/type-test' component={TypographyTest} />
               </Switch>
             </ThemeProvider>
