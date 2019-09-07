@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
@@ -35,13 +35,10 @@ const useStyles = makeStyles(theme => ({
     ...theme.mixins.toolbar
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: theme.zIndex.drawer + 1
   },
   menuButton: {
     marginRight: 36
-  },
-  menuButtonHidden: {
-    display: 'none'
   },
   title: {
     flexGrow: 1
@@ -96,20 +93,14 @@ const Dashboard = props => {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar
-        position='absolute'
-        className={classes.appBar}
-      >
+      <AppBar position='absolute' className={classes.appBar}>
         <Toolbar className={classes.toolbar}>
           <IconButton
             edge='start'
             color='inherit'
             aria-label='open drawer'
             onClick={handleDrawerOpen}
-            className={clsx(
-              classes.menuButton,
-              open && classes.menuButtonHidden
-            )}
+            className={classes.menuButton}
           >
             <MenuIcon />
           </IconButton>
@@ -129,12 +120,14 @@ const Dashboard = props => {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Drawer
+      <SwipeableDrawer
         variant='temporary'
         classes={{
           paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)
         }}
         open={open}
+        onClose={handleDrawerClose}
+        onOpen={handleDrawerOpen}
       >
         <div className={classes.toolbarIcon}>
           <IconButton onClick={handleDrawerClose}>
@@ -145,7 +138,7 @@ const Dashboard = props => {
         <List>{mainListItems}</List>
         {/* <Divider /> */}
         <List>{secondaryListItems}</List>
-      </Drawer>
+      </SwipeableDrawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth='lg' className={classes.container}>
