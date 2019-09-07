@@ -17,7 +17,7 @@ import Container from '@material-ui/core/Container';
 const useStyles = makeStyles(theme => ({
   paper: {
     [theme.breakpoints.down('xs')]: {
-      margin: theme.spacing(2, 0, 8),
+      margin: theme.spacing(2, 0, 8)
     },
     margin: theme.spacing(8, 0),
     display: 'flex',

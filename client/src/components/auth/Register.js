@@ -30,7 +30,6 @@ const useStyles = makeStyles(theme => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    // maxWidth: 600,
     marginTop: theme.spacing(3)
   },
   submit: {
