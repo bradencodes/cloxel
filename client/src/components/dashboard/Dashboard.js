@@ -125,11 +125,11 @@ const Dashboard = ({ auth: { loading, user }, logout }) => {
   // === Collapsing AppBar Start ===
   const [show, changeShow] = React.useState(true);
 
-  let lastScroll = null;
+  let lastScroll = 0;
 
   const handleScroll = () => {
     const windowLastScroll = window.scrollY;
-    if (windowLastScroll === lastScroll) {
+    if (Math.abs(windowLastScroll - lastScroll) < 71) {
       return;
     }
     const shouldShow = lastScroll !== null && windowLastScroll < lastScroll;
