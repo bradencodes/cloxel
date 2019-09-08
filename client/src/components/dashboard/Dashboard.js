@@ -125,7 +125,7 @@ const Dashboard = ({ auth: { loading, user }, logout }) => {
     const windowLastScroll = window.scrollY;
     console.log('lastScroll: ', lastScroll);
     console.log('windowLastScroll: ', windowLastScroll);
-    if (windowLastScroll === lastScroll || windowLastScroll < 56) {
+    if (Math.abs(windowLastScroll - lastScroll) < 16 || windowLastScroll < 56) {
       return;
     }
     const shouldShow = lastScroll !== null && windowLastScroll < lastScroll;

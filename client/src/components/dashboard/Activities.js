@@ -48,7 +48,7 @@ const Activities = ({ show }) => {
         <div>Doing</div>
         <Paper className={`${classes.activity} `} />
       </Paper>
-      <Paper className={classes.todo} elevation={4}>
+      <Paper className={classes.todo} elevation={4} square>
         <div>To do</div>
         <Paper className={classes.activity} />
         <Paper className={classes.activity} />
