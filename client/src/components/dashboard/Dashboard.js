@@ -49,8 +49,12 @@ const useStyles = makeStyles(theme => ({
     transform: 'translate(0, 0)',
     transition: 'transform .25s'
   },
-  hide: {
+  hideAppBar: {
     transform: 'translate(0, -70px)',
+    transition: 'transform .25s'
+  },
+  hideSpacer: {
+    transform: 'translate(0, -56px)',
     transition: 'transform .25s'
   },
   drawerPaper: {
@@ -150,7 +154,7 @@ const Dashboard = ({ auth: { loading, user }, logout }) => {
       return '';
     }
 
-    return show ? classes.show : classes.hide;
+    return show ? classes.show : classes.hideAppBar;
   };
 
   // === Collapsing AppBar End ===
@@ -222,7 +226,11 @@ const Dashboard = ({ auth: { loading, user }, logout }) => {
         {/* <Divider /> */}
         <List>{secondaryListItems}</List>
       </SwipeableDrawer>
-      <main className={classes.content}>
+      <main
+        className={`${classes.content} ${
+          show ? classes.show : classes.hideSpacer
+        }`}
+      >
         <div className={classes.appBarSpacer} />
         <Activities />
       </main>

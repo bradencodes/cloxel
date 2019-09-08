@@ -11,11 +11,11 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     height: 100,
     position: 'sticky',
-    top: 0
+    top: 56
   },
   todo: {
     width: '100%',
-    height: 1000
+    height: '200vh'
   }
 }));
 
@@ -28,7 +28,7 @@ const Activities = props => {
       <Paper className={classes.doing} elevation={12} square>
         <div>Content</div>
       </Paper>
-      <Paper className={classes.todo} elevation={13}>
+      <Paper className={classes.todo} elevation={4}>
         <div>Content</div>
       </Paper>
     </div>
