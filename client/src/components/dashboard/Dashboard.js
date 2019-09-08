@@ -118,23 +118,23 @@ const Dashboard = ({ auth: { loading, user }, logout }) => {
 
   const [show, changeShow] = React.useState(true);
 
-  let lastScroll = 0;
-
-  const handleScroll = () => {
-    const windowLastScroll = window.scrollY;
-    if (
-      !windowLastScroll ||
-      Math.abs(windowLastScroll - lastScroll) < 16 ||
-      windowLastScroll < 56
-    ) {
-      return;
-    }
-    const shouldShow = lastScroll !== null && windowLastScroll < lastScroll;
-    changeShow(shouldShow);
-    lastScroll = windowLastScroll;
-  };
-
   useEffect(() => {
+    let lastScroll = 0;
+
+    const handleScroll = () => {
+      const windowLastScroll = window.scrollY;
+      if (
+        !windowLastScroll ||
+        Math.abs(windowLastScroll - lastScroll) < 16 ||
+        windowLastScroll < 56
+      ) {
+        return;
+      }
+      const shouldShow = lastScroll !== null && windowLastScroll < lastScroll;
+      changeShow(shouldShow);
+      lastScroll = windowLastScroll;
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);

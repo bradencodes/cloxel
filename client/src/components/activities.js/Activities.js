@@ -68,6 +68,8 @@ const Activities = ({ show }) => {
   );
 };
 
-Activities.propTypes = {};
+Activities.propTypes = {
+  show: PropTypes.bool.isRequired
+};
 
 export default Activities;
