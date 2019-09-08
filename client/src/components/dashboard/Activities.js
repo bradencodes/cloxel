@@ -25,7 +25,7 @@ const Activities = props => {
   return (
     <div>
       <CssBaseline />
-      <Paper className={classes.doing} elevation={12}>
+      <Paper className={classes.doing} elevation={12} square>
         <div>Content</div>
       </Paper>
       <Paper className={classes.todo} elevation={13}>

@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import MenuIcon from '@material-ui/icons/Menu';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
@@ -11,13 +14,10 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-import Slide from '@material-ui/core/Slide';
 import { mainListItems, secondaryListItems } from './ListItems';
 import { logout } from '../../actions/auth';
 import cloxelLogo from '../../resources/cloxelLogo.svg';
 import Activities from './Activities';
-import CollapsibleAppBar from './CollapsibleAppBar';
 
 const drawerWidth = 256;
 
@@ -34,6 +34,24 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-end',
     padding: '0 8px',
     ...theme.mixins.toolbar
+  },
+  appBar: {
+    flexGrow: 1,
+    zIndex: theme.zIndex.drawer + 1
+  },
+  menuButton: {
+    marginRight: 36
+  },
+  title: {
+    flexGrow: 1
+  },
+  show: {
+    transform: 'translate(0, 0)',
+    transition: 'transform .25s'
+  },
+  hide: {
+    transform: 'translate(0, -70px)',
+    transition: 'transform .25s'
   },
   drawerPaper: {
     position: 'relative',
@@ -67,7 +85,7 @@ const useStyles = makeStyles(theme => ({
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    height: '100vh',
+    height: '100vh'
     // overflow: 'auto'
   },
   container: {
@@ -90,24 +108,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function HideOnScroll(props) {
-  const { children } = props;
-  // Note that you normally won't need to set the window ref as useScrollTrigger
-  // will default to window.
-  // This is only being set here because the demo is in an iframe.
-  const trigger = useScrollTrigger();
-
-  return (
-    <Slide appear={false} direction='down' in={!trigger}>
-      {children}
-    </Slide>
-  );
-}
-
-HideOnScroll.propTypes = {
-  children: PropTypes.element.isRequired
-};
-
 const Dashboard = ({ auth: { loading, user }, logout }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -117,6 +117,43 @@ const Dashboard = ({ auth: { loading, user }, logout }) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  // === Collapsing AppBar Start ===
+  const [show, changeShow] = React.useState(null);
+
+  let lastScroll = null;
+
+  const handleScroll = () => {
+    const windowLastScroll = window.scrollY;
+
+    if (windowLastScroll === lastScroll) {
+      return;
+    }
+
+    const shouldShow =
+      lastScroll !== null ? windowLastScroll < lastScroll : null;
+
+    if (shouldShow !== show) {
+      changeShow(shouldShow);
+    }
+
+    lastScroll = windowLastScroll;
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const getScrollClassName = () => {
+    if (show === null) {
+      return '';
+    }
+
+    return show ? classes.show : classes.hide;
+  };
+
+  // === Collapsing AppBar End ===
 
   return loading ? (
     <div className={classes.progress}>
@@ -130,7 +167,31 @@ const Dashboard = ({ auth: { loading, user }, logout }) => {
   ) : (
     <div className={classes.root}>
       <CssBaseline />
-      <CollapsibleAppBar handleDrawerOpen={handleDrawerOpen}/>
+      <AppBar
+        position='fixed'
+        className={`${getScrollClassName()} ${classes.appBar}`}
+      >
+        <Toolbar className={classes.toolbar}>
+          <IconButton
+            edge='start'
+            color='inherit'
+            aria-label='open drawer'
+            onClick={handleDrawerOpen}
+            className={classes.menuButton}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            component='h1'
+            variant='h6'
+            color='inherit'
+            noWrap
+            className={classes.title}
+          >
+            Cloxel
+          </Typography>
+        </Toolbar>
+      </AppBar>
 
       <SwipeableDrawer
         variant='temporary'
