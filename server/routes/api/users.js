@@ -87,8 +87,7 @@ router.put('/', auth, async (req, res) => {
     const changedUser = ({
       name,
       email,
-      password,
-      weeks
+      password
     } = req.body);
 
     const updatedUser = await User.findByIdAndUpdate(

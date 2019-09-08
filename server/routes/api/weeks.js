@@ -39,7 +39,12 @@ router.post(
 
       const week = await newWeek.save();
 
-      res.json(week);
+      let user = await User.findById(req.user.id);
+
+      user.weeks.push(week);
+      user = await user.save();
+
+      res.json(user);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server error');
@@ -125,9 +130,16 @@ router.delete('/:id', auth, async (req, res) => {
         .json({ errors: [{ msg: 'Week does not belong to user' }] });
     }
 
+    let user = await User.findById(req.user.id);
+
+    user.weeks.pull({ _id: week.id });
+    user = await user.save();
+
     await week.remove();
 
-    res.json({ successes: [{ msg: 'Week removed' }] });
+    res.json(user);
+
+    // res.json({ successes: [{ msg: 'Week removed' }] });
   } catch (err) {
     console.error(err.message);
 
