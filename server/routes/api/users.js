@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { check, validationResult } = require('express-validator');
+const auth = require('../../middleware/auth');
 
 const User = require('../../models/User');
 
@@ -76,5 +77,36 @@ router.post(
     }
   }
 );
+
+// @route   PUT api/users
+// @desc    Update user
+// @access  Private
+router.put('/', auth, async (req, res) => {
+  try {
+
+    const changedUser = ({
+      name,
+      email,
+      password,
+      weeks
+    } = req.body);
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      changedUser,
+      { new: true }
+    ).select('-password');
+
+    return res.json(updatedUser);
+  } catch (err) {
+    console.error(err.message);
+
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ errors: [{ msg: 'Activity not found' }] });
+    }
+
+    res.status(500).send('Server error');
+  }
+});
 
 module.exports = router;
