@@ -47,11 +47,11 @@ const useStyles = makeStyles(theme => ({
   },
   show: {
     transform: 'translate(0, 0)',
-    transition: 'transform .25s'
+    transition: 'transform .22s'
   },
   hideAppBar: {
-    transform: 'translate(0, -70px)',
-    transition: 'transform .3s'
+    transform: 'translate(0, -65px)',
+    transition: 'transform .35s'
   },
   drawerPaper: {
     position: 'relative',
@@ -125,11 +125,11 @@ const Dashboard = ({ auth: { loading, user }, logout }) => {
 
     const handleScroll = () => {
       const windowLastScroll = window.scrollY;
-      if (
-        !windowLastScroll ||
-        Math.abs(windowLastScroll - lastScroll) < 16 ||
-        windowLastScroll < 56
-      ) {
+      if (!windowLastScroll || Math.abs(windowLastScroll - lastScroll) < 16) {
+        return;
+      }
+      if (windowLastScroll < 76) {
+        changeShow(true);
         return;
       }
       const shouldShow = lastScroll !== null && windowLastScroll < lastScroll;

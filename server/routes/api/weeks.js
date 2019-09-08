@@ -138,8 +138,7 @@ router.delete('/:id', auth, async (req, res) => {
     await week.remove();
 
     res.json(user);
-
-    // res.json({ successes: [{ msg: 'Week removed' }] });
+    
   } catch (err) {
     console.error(err.message);
 
