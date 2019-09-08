@@ -5,20 +5,19 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import Container from '@material-ui/core/Container';
-import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import useScrollTrigger from '@material-ui/core/useScrollTrigger';
+import Slide from '@material-ui/core/Slide';
 import { mainListItems, secondaryListItems } from './ListItems';
 import { logout } from '../../actions/auth';
 import cloxelLogo from '../../resources/cloxelLogo.svg';
 import Activities from './Activities';
+import CollapsibleAppBar from './CollapsibleAppBar';
 
 const drawerWidth = 256;
 
@@ -35,15 +34,6 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-end',
     padding: '0 8px',
     ...theme.mixins.toolbar
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1
-  },
-  menuButton: {
-    marginRight: 36
-  },
-  title: {
-    flexGrow: 1
   },
   drawerPaper: {
     position: 'relative',
@@ -78,7 +68,7 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
     height: '100vh',
-    overflow: 'auto'
+    // overflow: 'auto'
   },
   container: {
     paddingTop: theme.spacing(4),
@@ -99,6 +89,24 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center'
   }
 }));
+
+function HideOnScroll(props) {
+  const { children } = props;
+  // Note that you normally won't need to set the window ref as useScrollTrigger
+  // will default to window.
+  // This is only being set here because the demo is in an iframe.
+  const trigger = useScrollTrigger();
+
+  return (
+    <Slide appear={false} direction='down' in={!trigger}>
+      {children}
+    </Slide>
+  );
+}
+
+HideOnScroll.propTypes = {
+  children: PropTypes.element.isRequired
+};
 
 const Dashboard = ({ auth: { loading, user }, logout }) => {
   const classes = useStyles();
@@ -122,28 +130,8 @@ const Dashboard = ({ auth: { loading, user }, logout }) => {
   ) : (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position='absolute' className={classes.appBar}>
-        <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge='start'
-            color='inherit'
-            aria-label='open drawer'
-            onClick={handleDrawerOpen}
-            className={classes.menuButton}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            component='h1'
-            variant='h6'
-            color='inherit'
-            noWrap
-            className={classes.title}
-          >
-            Cloxel
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <CollapsibleAppBar handleDrawerOpen={handleDrawerOpen}/>
+
       <SwipeableDrawer
         variant='temporary'
         classes={{
