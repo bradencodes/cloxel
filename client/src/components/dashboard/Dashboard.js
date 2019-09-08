@@ -17,7 +17,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { mainListItems, secondaryListItems } from './ListItems';
 import { logout } from '../../actions/auth';
 import cloxelLogo from '../../resources/cloxelLogo.svg';
-import Activities from './Activities';
+import Activities from '../activities.js/Activities';
 
 const drawerWidth = 256;
 
@@ -116,16 +116,17 @@ const Dashboard = ({ auth: { loading, user }, logout }) => {
     setOpen(false);
   };
 
-  // === Collapsing AppBar Start ===
   const [show, changeShow] = React.useState(true);
 
   let lastScroll = 0;
 
   const handleScroll = () => {
     const windowLastScroll = window.scrollY;
-    console.log('lastScroll: ', lastScroll);
-    console.log('windowLastScroll: ', windowLastScroll);
-    if (Math.abs(windowLastScroll - lastScroll) < 16 || windowLastScroll < 56) {
+    if (
+      !windowLastScroll ||
+      Math.abs(windowLastScroll - lastScroll) < 16 ||
+      windowLastScroll < 56
+    ) {
       return;
     }
     const shouldShow = lastScroll !== null && windowLastScroll < lastScroll;
@@ -141,8 +142,6 @@ const Dashboard = ({ auth: { loading, user }, logout }) => {
   const getScrollClassName = () => {
     return show ? classes.show : classes.hideAppBar;
   };
-
-  // === Collapsing AppBar End ===
 
   return loading ? (
     <div className={classes.progress}>
@@ -211,6 +210,7 @@ const Dashboard = ({ auth: { loading, user }, logout }) => {
         {/* <Divider /> */}
         <List>{secondaryListItems}</List>
       </SwipeableDrawer>
+
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Activities show={show} />
