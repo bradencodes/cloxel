@@ -9,27 +9,60 @@ const useStyles = makeStyles(theme => ({
   doing: {
     backgroundColor: theme.palette.secondary.light,
     width: '100%',
-    height: 100,
+    padding: theme.spacing(2),
     position: 'sticky',
     top: 56
   },
   todo: {
     width: '100%',
-    height: '200vh'
+    height: 'calc(100% - 56px)',
+    padding: theme.spacing(2)
+  },
+  activity: {
+    height: 64,
+    margin: theme.spacing(2, 0, 0)
+  },
+  show: {
+    transform: 'translate(0, 0)',
+    transition: 'transform .25s'
+  },
+  moveDoing: {
+    transform: 'translate(0, -56px)',
+    transition: 'transform .25s'
   }
 }));
 
-const Activities = props => {
+const Activities = ({ show }) => {
   const classes = useStyles();
 
   return (
     <div>
       <CssBaseline />
-      <Paper className={classes.doing} elevation={12} square>
-        <div>Content</div>
+      <Paper
+        className={`${classes.doing} ${
+          show ? classes.show : classes.moveDoing
+        }`}
+        elevation={12}
+        square
+      >
+        <div>Doing</div>
+        <Paper className={`${classes.activity} `} />
       </Paper>
       <Paper className={classes.todo} elevation={4}>
-        <div>Content</div>
+        <div>To do</div>
+        <Paper className={classes.activity} />
+        <Paper className={classes.activity} />
+        <Paper className={classes.activity} />
+        <Paper className={classes.activity} />
+        <Paper className={classes.activity} />
+        <Paper className={classes.activity} />
+        <Paper className={classes.activity} />
+        <Paper className={classes.activity} />
+        <Paper className={classes.activity} />
+        <Paper className={classes.activity} />
+        <Paper className={classes.activity} />
+        <Paper className={classes.activity} />
+        <Paper className={classes.activity} />
       </Paper>
     </div>
   );

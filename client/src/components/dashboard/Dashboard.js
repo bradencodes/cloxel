@@ -53,10 +53,6 @@ const useStyles = makeStyles(theme => ({
     transform: 'translate(0, -70px)',
     transition: 'transform .3s'
   },
-  hideSpacer: {
-    transform: 'translate(0, -56px)',
-    transition: 'transform .25s'
-  },
   drawerPaper: {
     position: 'relative',
     whiteSpace: 'nowrap',
@@ -88,9 +84,7 @@ const useStyles = makeStyles(theme => ({
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
-    flexGrow: 1,
-    height: '100vh'
-    // overflow: 'auto'
+    flexGrow: 1
   },
   container: {
     paddingTop: theme.spacing(4),
@@ -129,7 +123,9 @@ const Dashboard = ({ auth: { loading, user }, logout }) => {
 
   const handleScroll = () => {
     const windowLastScroll = window.scrollY;
-    if (Math.abs(windowLastScroll - lastScroll) < 71) {
+    console.log('lastScroll: ', lastScroll);
+    console.log('windowLastScroll: ', windowLastScroll);
+    if (windowLastScroll === lastScroll || windowLastScroll < 56) {
       return;
     }
     const shouldShow = lastScroll !== null && windowLastScroll < lastScroll;
@@ -215,13 +211,9 @@ const Dashboard = ({ auth: { loading, user }, logout }) => {
         {/* <Divider /> */}
         <List>{secondaryListItems}</List>
       </SwipeableDrawer>
-      <main
-        className={`${classes.content} ${
-          show ? classes.show : classes.hideSpacer
-        }`}
-      >
+      <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Activities />
+        <Activities show={show} />
       </main>
     </div>
   );
