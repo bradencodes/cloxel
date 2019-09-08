@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
+import { positions } from '@material-ui/system';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -11,12 +11,18 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     padding: theme.spacing(2),
     position: 'sticky',
+    zIndex: 1, //keeps on top
     top: 56
   },
   todo: {
     width: '100%',
-    height: 'calc(100% - 56px)',
+    position: 'relative', //shadow shows
     padding: theme.spacing(2)
+  },
+  done: {
+    width: '100%',
+    padding: theme.spacing(2),
+    backgroundColor: '#e6e6e6'
   },
   activity: {
     height: 64,
@@ -36,8 +42,7 @@ const Activities = ({ show }) => {
   const classes = useStyles();
 
   return (
-    <div>
-      <CssBaseline />
+    <React.Fragment>
       <Paper
         className={`${classes.doing} ${
           show ? classes.show : classes.moveDoing
@@ -64,7 +69,13 @@ const Activities = ({ show }) => {
         <Paper className={classes.activity} />
         <Paper className={classes.activity} />
       </Paper>
-    </div>
+      <Paper className={classes.done} elevation={0} square>
+        <div>Done</div>
+        <Paper className={classes.activity} />
+        <Paper className={classes.activity} />
+        <Paper className={classes.activity} />
+      </Paper>
+    </React.Fragment>
   );
 };
 
