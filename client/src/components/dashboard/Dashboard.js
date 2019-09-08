@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
   },
   hideAppBar: {
     transform: 'translate(0, -70px)',
-    transition: 'transform .25s'
+    transition: 'transform .3s'
   },
   hideSpacer: {
     transform: 'translate(0, -56px)',
@@ -123,24 +123,17 @@ const Dashboard = ({ auth: { loading, user }, logout }) => {
   };
 
   // === Collapsing AppBar Start ===
-  const [show, changeShow] = React.useState(null);
+  const [show, changeShow] = React.useState(true);
 
   let lastScroll = null;
 
   const handleScroll = () => {
     const windowLastScroll = window.scrollY;
-
     if (windowLastScroll === lastScroll) {
       return;
     }
-
-    const shouldShow =
-      lastScroll !== null ? windowLastScroll < lastScroll : null;
-
-    if (shouldShow !== show) {
-      changeShow(shouldShow);
-    }
-
+    const shouldShow = lastScroll !== null && windowLastScroll < lastScroll;
+    changeShow(shouldShow);
     lastScroll = windowLastScroll;
   };
 
@@ -150,10 +143,6 @@ const Dashboard = ({ auth: { loading, user }, logout }) => {
   }, []);
 
   const getScrollClassName = () => {
-    if (show === null) {
-      return '';
-    }
-
     return show ? classes.show : classes.hideAppBar;
   };
 
