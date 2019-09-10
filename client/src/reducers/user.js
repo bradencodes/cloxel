@@ -63,12 +63,21 @@ const calcActivity = (activity, timeZone, breaktime) => {
 
   const calcProgress = (lastReset, start, end) => {
     let progress = 0;
-    for (let i = end.length-1 ; i >= 0 ; i--){
+    for (let i = end.length - 1; i >= 0; i--) {
       if (end[i] < lastReset.ts) break;
-      progress += (end[i] - Math.max(start[i], lastReset.ts))
+      progress += end[i] - Math.max(start[i], lastReset.ts);
     }
     return progress;
-  }
+  };
+
+  const calcBreaktimeTarget = (displayTarget, repeat) => {
+    if (repeat.length === 1) {
+      if (repeat[0]) return displayTarget * 7;
+      else return displayTarget;
+    } else {
+      return displayTarget * repeat.reduce((total, curr) => (total += curr), 0);
+    }
+  };
 
   activity.nextDisplayReset = calcNextDisplayReset(activity.repeat);
   activity.lastDisplayReset = calcLastDisplayReset(activity.repeat);
@@ -81,6 +90,10 @@ const calcActivity = (activity, timeZone, breaktime) => {
     breaktime.lastReset,
     activity.start,
     activity.end
+  );
+  activity.breaktimeTarget = calcBreaktimeTarget(
+    activity.displayTarget,
+    activity.repeat
   );
   return activity;
 };
