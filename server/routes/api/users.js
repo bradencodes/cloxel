@@ -46,8 +46,7 @@ router.post(
       user = new User({
         name,
         email,
-        password,
-        weeks: []
+        password
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -83,18 +82,11 @@ router.post(
 // @access  Private
 router.put('/', auth, async (req, res) => {
   try {
+    const changedUser = ({ name, email, password } = req.body);
 
-    const changedUser = ({
-      name,
-      email,
-      password
-    } = req.body);
-
-    const updatedUser = await User.findByIdAndUpdate(
-      req.user.id,
-      changedUser,
-      { new: true }
-    ).select('-password');
+    const updatedUser = await User.findByIdAndUpdate(req.user.id, changedUser, {
+      new: true
+    }).select('-password');
 
     return res.json(updatedUser);
   } catch (err) {
