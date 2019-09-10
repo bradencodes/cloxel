@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const BreakSchema = new Schema({
+const BreaktimeSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: 'user',
@@ -27,4 +27,4 @@ const BreakSchema = new Schema({
   }
 });
 
-module.exports = Break = mongoose.model('break', BreakSchema);
+module.exports = Breaktime = mongoose.model('breaktime', BreaktimeSchema);

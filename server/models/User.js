@@ -39,7 +39,7 @@ const UserSchema = new Schema({
   },
   break: {
     type: Schema.Types.ObjectId,
-    ref: 'break',
+    ref: 'breaktime',
     required: true
   }
 });
