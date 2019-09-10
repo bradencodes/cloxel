@@ -145,7 +145,10 @@ const Dashboard = ({ auth: { loading }, user, logout }) => {
     return show ? classes.show : classes.hideAppBar;
   };
 
-  return loading || user === null ? (
+  const userIsEmpty =
+    Object.keys(user).length === 0 && user.constructor === Object;
+
+  return loading || userIsEmpty ? (
     <div className={classes.progress}>
       <img
         src={cloxelLogo}

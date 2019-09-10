@@ -164,7 +164,6 @@ export default function(state = initialState, action) {
         calcActivity(activity, timeZone, breaktime)
       );
       breaktime = calcBreaktime(breaktime, activities);
-      console.log(breaktime);
       return {
         ...state,
         activities

@@ -42,9 +42,11 @@ const useStyles = makeStyles(theme => ({
 const Activities = ({ show, user }) => {
   const classes = useStyles();
 
-  // const doing = [];
-  // const todo = [];
-  // const done = [];
+  const activities = user.activities;
+  const doing = [...activities, user.breaktime].find(activity => activity._id.toString() === user.active.toString());
+  console.log(doing);
+  const todo = [];
+  const done = [];
 
   return (
     <React.Fragment>
