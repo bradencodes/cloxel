@@ -5,7 +5,14 @@ const initialState = {};
 
 const weekStartOffset = 1; //start the week at Monday-weekStartOffset
 
-const calcActivity = (activity, timeZone) => {
+const calcResetsOnBreaktime = (breaktime, timeZone) => {
+  let now = DateTime.fromObject({ zone: timeZone });
+  breaktime.nextReset = now.startOf('week').plus({ days: 7 - weekStartOffset });
+  breaktime.lastReset = now.startOf('week').minus({ days: weekStartOffset });
+  return breaktime;
+};
+
+const calcActivity = (activity, timeZone, breaktime) => {
   let now = DateTime.fromObject({ zone: timeZone });
 
   const calcNextDisplayReset = repeat => {
@@ -14,22 +21,20 @@ const calcActivity = (activity, timeZone) => {
       // return the start of the next day
       if (repeat[0]) return now.startOf('day').plus({ days: 1 });
       // return the start of the next week
-      else return now.startOf('week').plus({ days: 7 - weekStartOffset });
+      else return breaktime.nextReset;
     } else {
       // return the start of Math.min(the next onDay, the next week)
       let day = now.weekday - 1;
       let repeatWrap = repeat.concat(repeat);
-      for (let i = day + 1; i < repeatWrap.length; i++) {
-        if (repeatWrap[i]) {
-          let daysDiff = i - day;
-          let nextOnDay = now.startOf('day').plus({ days: daysDiff });
-          let nextWeek = now
-            .startOf('week')
-            .plus({ days: 7 - weekStartOffset });
-
-          return nextOnDay.ts < nextWeek.ts ? nextOnDay : nextWeek;
-        }
+      let i;
+      for (i = day + 1; i < repeatWrap.length; i++) {
+        if (repeatWrap[i]) break;
       }
+      let daysDiff = i - day;
+      let nextOnDay = now.startOf('day').plus({ days: daysDiff });
+      let nextWeek = now.startOf('week').plus({ days: 7 - weekStartOffset });
+
+      return nextOnDay.ts < nextWeek.ts ? nextOnDay : nextWeek;
     }
   };
 
@@ -39,25 +44,44 @@ const calcActivity = (activity, timeZone) => {
       // return the start of today
       if (repeat[0]) return now.startOf('day');
       // return the start of this week
-      else return now.startOf('week').minus({ days: weekStartOffset });
+      else return breaktime.lastReset;
     } else {
       // return the start of Math.max(the last onDay, this week)
       let day = now.weekday - 1 + 7;
       let repeatWrap = repeat.concat(repeat);
-      for (let i = day; i > 0; i--) {
-        if (repeatWrap[i]) {
-          let daysDiff = day - i;
-          let lastOnDay = now.startOf('day').minus({ days: daysDiff });
-          let thisWeek = now.startOf('week').minus({ days: weekStartOffset });
-
-          return lastOnDay.ts > thisWeek.ts ? lastOnDay : thisWeek;
-        }
+      let i;
+      for (i = day; i > 0; i--) {
+        if (repeatWrap[i]) break;
       }
+      let daysDiff = day - i;
+      let lastOnDay = now.startOf('day').minus({ days: daysDiff });
+      let thisWeek = now.startOf('week').minus({ days: weekStartOffset });
+
+      return lastOnDay.ts > thisWeek.ts ? lastOnDay : thisWeek;
     }
   };
 
+  const calcProgress = (lastReset, start, end) => {
+    let progress = 0;
+    for (let i = end.length-1 ; i >= 0 ; i--){
+      if (end[i] < lastReset.ts) break;
+      progress += (end[i] - Math.max(start[i], lastReset.ts))
+    }
+    return progress;
+  }
+
   activity.nextDisplayReset = calcNextDisplayReset(activity.repeat);
   activity.lastDisplayReset = calcLastDisplayReset(activity.repeat);
+  activity.displayProgress = calcProgress(
+    activity.lastDisplayReset,
+    activity.start,
+    activity.end
+  );
+  activity.breaktimeProgress = calcProgress(
+    breaktime.lastReset,
+    activity.start,
+    activity.end
+  );
   return activity;
 };
 
@@ -72,9 +96,10 @@ export default function(state = initialState, action) {
       };
 
     case CALC_ACTIVITIES: {
-      let activities = state.activities;
+      let { activities, timeZone, breaktime } = state;
+      breaktime = calcResetsOnBreaktime(breaktime, timeZone);
       activities = activities.map(activity =>
-        calcActivity(activity, state.timeZone)
+        calcActivity(activity, timeZone, breaktime)
       );
       console.log(activities);
       return {
