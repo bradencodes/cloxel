@@ -14,22 +14,16 @@ const ActivitySchema = new Schema({
     type: String,
     required: true
   },
-  progress: {
-    type: Number,
-    required: true
-  },
-  target: {
+  displayTarget: {
     type: Number,
     required: true
   },
   start: {
-    type: Map,
-    of: [[Number]],
+    type: Array,
     required: true
   },
   end: {
-    type: Map,
-    of: [[Number]],
+    type: Array,
     required: true
   },
   repeat: {
@@ -38,10 +32,6 @@ const ActivitySchema = new Schema({
   },
   adds: {
     type: Boolean,
-    required: true
-  },
-  nextReset: {
-    type: Number,
     required: true
   },
   deleted: {
