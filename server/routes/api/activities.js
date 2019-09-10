@@ -4,6 +4,7 @@ const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 
 const Activity = require('../../models/Activity');
+const User = require('../../models/User');
 
 // @route   POST api/activities
 // @desc    Create activity
@@ -29,13 +30,11 @@ router.post(
         user: req.user.id,
         name: req.body.name,
         color: req.body.color,
-        progress: req.body.progress,
-        target: req.body.target,
+        displayTarget: req.body.displayTarget,
         start: req.body.start,
         end: req.body.end,
         repeat: req.body.repeat,
         adds: req.body.adds,
-        nextReset: req.body.nextReset,
         deleted: req.body.deleted
       });
 
@@ -132,13 +131,11 @@ router.put('/:id', auth, async (req, res) => {
     const changedActivity = ({
       name,
       color,
-      progress,
-      target,
+      displayTarget,
       start,
       end,
       repeat,
       adds,
-      nextReset,
       deleted
     } = req.body);
 
@@ -161,7 +158,7 @@ router.put('/:id', auth, async (req, res) => {
 });
 
 // @route   DELETE api/activities/:id
-// @desc    Delete an activity
+// @desc    Remove an activity
 // @access  Private
 router.delete('/:id', auth, async (req, res) => {
   try {
@@ -175,6 +172,16 @@ router.delete('/:id', auth, async (req, res) => {
       return res
         .status(403)
         .json({ errors: [{ msg: 'Activity does not belong to user' }] });
+    }
+
+    if (activity.deleted) {
+      await User.findByIdAndUpdate(req.user.id, {
+        $pull: { deletedActivities: activity.id }
+      });
+    } else {
+      await User.findByIdAndUpdate(req.user.id, {
+        $pull: { activities: activity.id }
+      });
     }
 
     await activity.remove();
