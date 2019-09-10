@@ -15,11 +15,15 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  date: {
-    type: Date,
-    default: Date.now
+  timeZone: {
+    type: String,
+    required: true,
+    default: 'local'
   },
-  weeks: [{ type: Schema.Types.ObjectId, ref: 'week' }]
+  activities: [{ type: Schema.Types.ObjectId, ref: 'activity' }],
+  deletedActivities: [{ type: Schema.Types.ObjectId, ref: 'activity' }],
+  active: { type: Schema.Types.ObjectId, ref: 'activity' },
+  break: { type: Schema.Types.ObjectId, ref: 'break' }
 });
 
 module.exports = User = mongoose.model('user', UserSchema);
