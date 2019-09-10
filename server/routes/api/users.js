@@ -61,7 +61,7 @@ router.post(
 
       let breaktime = new Breaktime({
         user: user.id,
-        start: [Date.now],
+        start: [Date.now()],
         end: []
       });
 
