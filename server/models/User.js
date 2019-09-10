@@ -34,13 +34,11 @@ const UserSchema = new Schema({
   ],
   active: {
     type: Schema.Types.ObjectId,
-    ref: 'activity',
-    required: true
+    ref: 'activity'
   },
-  break: {
+  breaktime: {
     type: Schema.Types.ObjectId,
-    ref: 'breaktime',
-    required: true
+    ref: 'breaktime'
   }
 });
 

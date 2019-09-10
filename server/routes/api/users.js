@@ -6,6 +6,8 @@ const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 
 const User = require('../../models/User');
+const Activity = require('../../models/Activity');
+const Breaktime = require('../../models/Breaktime');
 
 // @route   POST api/users
 // @desc    Register user
@@ -46,12 +48,55 @@ router.post(
       user = new User({
         name,
         email,
-        password
+        password,
+        activities: [],
+        deletedActivities: [],
+        active: null,
+        breaktime: null
       });
 
       const salt = await bcrypt.genSalt(10);
 
       user.password = await bcrypt.hash(password, salt);
+
+      let breaktime = new Breaktime({
+        user: user.id,
+        start: [Date.now],
+        end: []
+      });
+
+      const work = new Activity({
+        user: user.id,
+        name: 'Work',
+        color: '#546E7A',
+        displayTarget: 28800000,
+        start: [],
+        end: [],
+        repeat: [0, 1, 1, 1, 1, 1, 0],
+        adds: false,
+        deleted: false
+      });
+
+      const sleep = new Activity({
+        user: user.id,
+        name: 'Sleep',
+        color: '#AA00FF',
+        displayTarget: 28800000,
+        start: [],
+        end: [],
+        repeat: [1],
+        adds: false,
+        deleted: false
+      });
+
+      user.activities.push(work);
+      user.activities.push(sleep);
+      user.breaktime = breaktime;
+      user.active = breaktime;
+
+      await breaktime.save();
+      await work.save();
+      await sleep.save();
 
       await user.save();
 
@@ -82,7 +127,15 @@ router.post(
 // @access  Private
 router.put('/', auth, async (req, res) => {
   try {
-    const changedUser = ({ name, email, password } = req.body);
+    const changedUser = ({
+      name,
+      email,
+      password,
+      timeZone,
+      activities,
+      deletedActivities,
+      active
+    } = req.body);
 
     const updatedUser = await User.findByIdAndUpdate(req.user.id, changedUser, {
       new: true
