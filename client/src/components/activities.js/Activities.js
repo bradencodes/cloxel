@@ -11,8 +11,8 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     position: 'sticky',
     zIndex: 1, //keeps on top
-    // top: 56,
-    top: 20
+    top: 56,
+    // top: 20
   },
   todo: {
     width: '100%',

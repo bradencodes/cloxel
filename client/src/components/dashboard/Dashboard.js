@@ -125,11 +125,11 @@ const Dashboard = ({ auth: { loading, user }, logout }) => {
 
     const handleScroll = () => {
       const windowLastScroll = window.scrollY;
-      if (!windowLastScroll || Math.abs(windowLastScroll - lastScroll) < 16) {
+      if (windowLastScroll < 56) {
+        changeShow(true);
         return;
       }
-      if (windowLastScroll < 76) {
-        changeShow(true);
+      if (!windowLastScroll || Math.abs(windowLastScroll - lastScroll) < 16) {
         return;
       }
       const shouldShow = lastScroll !== null && windowLastScroll < lastScroll;
