@@ -98,6 +98,55 @@ const calcActivity = (activity, timeZone, breaktime) => {
   return activity;
 };
 
+const calcBreaktime = (breaktime, activities) => {
+  const calcProgress = (lastReset, start, end) => {
+    let progress = 0;
+    for (let i = end.length - 1; i >= 0; i--) {
+      if (end[i] < lastReset.ts) break;
+      progress += end[i] - Math.max(start[i], lastReset.ts);
+    }
+    return progress;
+  };
+
+  const calcTarget = (nextReset, lastReset, activities) => {
+    const extraTime = activities.reduce(
+      (total, activity) =>
+        (total += Math.max(
+          activity.breaktimeTarget,
+          activity.breaktimeProgress
+        )),
+      0
+    );
+    return nextReset - lastReset - extraTime;
+  };
+
+  const calcEarned = (target, activities) => {
+    const percentDone = activities.reduce(
+      (total, activity) =>
+        (total +=
+          Math.min(activity.breaktimeTarget, activity.breaktimeProgress) /
+          activity.breaktimeTarget),
+      0
+    );
+    return Math.round(target * percentDone);
+  };
+
+  breaktime.used = calcProgress(
+    breaktime.lastReset,
+    breaktime.start,
+    breaktime.end
+  );
+  breaktime.target = calcTarget(
+    breaktime.nextReset,
+    breaktime.lastReset,
+    activities
+  );
+  const addsActivities = activities.filter(activity => activity.adds);
+  breaktime.earned = calcEarned(breaktime.target, addsActivities);
+
+  return breaktime;
+};
+
 export default function(state = initialState, action) {
   const { type, payload } = action;
 
@@ -114,7 +163,8 @@ export default function(state = initialState, action) {
       activities = activities.map(activity =>
         calcActivity(activity, timeZone, breaktime)
       );
-      console.log(activities);
+      breaktime = calcBreaktime(breaktime, activities);
+      console.log(breaktime);
       return {
         ...state,
         activities
