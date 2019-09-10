@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import Activity from './Activity';
 
 const useStyles = makeStyles(theme => ({
-  root: {},
   doing: {
     backgroundColor: theme.palette.secondary.light,
     width: '100%',
@@ -25,10 +25,6 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     backgroundColor: '#e6e6e6'
   },
-  activity: {
-    height: 64,
-    margin: theme.spacing(2, 0, 0)
-  },
   show: {
     transform: 'translate(0, 0)',
     transition: 'transform .25s'
@@ -43,10 +39,17 @@ const Activities = ({ show, user }) => {
   const classes = useStyles();
 
   const activities = user.activities;
-  const doing = [...activities, user.breaktime].find(activity => activity._id.toString() === user.active.toString());
-  console.log(doing);
-  const todo = [];
-  const done = [];
+  const doing = activities.find(activity => activity.id === user.active) || [];
+  const todo = activities.filter(
+    activity =>
+      activity.id !== user.active &&
+      activity.displayProgress < activity.displayTarget
+  );
+  const done = activities.filter(
+    activity =>
+      activity.id !== user.active &&
+      activity.displayProgress >= activity.displayTarget
+  );
 
   return (
     <React.Fragment>
@@ -58,29 +61,15 @@ const Activities = ({ show, user }) => {
         square
       >
         <div>Doing</div>
-        <Paper className={`${classes.activity} `} />
       </Paper>
       <Paper className={classes.todo} elevation={4} square>
         <div>To do</div>
-        <Paper className={classes.activity} />
-        <Paper className={classes.activity} />
-        <Paper className={classes.activity} />
-        <Paper className={classes.activity} />
-        <Paper className={classes.activity} />
-        <Paper className={classes.activity} />
-        <Paper className={classes.activity} />
-        <Paper className={classes.activity} />
-        <Paper className={classes.activity} />
-        <Paper className={classes.activity} />
-        <Paper className={classes.activity} />
-        <Paper className={classes.activity} />
-        <Paper className={classes.activity} />
+        {todo.map(activity => (
+          <Activity key={activity._id} activity={activity} />
+        ))}
       </Paper>
       <Paper className={classes.done} elevation={0} square>
         <div>Done</div>
-        <Paper className={classes.activity} />
-        <Paper className={classes.activity} />
-        <Paper className={classes.activity} />
       </Paper>
     </React.Fragment>
   );

@@ -46,6 +46,7 @@ const theme = createMuiTheme({
       '"Segoe UI Symbol"'
     ].join(','),
     fontSize: 15,
+    htmlFontSize: 10,
     caption: {
       fontSize: 14
     },
