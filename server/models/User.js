@@ -20,10 +20,28 @@ const UserSchema = new Schema({
     required: true,
     default: 'local'
   },
-  activities: [{ type: Schema.Types.ObjectId, ref: 'activity' }],
-  deletedActivities: [{ type: Schema.Types.ObjectId, ref: 'activity' }],
-  active: { type: Schema.Types.ObjectId, ref: 'activity' },
-  break: { type: Schema.Types.ObjectId, ref: 'break' }
+  activities: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'activity'
+    }
+  ],
+  deletedActivities: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'activity'
+    }
+  ],
+  active: {
+    type: Schema.Types.ObjectId,
+    ref: 'activity',
+    required: true
+  },
+  break: {
+    type: Schema.Types.ObjectId,
+    ref: 'break',
+    required: true
+  }
 });
 
 module.exports = User = mongoose.model('user', UserSchema);
