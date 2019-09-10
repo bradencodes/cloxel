@@ -7,7 +7,8 @@ import {
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
-  LOGOUT
+  LOGOUT,
+  CALC_ACTIVITIES
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 
@@ -25,6 +26,9 @@ export const loadUser = () => async dispatch => {
     dispatch({
       type: USER_LOADED,
       payload: res.data
+    });
+    dispatch({
+      type: CALC_ACTIVITIES
     });
   } catch (err) {
     dispatch({

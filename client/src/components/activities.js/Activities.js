@@ -42,9 +42,9 @@ const useStyles = makeStyles(theme => ({
 const Activities = ({ show, user }) => {
   const classes = useStyles();
 
-  const doing = [];
-  const todo = [];
-  const done = [];
+  // const doing = [];
+  // const todo = [];
+  // const done = [];
 
   return (
     <React.Fragment>
@@ -90,7 +90,7 @@ Activities.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  user: state.auth.user
+  user: state.user
 });
 
 export default connect(mapStateToProps)(Activities);
