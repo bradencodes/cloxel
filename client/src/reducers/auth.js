@@ -12,8 +12,7 @@ import {
 const initialState = {
   token: localStorage.getItem('token'),
   isAuthenticated: null,
-  loading: true,
-  user: null
+  loading: true
 };
 
 export default function(state = initialState, action) {
@@ -24,8 +23,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         isAuthenticated: true,
-        loading: false,
-        user: payload
+        loading: false
       };
 
     case REGISTER_SUCCESS:

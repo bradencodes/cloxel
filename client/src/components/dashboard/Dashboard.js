@@ -47,11 +47,11 @@ const useStyles = makeStyles(theme => ({
   },
   show: {
     transform: 'translate(0, 0)',
-    transition: 'transform .22s'
+    transition: 'transform .25s'
   },
   hideAppBar: {
     transform: 'translate(0, -65px)',
-    transition: 'transform .35s'
+    transition: 'transform .27s'
   },
   drawerPaper: {
     position: 'relative',
@@ -108,7 +108,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Dashboard = ({ auth: { loading, user }, logout }) => {
+const Dashboard = ({ auth: { loading }, user, logout }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const handleDrawerOpen = () => {
@@ -223,11 +223,13 @@ const Dashboard = ({ auth: { loading, user }, logout }) => {
 
 Dashboard.propTypes = {
   auth: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  user: state.user
 });
 
 export default connect(

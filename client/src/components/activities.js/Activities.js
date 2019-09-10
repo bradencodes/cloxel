@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 
@@ -11,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     position: 'sticky',
     zIndex: 1, //keeps on top
-    top: 56,
+    top: 56
     // top: 20
   },
   todo: {
@@ -38,8 +39,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Activities = ({ show }) => {
+const Activities = ({ show, user }) => {
   const classes = useStyles();
+
+  const doing = [];
+  const todo = [];
+  const done = [];
 
   return (
     <React.Fragment>
@@ -80,7 +85,12 @@ const Activities = ({ show }) => {
 };
 
 Activities.propTypes = {
-  show: PropTypes.bool.isRequired
+  show: PropTypes.bool.isRequired,
+  user: PropTypes.object.isRequired
 };
 
-export default Activities;
+const mapStateToProps = state => ({
+  user: state.auth.user
+});
+
+export default connect(mapStateToProps)(Activities);
