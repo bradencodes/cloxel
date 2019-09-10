@@ -12,7 +12,12 @@ export default function(state = initialState, action) {
         ...payload
       };
 
+    // case CALC_ACTIVITIES: {
+    //   let activities = [...state.activities];
+
+    // }
+
     default:
       return state;
   }
-}
+};

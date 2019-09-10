@@ -15,7 +15,6 @@ router.get('/', auth, async (req, res) => {
     const user = await User.findById(req.user.id)
       .select('-password')
       .populate('activities')
-      .populate('active')
       .populate('breaktime');
     res.json(user);
   } catch (err) {
