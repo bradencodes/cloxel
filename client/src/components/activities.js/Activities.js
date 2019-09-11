@@ -62,8 +62,6 @@ const Activities = ({ show, user }) => {
     } else return 'done';
   })();
 
-  console.log(breaktimePlace);
-
   return (
     <React.Fragment>
       <Paper
@@ -83,13 +81,22 @@ const Activities = ({ show, user }) => {
       </Paper>
       <Paper className={classes.todo} elevation={4} square>
         <div>To do</div>
+        {breaktimePlace === 'todo top' && (
+          <BreaktimeCard breaktime={user.breaktime} active={false} />
+        )}
         {todo.map(activity => (
           <ActivityCard key={activity._id} activity={activity} active={false} />
         ))}
+        {breaktimePlace === 'todo bottom' && (
+          <BreaktimeCard breaktime={user.breaktime} active={false} />
+        )}
         <AddActivityCard />
       </Paper>
       <Paper className={classes.done} elevation={0} square>
         <div>Done</div>
+        {breaktimePlace === 'done' && (
+          <BreaktimeCard breaktime={user.breaktime} active={false} />
+        )}
         {done.map(activity => (
           <ActivityCard key={activity._id} activity={activity} />
         ))}
