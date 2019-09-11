@@ -25,13 +25,19 @@ const useStyles = makeStyles(theme => ({
   },
   time: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    padding: theme.spacing(0, 1)
   },
   times: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: '100%'
+    width: '100%',
+    paddingRight: theme.spacing(1)
+  },
+  timeText: {
+    fontSize: '2rem',
+    fontWeight: '500',
   },
   repeatContainer: {
     fontWeight: 'bold',
@@ -41,7 +47,7 @@ const useStyles = makeStyles(theme => ({
   },
   repeatText: {
     fontSize: '1rem',
-    fontWeight: 'bold',
+    fontWeight: '600',
     lineHeight: '1rem'
   }
 }));
