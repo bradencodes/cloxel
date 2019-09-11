@@ -1,4 +1,4 @@
-import { USER_LOADED, CALC_ACTIVITIES, TICK } from '../actions/types';
+import { UPDATE_USER } from '../actions/types';
 
 const initialState = {};
 
@@ -6,25 +6,11 @@ export default function(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case USER_LOADED:
+    case UPDATE_USER:
       return {
         ...state,
         ...payload
       };
-
-    case CALC_ACTIVITIES: {
-      return {
-        ...state,
-        ...payload
-      };
-    }
-
-    case TICK: {
-      return {
-        ...state,
-        ...payload
-      };
-    }
 
     default:
       return state;

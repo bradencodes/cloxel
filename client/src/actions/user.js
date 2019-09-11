@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CALC_ACTIVITIES, TICK } from './types';
+import { UPDATE_USER } from './types';
 import { DateTime } from 'luxon';
 
 const urlpre = process.env.REACT_APP_API_URL;
@@ -13,7 +13,7 @@ export const calcActivities = user => dispatch => {
     calcActivity(activity, timeZone, breaktime)
   );
   breaktime = calcBreaktime(breaktime, activities);
-  dispatch({ type: CALC_ACTIVITIES, payload: user });
+  dispatch({ type: UPDATE_USER, payload: user });
 };
 
 export const tick = user => dispatch => {

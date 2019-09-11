@@ -12,5 +12,4 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT = 'LOGOUT';
 export const ACCOUNT_DELETED = 'ACCOUNT_DELETED';
 
-export const CALC_ACTIVITIES = 'CALC_ACTIVITIES';
-export const TICK = 'TICK';
+export const UPDATE_USER = 'UPDATE_USER';
