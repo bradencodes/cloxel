@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Activity from './Activity';
+import ActivityCard from './ActivityCard';
+import AddActivityCard from './AddActivityCard';
 
 const useStyles = makeStyles(theme => ({
   doing: {
@@ -62,19 +63,20 @@ const Activities = ({ show, user }) => {
       >
         <div>Doing</div>
         {doing.map(activity => (
-          <Activity key={activity._id} activity={activity} active={true} />
+          <ActivityCard key={activity._id} activity={activity} active={true} />
         ))}
       </Paper>
       <Paper className={classes.todo} elevation={4} square>
         <div>To do</div>
         {todo.map(activity => (
-          <Activity key={activity._id} activity={activity} active={false} />
+          <ActivityCard key={activity._id} activity={activity} active={false} />
         ))}
+        <AddActivityCard />
       </Paper>
       <Paper className={classes.done} elevation={0} square>
         <div>Done</div>
         {done.map(activity => (
-          <Activity key={activity._id} activity={activity} />
+          <ActivityCard key={activity._id} activity={activity} />
         ))}
       </Paper>
     </React.Fragment>

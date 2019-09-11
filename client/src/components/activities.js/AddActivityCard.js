@@ -4,23 +4,27 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import { repeatToText, msToShortTime } from '../../utils/convert';
+import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 
 const useStyles = makeStyles(theme => ({
   card: {
     margin: theme.spacing(2, 0, 0),
     display: 'flex',
     flexDirection: 'column',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    cursor: 'pointer',
+    '-webkit-tap-highlight-color': 'rgba(255, 255, 255, 0)'
   },
   actions: {
     display: 'flex',
     alignItems: 'center',
     margin: '-4px -4px -8px'
   },
+  add: {
+    color: 'rgba(0, 0, 0, 0.38)'
+  },
   name: {
+    color: 'rgba(0, 0, 0, 0.38)',
     fontWeight: 'bold',
     fontSize: '3.0rem',
     width: '100%',
@@ -40,6 +44,7 @@ const useStyles = makeStyles(theme => ({
     paddingRight: theme.spacing(1)
   },
   timeText: {
+    color: 'rgba(0, 0, 0, 0.38)',
     fontSize: '2rem',
     fontWeight: '500'
   },
@@ -58,81 +63,47 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'flex-end'
   },
-  progressBar: {
-    height: 12
-  },
   breaktimeBar: {
+    width: '100%',
     height: 6,
-    backgroundColor: '#FDD835'
+    backgroundColor: 'rgba(0, 0, 0, 0.38)'
   }
 }));
 
-const Activity = ({ activity, active }) => {
+const AddActivityCard = ({ activity, active }) => {
   const classes = useStyles();
 
   return (
     <Paper className={classes.card}>
       <div className={classes.actions}>
-        <IconButton className={classes.activate} aria-label='activate'>
-          <PlayArrowOutlinedIcon
-            style={{ transform: `rotate(${active * 90}deg)` }}
-          />
+        <IconButton className={classes.add} aria-label='add activity'>
+          <AddCircleOutlineOutlinedIcon />
         </IconButton>
         <Typography variant='h5' className={classes.name}>
-          {activity.name}
+          Add Activity
         </Typography>
-        <IconButton className={classes.edit} aria-label='edit'>
-          <EditOutlinedIcon />
-        </IconButton>
       </div>
 
       <div className={classes.time}>
         <div className={classes.times}>
-          <Typography color='textSecondary' className={classes.timeText}>
-            {msToShortTime(activity.displayProgress)}
-          </Typography>
-          <Typography color='textSecondary' className={classes.timeText}>
-            {msToShortTime(activity.displayTarget)}
-          </Typography>
+          <Typography className={classes.timeText}>00:00:00</Typography>
+          <Typography className={classes.timeText}>00:00:00</Typography>
         </div>
         <div className={classes.repeatContainer}>
           <Typography
             variant='caption'
-            color='textSecondary'
             className={classes.repeatText}
-          >
-            {repeatToText(activity.repeat)}
-          </Typography>
+          ></Typography>
         </div>
       </div>
 
       <div className={classes.bars}>
-        <div
-          className={classes.progressBar}
-          style={{
-            width: `calc(100% * ${Math.min(
-              activity.displayProgress / activity.displayTarget,
-              1
-            )})`,
-            backgroundColor: activity.color
-          }}
-        />
-        {activity.adds && (
-          <div
-            className={classes.breaktimeBar}
-            style={{
-              width: `calc(100% * (1 - ${Math.min(
-                activity.displayProgress / activity.displayTarget,
-                1
-              )}))`
-            }}
-          />
-        )}
+        <div className={classes.breaktimeBar} />
       </div>
     </Paper>
   );
 };
 
-Activity.propTypes = {};
+AddActivityCard.propTypes = {};
 
-export default Activity;
+export default AddActivityCard;
