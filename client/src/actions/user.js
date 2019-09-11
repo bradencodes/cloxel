@@ -5,16 +5,28 @@ import { DateTime } from 'luxon';
 
 const urlpre = process.env.REACT_APP_API_URL;
 
-export const activate = (inputUser, clickedId, isActive) => {
+export const activate = (inputUser, clickedId, isActive) => async dispatch => {
+  console.log('activate run')
   let now = Date.now();
   let user = cloneDeep(inputUser);
-  let clickedActivity = [...user.activities, user.breaktime].find(activity => activity._id === clickedId);
-  let activeActivity = [...user.activities, user.breaktime].find(activity => activity._id === user.active);
-  if (!isActive) {
-    clickedActivity.start.push(now);
-    clickedActivity.end.push(now);
+  let clickedActivity = [...user.activities, user.breaktime].find(
+    activity => activity._id === clickedId
+  );
+  let activeActivity = [...user.activities, user.breaktime].find(
+    activity => activity._id === user.active
+  );
+  try {
+    if (!isActive) {
+      clickedActivity.start.push(now);
+      clickedActivity.end.push(now);
 
+      activeActivity.end[activeActivity.end.length-1] = now;
 
+      user.active = clickedId;
+      dispatch({ type: UPDATE_USER, payload: user });
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -47,7 +59,7 @@ export const tick = inputUser => dispatch => {
     if (breaktime.end.length < breaktime.start.length) breaktime.end.push(now);
     else breaktime.end[breaktime.end.length - 1] = now;
   } else {
-    activeActivity = activities.find(activity => activity.id === active);
+    activeActivity = activities.find(activity => activity._id === active);
     if (activeActivity.end.length < activeActivity.start.length)
       activeActivity.end.push(now);
     else activeActivity.end[activeActivity.end.length - 1] = now;

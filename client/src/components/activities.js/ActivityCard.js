@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -7,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { repeatToText, msToShortTime } from '../../utils/convert';
+import { activate } from '../../actions/user';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -67,13 +69,22 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ActivityCard = ({ activity, isActive }) => {
+const ActivityCard = ({ activity, isActive, user, activate }) => {
   const classes = useStyles();
+
+  const handleActivateClick = e => {
+    console.log('activateClick run');
+    activate(user, activity._id, isActive);
+  };
 
   return (
     <Paper className={classes.card}>
       <div className={classes.actions}>
-        <IconButton className={classes.activate} aria-label='activate'>
+        <IconButton
+          className={classes.activate}
+          aria-label='activate'
+          onClick={handleActivateClick}
+        >
           <PlayArrowOutlinedIcon
             style={{ transform: `rotate(${isActive * 90}deg)` }}
           />
@@ -138,4 +149,8 @@ ActivityCard.propTypes = {
   isActive: PropTypes.bool.isRequired
 };
 
-export default ActivityCard;
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+export default connect(mapStateToProps, { activate })(ActivityCard);

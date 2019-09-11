@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
 import { msToShortTime } from '../../utils/convert';
+import { activate } from '../../actions/user';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -63,13 +65,22 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const BreaktimeCard = ({ breaktime, isActive }) => {
+const BreaktimeCard = ({ breaktime, isActive, user, activate }) => {
   const classes = useStyles();
+
+  const handleActivateClick = e => {
+    console.log('activateClick run');
+    activate(user, breaktime._id, isActive);
+  };
 
   return (
     <Paper className={classes.card}>
       <div className={classes.actions}>
-        <IconButton className={classes.activate} aria-label='activate'>
+        <IconButton
+          className={classes.activate}
+          aria-label='activate'
+          onClick={handleActivateClick}
+        >
           <PlayArrowOutlinedIcon
             style={{ transform: `rotate(${isActive * 90}deg)` }}
           />
@@ -116,4 +127,8 @@ BreaktimeCard.propTypes = {
   isActive: PropTypes.bool.isRequired
 };
 
-export default BreaktimeCard;
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+export default connect(mapStateToProps, { activate })(BreaktimeCard);
