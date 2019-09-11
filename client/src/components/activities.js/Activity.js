@@ -12,7 +12,8 @@ const useStyles = makeStyles(theme => ({
   card: {
     margin: theme.spacing(2, 0, 0),
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    overflow: 'hidden'
   },
   actions: {
     display: 'flex',
@@ -37,7 +38,7 @@ const useStyles = makeStyles(theme => ({
   },
   timeText: {
     fontSize: '2rem',
-    fontWeight: '500',
+    fontWeight: '500'
   },
   repeatContainer: {
     fontWeight: 'bold',
@@ -49,6 +50,17 @@ const useStyles = makeStyles(theme => ({
     fontSize: '1rem',
     fontWeight: '600',
     lineHeight: '1rem'
+  },
+  bars: {
+    display: 'flex',
+    alignItems: 'flex-end'
+  },
+  progressBar: {
+    height: 12
+  },
+  breaktimeBar: {
+    height: 6,
+    backgroundColor: '#FDD835'
   }
 }));
 
@@ -89,7 +101,29 @@ const Activity = ({ activity }) => {
         </div>
       </div>
 
-      <div className={classes.bars}></div>
+      <div className={classes.bars}>
+        <div
+          className={classes.progressBar}
+          style={{
+            width: `calc(100% * ${Math.min(
+              activity.displayProgress / activity.displayTarget,
+              1
+            )})`,
+            backgroundColor: activity.color
+          }}
+        />
+        {activity.adds && (
+          <div
+            className={classes.breaktimeBar}
+            style={{
+              width: `calc(100% * (1 - ${Math.min(
+                activity.displayProgress / activity.displayTarget,
+                1
+              )}))`
+            }}
+          />
+        )}
+      </div>
     </Paper>
   );
 };

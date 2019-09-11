@@ -70,6 +70,9 @@ const Activities = ({ show, user }) => {
       </Paper>
       <Paper className={classes.done} elevation={0} square>
         <div>Done</div>
+        {done.map(activity => (
+          <Activity key={activity._id} activity={activity} />
+        ))}
       </Paper>
     </React.Fragment>
   );
