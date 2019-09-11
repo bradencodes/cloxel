@@ -5,23 +5,23 @@ import { DateTime } from 'luxon';
 
 const urlpre = process.env.REACT_APP_API_URL;
 
-export const activate = (inputUser, clickedId, isActive) => async dispatch => {
+export const activate = (inputUser, doNowId, isActive) => async dispatch => {
   let now = Date.now();
   let user = cloneDeep(inputUser);
-  let clickedActivity = [...user.activities, user.breaktime].find(
-    activity => activity._id === clickedId
+  let doNow = [...user.activities, user.breaktime].find(
+    activity => activity._id === doNowId
   );
-  let activeActivity = [...user.activities, user.breaktime].find(
+  let wasDoing = [...user.activities, user.breaktime].find(
     activity => activity._id === user.active
   );
   try {
     if (!isActive) {
-      clickedActivity.start.push(now);
-      clickedActivity.end.push(now);
+      doNow.start.push(now);
+      doNow.end.push(now);
 
-      activeActivity.end[activeActivity.end.length - 1] = now;
+      wasDoing.end[wasDoing.end.length - 1] = now;
 
-      user.active = clickedId;
+      user.active = doNowId;
       dispatch(tick(user));
     }
   } catch (err) {

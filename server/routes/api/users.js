@@ -59,10 +59,11 @@ router.post(
 
       user.password = await bcrypt.hash(password, salt);
 
+      let now = Date.now();
       let breaktime = new Breaktime({
         user: user.id,
-        start: [Date.now()],
-        end: []
+        start: [now],
+        end: [now]
       });
 
       const work = new Activity({
@@ -72,7 +73,7 @@ router.post(
         displayTarget: 28800000,
         start: [],
         end: [],
-        repeat: [0, 1, 1, 1, 1, 1, 0],
+        repeat: [1, 1, 1, 1, 1, 0, 0],
         adds: false,
         deleted: false
       });
