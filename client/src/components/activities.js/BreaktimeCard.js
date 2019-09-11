@@ -69,7 +69,6 @@ const BreaktimeCard = ({ breaktime, isActive, user, activate }) => {
   const classes = useStyles();
 
   const handleActivateClick = e => {
-    console.log('activateClick run');
     activate(user, breaktime._id, isActive);
   };
 
@@ -131,4 +130,7 @@ const mapStateToProps = state => ({
   user: state.user
 });
 
-export default connect(mapStateToProps, { activate })(BreaktimeCard);
+export default connect(
+  mapStateToProps,
+  { activate }
+)(BreaktimeCard);

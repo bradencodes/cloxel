@@ -73,7 +73,6 @@ const ActivityCard = ({ activity, isActive, user, activate }) => {
   const classes = useStyles();
 
   const handleActivateClick = e => {
-    console.log('activateClick run');
     activate(user, activity._id, isActive);
   };
 
@@ -153,4 +152,7 @@ const mapStateToProps = state => ({
   user: state.user
 });
 
-export default connect(mapStateToProps, { activate })(ActivityCard);
+export default connect(
+  mapStateToProps,
+  { activate }
+)(ActivityCard);

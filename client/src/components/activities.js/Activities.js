@@ -47,15 +47,15 @@ const Activities = ({ show, user }) => {
   const classes = useStyles();
 
   const activities = user.activities;
-  const doing = activities.find(activity => activity.id === user.active) || [];
+  const doing = activities.filter(activity => activity._id === user.active);
   const todo = activities.filter(
     activity =>
-      activity.id !== user.active &&
+      activity._id !== user.active &&
       activity.displayProgress < activity.displayTarget
   );
   const done = activities.filter(
     activity =>
-      activity.id !== user.active &&
+      activity._id !== user.active &&
       activity.displayProgress >= activity.displayTarget
   );
 

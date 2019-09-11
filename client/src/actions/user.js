@@ -6,7 +6,6 @@ import { DateTime } from 'luxon';
 const urlpre = process.env.REACT_APP_API_URL;
 
 export const activate = (inputUser, clickedId, isActive) => async dispatch => {
-  console.log('activate run')
   let now = Date.now();
   let user = cloneDeep(inputUser);
   let clickedActivity = [...user.activities, user.breaktime].find(
@@ -20,10 +19,10 @@ export const activate = (inputUser, clickedId, isActive) => async dispatch => {
       clickedActivity.start.push(now);
       clickedActivity.end.push(now);
 
-      activeActivity.end[activeActivity.end.length-1] = now;
+      activeActivity.end[activeActivity.end.length - 1] = now;
 
       user.active = clickedId;
-      dispatch({ type: UPDATE_USER, payload: user });
+      dispatch(tick(user));
     }
   } catch (err) {
     console.log(err);
