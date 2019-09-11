@@ -1,24 +1,27 @@
 import axios from 'axios';
+import { cloneDeep } from 'lodash';
 import { UPDATE_USER } from './types';
 import { DateTime } from 'luxon';
 
 const urlpre = process.env.REACT_APP_API_URL;
 
+export const activate = () => {};
+
 const weekStartOffset = 1; //start the week at Monday-weekStartOffset
 
 export const calcActivities = inputUser => dispatch => {
-  let user = { ...inputUser };
+  let user = cloneDeep(inputUser);
   let { activities, timeZone, breaktime, created } = user;
   breaktime = calcResetsOnBreaktime(breaktime, timeZone, created);
   activities = activities.map(activity =>
     calcActivity(activity, timeZone, breaktime)
   );
   breaktime = calcBreaktime(breaktime, activities);
-  dispatch({ type: UPDATE_USER, payload: user });
+  dispatch(tick(user));
 };
 
 export const tick = inputUser => dispatch => {
-  let user = { ...inputUser };
+  let user = cloneDeep(inputUser);
   const userIsEmpty =
     Object.keys(user).length === 0 && user.constructor === Object;
   if (userIsEmpty) return;
@@ -63,7 +66,10 @@ const calcResetsOnBreaktime = (breaktime, timeZone, created) => {
   breaktime.nextReset = now
     .startOf('week')
     .plus({ days: 7 - weekStartOffset }).ts;
-  breaktime.lastReset = Math.max(now.startOf('week').minus({ days: weekStartOffset }).ts, created);
+  breaktime.lastReset = Math.max(
+    now.startOf('week').minus({ days: weekStartOffset }).ts,
+    created
+  );
   return breaktime;
 };
 

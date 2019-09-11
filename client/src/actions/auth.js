@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { setAlerts } from './alerts';
-import { calcActivities, tick } from './user';
+import { calcActivities } from './user';
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -28,7 +28,6 @@ export const loadUser = () => async dispatch => {
       payload: res.data
     });
     dispatch(calcActivities(res.data));
-    dispatch(tick(res.data));
   } catch (err) {
     dispatch({
       type: AUTH_ERROR
