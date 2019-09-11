@@ -44,7 +44,7 @@ export const tick = inputUser => dispatch => {
     activity => activity.nextDisplayReset < now
   );
   if (breaktimeIsPastReset || someActivityIsPastReset) {
-    calcActivities(user);
+    dispatch(calcActivities(user));
   } else {
     dispatch({ type: UPDATE_USER, payload: user });
   }
