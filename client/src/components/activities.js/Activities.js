@@ -61,11 +61,14 @@ const Activities = ({ show, user }) => {
         square
       >
         <div>Doing</div>
+        {doing.map(activity => (
+          <Activity key={activity._id} activity={activity} active={true} />
+        ))}
       </Paper>
       <Paper className={classes.todo} elevation={4} square>
         <div>To do</div>
         {todo.map(activity => (
-          <Activity key={activity._id} activity={activity} />
+          <Activity key={activity._id} activity={activity} active={false} />
         ))}
       </Paper>
       <Paper className={classes.done} elevation={0} square>

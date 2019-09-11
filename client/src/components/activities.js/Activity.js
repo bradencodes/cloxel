@@ -17,17 +17,20 @@ const useStyles = makeStyles(theme => ({
   },
   actions: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    margin: '-4px -4px -8px'
   },
   name: {
     fontWeight: 'bold',
     fontSize: '3.0rem',
-    width: '100%'
+    width: '100%',
+    marginLeft: -8
   },
   time: {
     display: 'flex',
     alignItems: 'center',
-    padding: theme.spacing(0, 1)
+    padding: theme.spacing(0, 1),
+    marginBottom: -4
   },
   times: {
     display: 'flex',
@@ -64,14 +67,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Activity = ({ activity }) => {
+const Activity = ({ activity, active }) => {
   const classes = useStyles();
 
   return (
     <Paper className={classes.card}>
       <div className={classes.actions}>
         <IconButton className={classes.activate} aria-label='activate'>
-          <PlayArrowOutlinedIcon />
+          <PlayArrowOutlinedIcon
+            style={{ transform: `rotate(${active * 90}deg)` }}
+          />
         </IconButton>
         <Typography variant='h5' className={classes.name}>
           {activity.name}
