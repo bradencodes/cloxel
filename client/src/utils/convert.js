@@ -12,7 +12,7 @@ export const msToShortTime = ms => {
   let seconds = parseInt((ms / 1000) % 60);
   let minutes = parseInt((ms / (1000 * 60)) % 60);
   let hours = parseInt(ms / (1000 * 60 * 60));
-  let sign = seconds < 0 ? '-' : '';
+  let sign = ms < 0 ? '-' : '';
 
   hours = hours < 10 && hours > -10 ? '0' + Math.abs(hours) : Math.abs(hours);
   minutes =
