@@ -26,26 +26,32 @@ export const tick = inputUser => dispatch => {
   const now = Date.now();
   let { activities, breaktime, active } = user;
   const breaktimeIsActive = active === breaktime._id;
+  let activeActivity;
 
   // update active.end[active.end.length-1] to date.now
   if (breaktimeIsActive) {
     if (breaktime.end.length < breaktime.start.length) breaktime.end.push(now);
     else breaktime.end[breaktime.end.length - 1] = now;
   } else {
-    let activeActivity = activities.find(activity => activity.id === active);
+    activeActivity = activities.find(activity => activity.id === active);
     if (activeActivity.end.length < activeActivity.start.length)
       activeActivity.end.push(now);
     else activeActivity.end[activeActivity.end.length - 1] = now;
   }
 
-  // check if date.now is past nextRest of any activities
+  // check if date.now is past nextReset of any activities
   const breaktimeIsPastReset = breaktime.nextReset < now;
   const someActivityIsPastReset = [...activities].some(
     activity => activity.nextDisplayReset < now
   );
   if (breaktimeIsPastReset || someActivityIsPastReset) {
     dispatch(calcActivities(user));
+  } else if (breaktimeIsActive) {
+    breaktime = calcBreaktime(breaktime, activities);
+    dispatch({ type: UPDATE_USER, payload: user });
   } else {
+    activeActivity = calcActivity(activeActivity, user.timeZone, breaktime);
+    breaktime = calcBreaktime(breaktime, activities);
     dispatch({ type: UPDATE_USER, payload: user });
   }
 };
