@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const BreaktimeCard = ({ breaktime, active }) => {
+const BreaktimeCard = ({ breaktime, isActive }) => {
   const classes = useStyles();
 
   return (
@@ -71,7 +71,7 @@ const BreaktimeCard = ({ breaktime, active }) => {
       <div className={classes.actions}>
         <IconButton className={classes.activate} aria-label='activate'>
           <PlayArrowOutlinedIcon
-            style={{ transform: `rotate(${active * 90}deg)` }}
+            style={{ transform: `rotate(${isActive * 90}deg)` }}
           />
         </IconButton>
         <Typography variant='h5' className={classes.name}>
@@ -113,7 +113,7 @@ const BreaktimeCard = ({ breaktime, active }) => {
 
 BreaktimeCard.propTypes = {
   breaktime: PropTypes.object.isRequired,
-  active: PropTypes.bool.isRequired
+  isActive: PropTypes.bool.isRequired
 };
 
 export default BreaktimeCard;

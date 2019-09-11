@@ -67,7 +67,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ActivityCard = ({ activity, active }) => {
+const ActivityCard = ({ activity, isActive }) => {
   const classes = useStyles();
 
   return (
@@ -75,7 +75,7 @@ const ActivityCard = ({ activity, active }) => {
       <div className={classes.actions}>
         <IconButton className={classes.activate} aria-label='activate'>
           <PlayArrowOutlinedIcon
-            style={{ transform: `rotate(${active * 90}deg)` }}
+            style={{ transform: `rotate(${isActive * 90}deg)` }}
           />
         </IconButton>
         <Typography variant='h5' className={classes.name}>
@@ -135,7 +135,7 @@ const ActivityCard = ({ activity, active }) => {
 
 ActivityCard.propTypes = {
   activity: PropTypes.object.isRequired,
-  active: PropTypes.bool.isRequired
+  isActive: PropTypes.bool.isRequired
 };
 
 export default ActivityCard;

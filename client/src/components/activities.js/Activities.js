@@ -79,32 +79,44 @@ const Activities = ({ show, user }) => {
       >
         <div>Doing</div>
         {doing.map(activity => (
-          <ActivityCard key={activity._id} activity={activity} active={true} />
+          <ActivityCard
+            key={activity._id}
+            activity={activity}
+            isActive={true}
+          />
         ))}
         {breaktimePlace === 'doing' && (
-          <BreaktimeCard breaktime={user.breaktime} active={true} />
+          <BreaktimeCard breaktime={user.breaktime} isActive={true} />
         )}
       </Paper>
       <Paper className={classes.todo} elevation={4} square>
         <div>To do</div>
         {breaktimePlace === 'todo top' && (
-          <BreaktimeCard breaktime={user.breaktime} active={false} />
+          <BreaktimeCard breaktime={user.breaktime} isActive={false} />
         )}
         {todo.map(activity => (
-          <ActivityCard key={activity._id} activity={activity} active={false} />
+          <ActivityCard
+            key={activity._id}
+            activity={activity}
+            isActive={false}
+          />
         ))}
         {breaktimePlace === 'todo bottom' && (
-          <BreaktimeCard breaktime={user.breaktime} active={false} />
+          <BreaktimeCard breaktime={user.breaktime} isActive={false} />
         )}
         <AddActivityCard />
       </Paper>
       <Paper className={classes.done} elevation={0} square>
         <div>Done</div>
         {breaktimePlace === 'done' && (
-          <BreaktimeCard breaktime={user.breaktime} active={false} />
+          <BreaktimeCard breaktime={user.breaktime} isActive={false} />
         )}
         {done.map(activity => (
-          <ActivityCard key={activity._id} activity={activity} active={false} />
+          <ActivityCard
+            key={activity._id}
+            activity={activity}
+            isActive={false}
+          />
         ))}
       </Paper>
     </div>

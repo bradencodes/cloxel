@@ -5,7 +5,18 @@ import { DateTime } from 'luxon';
 
 const urlpre = process.env.REACT_APP_API_URL;
 
-export const activate = () => {};
+export const activate = (inputUser, clickedId, isActive) => {
+  let now = Date.now();
+  let user = cloneDeep(inputUser);
+  let clickedActivity = [...user.activities, user.breaktime].find(activity => activity._id === clickedId);
+  let activeActivity = [...user.activities, user.breaktime].find(activity => activity._id === user.active);
+  if (!isActive) {
+    clickedActivity.start.push(now);
+    clickedActivity.end.push(now);
+
+
+  }
+};
 
 const weekStartOffset = 1; //start the week at Monday-weekStartOffset
 
