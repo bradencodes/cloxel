@@ -39,6 +39,10 @@ const UserSchema = new Schema({
   breaktime: {
     type: Schema.Types.ObjectId,
     ref: 'breaktime'
+  },
+  created: {
+    type: Number,
+    default: Date.now
   }
 });
 

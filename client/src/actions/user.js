@@ -8,8 +8,8 @@ const weekStartOffset = 1; //start the week at Monday-weekStartOffset
 
 export const calcActivities = inputUser => dispatch => {
   let user = { ...inputUser };
-  let { activities, timeZone, breaktime } = user;
-  breaktime = calcResetsOnBreaktime(breaktime, timeZone);
+  let { activities, timeZone, breaktime, created } = user;
+  breaktime = calcResetsOnBreaktime(breaktime, timeZone, created);
   activities = activities.map(activity =>
     calcActivity(activity, timeZone, breaktime)
   );
@@ -58,12 +58,12 @@ export const tick = inputUser => dispatch => {
 
 // ======= Helper Functions =======
 
-const calcResetsOnBreaktime = (breaktime, timeZone) => {
+const calcResetsOnBreaktime = (breaktime, timeZone, created) => {
   let now = DateTime.fromObject({ zone: timeZone });
   breaktime.nextReset = now
     .startOf('week')
     .plus({ days: 7 - weekStartOffset }).ts;
-  breaktime.lastReset = now.startOf('week').minus({ days: weekStartOffset }).ts;
+  breaktime.lastReset = Math.max(now.startOf('week').minus({ days: weekStartOffset }).ts, created);
   return breaktime;
 };
 
