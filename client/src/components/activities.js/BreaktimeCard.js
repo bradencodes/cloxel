@@ -5,8 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import { repeatToText, msToShortTime } from '../../utils/convert';
+import { msToShortTime } from '../../utils/convert';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -45,7 +44,7 @@ const useStyles = makeStyles(theme => ({
   },
   repeatContainer: {
     fontWeight: 'bold',
-    width: '43px',
+    width: '40px',
     lineHeight: '0',
     textAlign: 'center'
   },
@@ -59,15 +58,12 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'flex-end'
   },
   progressBar: {
-    height: 12
-  },
-  breaktimeBar: {
-    height: 6,
+    height: 12,
     backgroundColor: '#FDD835'
-  }
+  },
 }));
 
-const ActivityCard = ({ activity, active }) => {
+const BreaktimeCard = ({ breaktime, active }) => {
   const classes = useStyles();
 
   return (
@@ -79,20 +75,14 @@ const ActivityCard = ({ activity, active }) => {
           />
         </IconButton>
         <Typography variant='h5' className={classes.name}>
-          {activity.name}
+          {breaktime.name}
         </Typography>
-        <IconButton className={classes.edit} aria-label='edit'>
-          <EditOutlinedIcon />
-        </IconButton>
       </div>
 
       <div className={classes.time}>
         <div className={classes.times}>
           <Typography color='textSecondary' className={classes.timeText}>
-            {msToShortTime(activity.displayProgress)}
-          </Typography>
-          <Typography color='textSecondary' className={classes.timeText}>
-            {msToShortTime(activity.displayTarget)}
+            {msToShortTime(breaktime.earned - breaktime.used)}
           </Typography>
         </div>
         <div className={classes.repeatContainer}>
@@ -101,7 +91,9 @@ const ActivityCard = ({ activity, active }) => {
             color='textSecondary'
             className={classes.repeatText}
           >
-            {repeatToText(activity.repeat)}
+            TO
+            <br />
+            USE
           </Typography>
         </div>
       </div>
@@ -111,28 +103,16 @@ const ActivityCard = ({ activity, active }) => {
           className={classes.progressBar}
           style={{
             width: `calc(100% * ${Math.min(
-              activity.displayProgress / activity.displayTarget,
+              (breaktime.earned - breaktime.used) / 1800000,
               1
-            )})`,
-            backgroundColor: activity.color
+            )})`
           }}
         />
-        {activity.adds && (
-          <div
-            className={classes.breaktimeBar}
-            style={{
-              width: `calc(100% * (1 - ${Math.min(
-                activity.displayProgress / activity.displayTarget,
-                1
-              )}))`
-            }}
-          />
-        )}
       </div>
     </Paper>
   );
 };
 
-ActivityCard.propTypes = {};
+BreaktimeCard.propTypes = {};
 
-export default ActivityCard;
+export default BreaktimeCard;

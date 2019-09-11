@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import ActivityCard from './ActivityCard';
 import AddActivityCard from './AddActivityCard';
+import BreaktimeCard from './BreaktimeCard';
 
 const useStyles = makeStyles(theme => ({
   doing: {
@@ -52,6 +53,17 @@ const Activities = ({ show, user }) => {
       activity.displayProgress >= activity.displayTarget
   );
 
+  const breaktimePlace = (() => {
+    let breaktime = user.breaktime;
+    if (user.active === breaktime._id) return 'doing';
+    if (breaktime.used < breaktime.target) {
+      if (breaktime.earned - breaktime.used > 1800000) return 'todo top';
+      else return 'todo bottom';
+    } else return 'done';
+  })();
+
+  console.log(breaktimePlace);
+
   return (
     <React.Fragment>
       <Paper
@@ -65,6 +77,9 @@ const Activities = ({ show, user }) => {
         {doing.map(activity => (
           <ActivityCard key={activity._id} activity={activity} active={true} />
         ))}
+        {breaktimePlace === 'doing' && (
+          <BreaktimeCard breaktime={user.breaktime} active={true} />
+        )}
       </Paper>
       <Paper className={classes.todo} elevation={4} square>
         <div>To do</div>
