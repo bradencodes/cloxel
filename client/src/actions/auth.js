@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { setAlerts } from './alerts';
+import { calcActivities } from './user';
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -7,8 +8,7 @@ import {
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
-  LOGOUT,
-  CALC_ACTIVITIES
+  LOGOUT
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 
@@ -27,9 +27,7 @@ export const loadUser = () => async dispatch => {
       type: USER_LOADED,
       payload: res.data
     });
-    dispatch({
-      type: CALC_ACTIVITIES
-    });
+    dispatch(calcActivities(res.data));
   } catch (err) {
     dispatch({
       type: AUTH_ERROR
