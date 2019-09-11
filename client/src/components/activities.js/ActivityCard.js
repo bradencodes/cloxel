@@ -133,6 +133,9 @@ const ActivityCard = ({ activity, active }) => {
   );
 };
 
-ActivityCard.propTypes = {};
+ActivityCard.propTypes = {
+  activity: PropTypes.object.isRequired,
+  active: PropTypes.bool.isRequired
+};
 
 export default ActivityCard;

@@ -98,7 +98,7 @@ const Activities = ({ show, user }) => {
           <BreaktimeCard breaktime={user.breaktime} active={false} />
         )}
         {done.map(activity => (
-          <ActivityCard key={activity._id} activity={activity} />
+          <ActivityCard key={activity._id} activity={activity} active={false} />
         ))}
       </Paper>
     </React.Fragment>

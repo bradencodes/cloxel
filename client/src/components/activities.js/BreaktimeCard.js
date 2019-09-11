@@ -113,6 +113,9 @@ const BreaktimeCard = ({ breaktime, active }) => {
   );
 };
 
-BreaktimeCard.propTypes = {};
+BreaktimeCard.propTypes = {
+  breaktime: PropTypes.object.isRequired,
+  active: PropTypes.bool.isRequired,
+};
 
 export default BreaktimeCard;
