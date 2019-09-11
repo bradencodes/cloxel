@@ -6,7 +6,8 @@ const urlpre = process.env.REACT_APP_API_URL;
 
 const weekStartOffset = 1; //start the week at Monday-weekStartOffset
 
-export const calcActivities = user => dispatch => {
+export const calcActivities = inputUser => dispatch => {
+  let user = { ...inputUser };
   let { activities, timeZone, breaktime } = user;
   breaktime = calcResetsOnBreaktime(breaktime, timeZone);
   activities = activities.map(activity =>
@@ -16,13 +17,37 @@ export const calcActivities = user => dispatch => {
   dispatch({ type: UPDATE_USER, payload: user });
 };
 
-export const tick = user => dispatch => {
+export const tick = inputUser => dispatch => {
+  let user = { ...inputUser };
   const userIsEmpty =
     Object.keys(user).length === 0 && user.constructor === Object;
   if (userIsEmpty) return;
 
+  const now = Date.now();
   let { activities, breaktime, active } = user;
   const breaktimeIsActive = active === breaktime._id;
+
+  // update active.end[active.end.length-1] to date.now
+  if (breaktimeIsActive) {
+    if (breaktime.end.length < breaktime.start.length) breaktime.end.push(now);
+    else breaktime.end[breaktime.end.length - 1] = now;
+  } else {
+    let activeActivity = activities.find(activity => activity.id === active);
+    if (activeActivity.end.length < activeActivity.start.length)
+      activeActivity.end.push(now);
+    else activeActivity.end[activeActivity.end.length - 1] = now;
+  }
+
+  // check if date.now is past nextRest of any activities
+  const breaktimeIsPastReset = breaktime.nextReset < now;
+  const someActivityIsPastReset = [...activities].some(
+    activity => activity.nextDisplayReset < now
+  );
+  if (breaktimeIsPastReset || someActivityIsPastReset) {
+    calcActivities(user);
+  } else {
+    dispatch({ type: UPDATE_USER, payload: user });
+  }
 };
 
 // ======= Helper Functions =======
