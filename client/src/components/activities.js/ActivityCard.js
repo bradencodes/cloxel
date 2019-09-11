@@ -45,12 +45,12 @@ const useStyles = makeStyles(theme => ({
   },
   repeatContainer: {
     fontWeight: 'bold',
-    width: '43px',
+    width: '4.7rem',
     lineHeight: '0',
     textAlign: 'center'
   },
   repeatText: {
-    fontSize: '1rem',
+    fontSize: '1.0rem',
     fontWeight: '600',
     lineHeight: '1rem'
   },
@@ -59,10 +59,10 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'flex-end'
   },
   progressBar: {
-    height: 12
+    height: '1.2rem'
   },
   breaktimeBar: {
-    height: 6,
+    height: '.6rem',
     backgroundColor: '#FDD835'
   }
 }));

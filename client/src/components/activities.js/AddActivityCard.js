@@ -10,9 +10,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(2, 0, 0),
     display: 'flex',
     flexDirection: 'column',
-    overflow: 'hidden',
-    cursor: 'pointer',
-    '-webkit-tap-highlight-color': 'rgba(255, 255, 255, 0)'
+    overflow: 'hidden'
   },
   actions: {
     display: 'flex',
@@ -50,7 +48,7 @@ const useStyles = makeStyles(theme => ({
   },
   repeatContainer: {
     fontWeight: 'bold',
-    width: '40px',
+    width: '4.7rem',
     lineHeight: '0',
     textAlign: 'center'
   },
@@ -64,11 +62,11 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'flex-end'
   },
   progressBar: {
-    height: 12
+    height: '1.2rem'
   },
   breaktimeBar: {
     width: '100%',
-    height: 6,
+    height: '.6rem',
     backgroundColor: 'rgba(0, 0, 0, 0.38)'
   }
 }));

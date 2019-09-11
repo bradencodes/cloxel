@@ -8,6 +8,11 @@ import AddActivityCard from './AddActivityCard';
 import BreaktimeCard from './BreaktimeCard';
 
 const useStyles = makeStyles(theme => ({
+  container: {
+    display: 'flex',
+    flexFlow: 'column',
+    minHeight: 'calc(100vh - 56px)'
+  },
   doing: {
     backgroundColor: theme.palette.secondary.light,
     width: '100%',
@@ -25,7 +30,8 @@ const useStyles = makeStyles(theme => ({
   done: {
     width: '100%',
     padding: theme.spacing(2),
-    backgroundColor: '#e6e6e6'
+    backgroundColor: '#e6e6e6',
+    flexGrow: '1'
   },
   show: {
     transform: 'translate(0, 0)',
@@ -63,7 +69,7 @@ const Activities = ({ show, user }) => {
   })();
 
   return (
-    <React.Fragment>
+    <div className={classes.container}>
       <Paper
         className={`${classes.doing} ${
           show ? classes.show : classes.moveDoing
@@ -101,7 +107,7 @@ const Activities = ({ show, user }) => {
           <ActivityCard key={activity._id} activity={activity} active={false} />
         ))}
       </Paper>
-    </React.Fragment>
+    </div>
   );
 };
 

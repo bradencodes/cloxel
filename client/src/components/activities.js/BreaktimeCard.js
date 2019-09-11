@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
   },
   repeatContainer: {
     fontWeight: 'bold',
-    width: '40px',
+    width: '4.7rem',
     lineHeight: '0',
     textAlign: 'center'
   },
@@ -58,9 +58,9 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'flex-end'
   },
   progressBar: {
-    height: 12,
+    height: '1.2rem',
     backgroundColor: '#FDD835'
-  },
+  }
 }));
 
 const BreaktimeCard = ({ breaktime, active }) => {
@@ -91,9 +91,7 @@ const BreaktimeCard = ({ breaktime, active }) => {
             color='textSecondary'
             className={classes.repeatText}
           >
-            TO
-            <br />
-            USE
+            TO USE
           </Typography>
         </div>
       </div>
@@ -115,7 +113,7 @@ const BreaktimeCard = ({ breaktime, active }) => {
 
 BreaktimeCard.propTypes = {
   breaktime: PropTypes.object.isRequired,
-  active: PropTypes.bool.isRequired,
+  active: PropTypes.bool.isRequired
 };
 
 export default BreaktimeCard;
