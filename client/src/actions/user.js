@@ -54,8 +54,10 @@ export const tick = inputUser => dispatch => {
 
 const calcResetsOnBreaktime = (breaktime, timeZone) => {
   let now = DateTime.fromObject({ zone: timeZone });
-  breaktime.nextReset = now.startOf('week').plus({ days: 7 - weekStartOffset });
-  breaktime.lastReset = now.startOf('week').minus({ days: weekStartOffset });
+  breaktime.nextReset = now
+    .startOf('week')
+    .plus({ days: 7 - weekStartOffset }).ts;
+  breaktime.lastReset = now.startOf('week').minus({ days: weekStartOffset }).ts;
   return breaktime;
 };
 
@@ -66,7 +68,7 @@ const calcActivity = (activity, timeZone, breaktime) => {
     //if it repeats weekly or daily
     if (repeat.length === 1) {
       // return the start of the next day
-      if (repeat[0]) return now.startOf('day').plus({ days: 1 });
+      if (repeat[0]) return now.startOf('day').plus({ days: 1 }).ts;
       // return the start of the next week
       else return breaktime.nextReset;
     } else {
@@ -78,10 +80,10 @@ const calcActivity = (activity, timeZone, breaktime) => {
         if (repeatWrap[i]) break;
       }
       let daysDiff = i - day;
-      let nextOnDay = now.startOf('day').plus({ days: daysDiff });
-      let nextWeek = now.startOf('week').plus({ days: 7 - weekStartOffset });
+      let nextOnDay = now.startOf('day').plus({ days: daysDiff }).ts;
+      let nextWeek = now.startOf('week').plus({ days: 7 - weekStartOffset }).ts;
 
-      return nextOnDay.ts < nextWeek.ts ? nextOnDay : nextWeek;
+      return Math.min(nextOnDay, nextWeek);
     }
   };
 
@@ -89,7 +91,7 @@ const calcActivity = (activity, timeZone, breaktime) => {
     //if it repeats weekly or daily
     if (repeat.length === 1) {
       // return the start of today
-      if (repeat[0]) return now.startOf('day');
+      if (repeat[0]) return now.startOf('day').ts;
       // return the start of this week
       else return breaktime.lastReset;
     } else {
@@ -101,18 +103,18 @@ const calcActivity = (activity, timeZone, breaktime) => {
         if (repeatWrap[i]) break;
       }
       let daysDiff = day - i;
-      let lastOnDay = now.startOf('day').minus({ days: daysDiff });
-      let thisWeek = now.startOf('week').minus({ days: weekStartOffset });
+      let lastOnDay = now.startOf('day').minus({ days: daysDiff }).ts;
+      let thisWeek = now.startOf('week').minus({ days: weekStartOffset }).ts;
 
-      return lastOnDay.ts > thisWeek.ts ? lastOnDay : thisWeek;
+      return Math.max(lastOnDay, thisWeek);
     }
   };
 
   const calcProgress = (lastReset, start, end) => {
     let progress = 0;
     for (let i = end.length - 1; i >= 0; i--) {
-      if (end[i] < lastReset.ts) break;
-      progress += end[i] - Math.max(start[i], lastReset.ts);
+      if (end[i] < lastReset) break;
+      progress += end[i] - Math.max(start[i], lastReset);
     }
     return progress;
   };
@@ -149,8 +151,8 @@ const calcBreaktime = (breaktime, activities) => {
   const calcProgress = (lastReset, start, end) => {
     let progress = 0;
     for (let i = end.length - 1; i >= 0; i--) {
-      if (end[i] < lastReset.ts) break;
-      progress += end[i] - Math.max(start[i], lastReset.ts);
+      if (end[i] < lastReset) break;
+      progress += end[i] - Math.max(start[i], lastReset);
     }
     return progress;
   };
