@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { clearAlerts } from '../../actions/alerts';
 import PropTypes from 'prop-types';
-import { Link as RouterLink, Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -20,6 +19,10 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Switch from '@material-ui/core/Switch';
+import CloseIcon from '@material-ui/icons/Close';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
 import { getUnusedColors } from '../../utils/colors';
 
 const CustomTextField = withStyles({
@@ -45,6 +48,9 @@ const CustomSelect = withStyles({
 })(Select);
 
 const useStyles = makeStyles(theme => ({
+  exitButton: {
+    marginRight: theme.spacing(2)
+  },
   paper: {
     display: 'flex',
     flexDirection: 'column',
@@ -85,7 +91,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AddActivity = ({ clearAlerts, alerts, socket, activities }) => {
+const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
   let colors = getUnusedColors(activities);
 
   useEffect(() => {
@@ -108,6 +114,10 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities }) => {
 
   const nameError = alerts.errors.filter(error => error.param === 'name')[0];
 
+  const handleExit = () => {
+    history.push('/activities')
+  }
+
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -121,135 +131,157 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities }) => {
   };
 
   return (
-    <Container component='main'>
-      <CssBaseline />
-      <div className={classes.paper}>
-        <form
-          className={classes.form}
-          onSubmit={e => onSubmit(e)}
-          autoComplete='off'
-        >
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <TextField
-                csscolor={color.hex}
-                fullWidth
-                id='name'
-                label='Name'
-                name='name'
-                value={name}
-                autoFocus
-                onChange={e => onChange(e)}
-                error={!!nameError}
-                helperText={nameError && nameError.msg}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <FormControl className={classes.formControl}>
-                <InputLabel htmlFor='color'>Color</InputLabel>
-                <Select
-                  csscolor={color.hex}
-                  value={color}
-                  onChange={e => onChange(e)}
-                  inputProps={{
-                    name: 'color',
-                    id: 'color'
-                  }}
-                  renderValue={color => (
-                    <div className={classes.colorSelected} value={color.hex}>
-                      <div
-                        className={classes.colorPrev}
-                        style={{ backgroundColor: color.hex }}
-                      />
-                      {color.name}
-                    </div>
-                  )}
-                >
-                  {colors.map(color => (
-                    <MenuItem key={color.name} value={color}>
-                      <div
-                        className={classes.colorPrev}
-                        style={{ backgroundColor: color.hex }}
-                      />
-                      {color.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={12}>
-              <TextField
-                csscolor={color.hex}
-                fullWidth
-                value={target}
-                id='target'
-                label='Target'
-                name='target'
-                onChange={e => onChange(e)}
-                helperText='hours : minutes : seconds'
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <FormControl component='fieldset' className={classes.formControl}>
-                <FormLabel component='legend'>Repeat</FormLabel>
-                <RadioGroup
-                  aria-label='repeat'
-                  name='repeat'
-                  value={repeat}
-                  onChange={e => onChange(e)}
-                >
-                  <FormControlLabel
-                    value='weekly'
-                    control={<Radio color='default' />}
-                    label='Weekly'
-                  />
-                  <FormControlLabel
-                    value='daily'
-                    control={<Radio color='default' />}
-                    label='Daily'
-                  />
-                  <FormControlLabel
-                    value='onDays'
-                    control={<Radio color='default' />}
-                    label='On days'
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={12} style={{ paddingTop: '0' }}>
-              <FormControlLabel
-                className={classes.earns}
-                value={earns}
-                control={
-                  <Switch
-                    color='secondary'
-                    checked={earns}
-                    name='earns'
-                    value={earns}
-                    onChange={toggleEarns}
-                  />
-                }
-                label='Earns break time'
-                labelPlacement='start'
-              />
-            </Grid>
-          </Grid>
-          <Button
-            type='submit'
-            variant='contained'
-            color='primary'
-            fullWidth
-            className={classes.submit}
+    <React.Fragment>
+      <AppBar position='static'>
+        <Toolbar>
+          <IconButton
+            edge='start'
+            className={classes.exitButton}
+            color='inherit'
+            aria-label='exit'
+            onClick={handleExit}
           >
-            Save
-          </Button>
-        </form>
-      </div>
-    </Container>
+            <CloseIcon />
+          </IconButton>
+          <Typography variant='h6' className={classes.title}>
+            Add Activity
+          </Typography>
+        </Toolbar>
+      </AppBar>
+
+      <Container component='main'>
+        <CssBaseline />
+        <div className={classes.paper}>
+          <form
+            className={classes.form}
+            onSubmit={e => onSubmit(e)}
+            autoComplete='off'
+          >
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <TextField
+                  csscolor={color.hex}
+                  fullWidth
+                  id='name'
+                  label='Name'
+                  name='name'
+                  value={name}
+                  autoFocus
+                  onChange={e => onChange(e)}
+                  error={!!nameError}
+                  helperText={nameError && nameError.msg}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <FormControl className={classes.formControl}>
+                  <InputLabel htmlFor='color'>Color</InputLabel>
+                  <Select
+                    csscolor={color.hex}
+                    value={color}
+                    onChange={e => onChange(e)}
+                    inputProps={{
+                      name: 'color',
+                      id: 'color'
+                    }}
+                    renderValue={color => (
+                      <div className={classes.colorSelected} value={color.hex}>
+                        <div
+                          className={classes.colorPrev}
+                          style={{ backgroundColor: color.hex }}
+                        />
+                        {color.name}
+                      </div>
+                    )}
+                  >
+                    {colors.map(color => (
+                      <MenuItem key={color.name} value={color}>
+                        <div
+                          className={classes.colorPrev}
+                          style={{ backgroundColor: color.hex }}
+                        />
+                        {color.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  csscolor={color.hex}
+                  fullWidth
+                  value={target}
+                  id='target'
+                  label='Target'
+                  name='target'
+                  onChange={e => onChange(e)}
+                  helperText='hours : minutes : seconds'
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <FormControl
+                  component='fieldset'
+                  className={classes.formControl}
+                >
+                  <FormLabel component='legend'>Repeat</FormLabel>
+                  <RadioGroup
+                    aria-label='repeat'
+                    name='repeat'
+                    value={repeat}
+                    onChange={e => onChange(e)}
+                  >
+                    <FormControlLabel
+                      value='weekly'
+                      control={<Radio color='default' />}
+                      label='Weekly'
+                    />
+                    <FormControlLabel
+                      value='daily'
+                      control={<Radio color='default' />}
+                      label='Daily'
+                    />
+                    <FormControlLabel
+                      value='onDays'
+                      control={<Radio color='default' />}
+                      label='On days'
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={12} style={{ paddingTop: '0' }}>
+                <FormControlLabel
+                  className={classes.earns}
+                  value={earns}
+                  control={
+                    <Switch
+                      color='secondary'
+                      checked={earns}
+                      name='earns'
+                      value={earns}
+                      onChange={toggleEarns}
+                    />
+                  }
+                  label='Earns break time'
+                  labelPlacement='start'
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type='submit'
+              variant='contained'
+              color='primary'
+              fullWidth
+              className={classes.submit}
+            >
+              Save
+            </Button>
+          </form>
+        </div>
+      </Container>
+    </React.Fragment>
   );
 };
 
@@ -268,4 +300,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { clearAlerts }
-)(AddActivity);
+)(withRouter(AddActivity));
