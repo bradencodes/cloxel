@@ -46,8 +46,10 @@ const useStyles = makeStyles(theme => ({
   colorSelect: {
     display: 'flex'
   },
-  colorMenuItem: {
-    display: 'flex'
+  colorSelected: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1, 0)
   },
   unsetColor: {
     width: 12,
@@ -84,7 +86,7 @@ const AddActivity = ({
 
   const [formData, setFormData] = useState({
     name: '',
-    color: '',
+    color: colors[0],
     target: [],
     repeat: [],
     earns: true
@@ -129,19 +131,15 @@ const AddActivity = ({
               <FormControl className={classes.formControl}>
                 <InputLabel htmlFor='color'>Color</InputLabel>
                 <Select
-                  className={classes.colorSelect}
                   value={color}
                   onChange={e => onChange(e)}
                   inputProps={{
                     name: 'color',
                     id: 'color'
                   }}
-                  displayEmpty
-                  renderValue={color => {
-                    console.log(color);
-                    return color ? (
-                      <MenuItem
-                        className={classes.colorMenuItem}
+                  renderValue={color => (
+                      <div
+                        className={classes.colorSelected}
                         value={color.hex}
                       >
                         <div
@@ -149,23 +147,12 @@ const AddActivity = ({
                           style={{ backgroundColor: color.hex }}
                         />
                         {color.name}
-                      </MenuItem>
-                    ) : (
-                      <MenuItem
-                        className={classes.colorMenuItem}
-                        value=''
-                      >
-                        <div
-                          className={classes.unsetColor}
-                        />
-                        Unset
-                      </MenuItem>
+                      </div>
                     )
-                  }}
+                  }
                 >
                   {colors.map(color => (
                     <MenuItem
-                      className={classes.colorMenuItem}
                       key={color.name}
                       value={color}
                     >
