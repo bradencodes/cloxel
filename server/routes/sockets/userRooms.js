@@ -8,7 +8,7 @@ module.exports = namespace => {
     socket.on('join room', room => {
       socket.join(room);
       socket.room = room;
-      console.log(`socket ${socket.id} joined room ${room}`);
+      console.log('user connected');
     });
 
     socket.on('change doing', async (userId, doNowId, wasDoingId, time) => {

@@ -1,29 +1,28 @@
-import axios from 'axios';
 import { cloneDeep } from 'lodash';
 import { UPDATE_USER } from './types';
 import { DateTime } from 'luxon';
 
-const urlpre = process.env.REACT_APP_API_URL;
-
-export const activate = (inputUser, doNowId, isActive) => async dispatch => {
-  let now = Date.now();
+export const changeDoing = (
+  inputUser,
+  doNowId,
+  wasDoingId,
+  time
+) => async dispatch => {
   let user = cloneDeep(inputUser);
   let doNow = [...user.activities, user.breaktime].find(
     activity => activity._id === doNowId
   );
   let wasDoing = [...user.activities, user.breaktime].find(
-    activity => activity._id === user.active
+    activity => activity._id === wasDoingId
   );
   try {
-    if (!isActive) {
-      doNow.start.push(now);
-      doNow.end.push(now);
+    doNow.start.push(time);
+    doNow.end.push(time);
 
-      wasDoing.end[wasDoing.end.length - 1] = now;
+    wasDoing.end[wasDoing.end.length - 1] = time;
 
-      user.active = doNowId;
-      dispatch(tick(user));
-    }
+    user.active = doNowId;
+    dispatch(tick(user));
   } catch (err) {
     console.log(err);
   }

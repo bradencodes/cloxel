@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
 import { msToShortTime } from '../../utils/convert';
-import { activate } from '../../actions/user';
+import { changeDoing } from '../../actions/user';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -65,11 +65,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const BreaktimeCard = ({ breaktime, isActive, user, activate }) => {
+const BreaktimeCard = ({ breaktime, isActive, user, changeDoing }) => {
   const classes = useStyles();
 
   const handleActivateClick = e => {
-    activate(user, breaktime._id, isActive);
+    changeDoing(user, breaktime._id, user.active, Date.now());
   };
 
   return (
@@ -132,5 +132,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { activate }
+  { changeDoing }
 )(BreaktimeCard);

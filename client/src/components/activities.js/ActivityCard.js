@@ -8,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { repeatToText, msToShortTime } from '../../utils/convert';
-import { activate } from '../../actions/user';
+import { changeDoing } from '../../actions/user';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -69,11 +69,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ActivityCard = ({ activity, isActive, user, activate }) => {
+const ActivityCard = ({ activity, isActive, user, changeDoing }) => {
   const classes = useStyles();
 
   const handleActivateClick = e => {
-    activate(user, activity._id, isActive);
+    changeDoing(user, activity._id, user.active, Date.now());
   };
 
   return (
@@ -154,5 +154,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { activate }
+  { changeDoing }
 )(ActivityCard);
