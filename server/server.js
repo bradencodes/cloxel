@@ -41,7 +41,7 @@ app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/activities', require('./routes/api/activities'));
 
-require('./routes/sockets/user')(io.of('userRooms'));
+require('./routes/sockets/userRooms')(io.of('userRooms'));
 
 const PORT = process.env.PORT || 5000;
 

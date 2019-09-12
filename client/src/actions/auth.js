@@ -11,6 +11,7 @@ import {
   LOGOUT
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
+import io from 'socket.io-client';
 
 const urlpre = process.env.REACT_APP_API_URL;
 
@@ -22,6 +23,10 @@ export const loadUser = () => async dispatch => {
 
   try {
     const res = await axios.get(`${urlpre}/api/auth`);
+
+    let socket = io(`${urlpre}/userRooms`);
+    socket.emit('join room', res.data._id);
+    res.data.socket = socket;
 
     dispatch({
       type: USER_LOADED,
