@@ -49,8 +49,9 @@ export const register = ({ name, email, password }) => async dispatch => {
     }
   };
 
-  const initBreaktimeStart = DateTime.local().startOf('week').minus({ days: 1 })
-    .ts;
+  const initBreaktimeStart = DateTime.local()
+    .startOf('week')
+    .minus({ days: 1 }).ts;
 
   const body = JSON.stringify({ name, email, password, initBreaktimeStart });
 

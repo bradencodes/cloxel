@@ -6,29 +6,21 @@ import { changeDoing } from '../../actions/user';
 
 const PrivateRoute = ({
   component: Component,
-  auth: { isAuthenticated, loading, socket },
+  auth: { isAuthenticated, loading },
   user,
   ...rest
-}) => {
-  // if (socket) {
-  //   socket.on('change doing', (userId, doNowId, wasDoingId, time) => {
-  //     changeDoing(user, doNowId, wasDoingId, time);
-  //   });
-  // }
-
-  return (
-    <Route
-      {...rest}
-      render={props =>
-        !isAuthenticated && !loading ? (
-          <Redirect to='/signin' />
-        ) : (
-          <Component {...props} />
-        )
-      }
-    />
-  );
-};
+}) => (
+  <Route
+    {...rest}
+    render={props =>
+      !isAuthenticated && !loading ? (
+        <Redirect to='/signin' />
+      ) : (
+        <Component {...props} />
+      )
+    }
+  />
+);
 
 PrivateRoute.propTypes = {
   auth: PropTypes.object.isRequired,

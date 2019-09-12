@@ -9,6 +9,7 @@ export const repeatToText = repeat => {
 };
 
 export const msToShortTime = ms => {
+  if (Math.abs(ms) < 1000) return '00:00:00';
   let seconds = parseInt((ms / 1000) % 60);
   let minutes = parseInt((ms / (1000 * 60)) % 60);
   let hours = parseInt(ms / (1000 * 60 * 60));

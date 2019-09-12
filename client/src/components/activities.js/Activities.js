@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import ActivityCard from './ActivityCard';
 import AddActivityCard from './AddActivityCard';
 import BreaktimeCard from './BreaktimeCard';
+import { changeDoing } from '../../actions/user';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -43,7 +44,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Activities = ({ show, user }) => {
+const Activities = ({ show, user, socket }) => {
+  useEffect(() => {
+    socket.on('change doing', (userId, doNowId, wasDoingId, time) => {
+      console.log('change doing triggered')
+      changeDoing(user, doNowId, wasDoingId, time);
+    });
+  }, [socket]);
   const classes = useStyles();
 
   const activities = user.activities;
@@ -129,7 +136,11 @@ Activities.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  socket: state.auth.socket
 });
 
-export default connect(mapStateToProps)(Activities);
+export default connect(
+  mapStateToProps,
+  { changeDoing }
+)(Activities);
