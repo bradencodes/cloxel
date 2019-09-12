@@ -68,7 +68,7 @@ router.post(
       const work = new Activity({
         user: user.id,
         name: 'Work',
-        color: '#546E7A',
+        color: '#607D8B',
         displayTarget: 28800000,
         start: [],
         end: [],
@@ -80,7 +80,7 @@ router.post(
       const sleep = new Activity({
         user: user.id,
         name: 'Sleep',
-        color: '#AA00FF',
+        color: '#80DEEA',
         displayTarget: 28800000,
         start: [],
         end: [],

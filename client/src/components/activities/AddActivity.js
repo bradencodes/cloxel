@@ -16,25 +16,14 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { colors } from '../../utils/colors';
+import { getUnusedColors } from '../../utils/colors';
 
 const useStyles = makeStyles(theme => ({
-  // overrides: {
-  //   MuiSelect: {
-  //     input: {
-  //       display: 'flex'
-  //     }
-  //   }
-  // },
   paper: {
     margin: theme.spacing(8, 0),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -43,25 +32,15 @@ const useStyles = makeStyles(theme => ({
   formControl: {
     width: '100%'
   },
-  colorSelect: {
-    display: 'flex'
-  },
   colorSelected: {
     display: 'flex',
     alignItems: 'center',
     padding: theme.spacing(0, 1, 0)
   },
-  unsetColor: {
-    width: 12,
-    height: 12,
-    borderRadius: 100000,
-    border: '2px solid #a0a0a0',
-    marginRight: theme.spacing(1)
-  },
   colorPrev: {
     width: 12,
     height: 12,
-    borderRadius: 100000,
+    borderRadius: 100,
     marginRight: theme.spacing(1)
   },
   submit: {
@@ -74,9 +53,13 @@ const AddActivity = ({
   clearAlerts,
   isAuthenticated,
   alerts,
-  socket
+  socket,
+  activities
 }) => {
+  let colors = getUnusedColors(activities);
+
   useEffect(() => {
+
     return () => {
       clearAlerts();
     };
@@ -198,7 +181,8 @@ AddActivity.propTypes = {
 
 const mapStateToProps = state => ({
   alerts: state.alerts,
-  socket: state.auth.socket
+  socket: state.auth.socket,
+  activities: state.user.activities
 });
 
 export default connect(
