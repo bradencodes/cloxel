@@ -18,11 +18,11 @@ const BreaktimeSchema = new Schema({
     default: '#FDD835'
   },
   start: {
-    type: Array,
+    type: [Number],
     required: true
   },
   end: {
-    type: Array,
+    type: [Number],
     required: true
   }
 });

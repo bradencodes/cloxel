@@ -69,11 +69,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ActivityCard = ({ activity, isActive, user, changeDoing }) => {
+const ActivityCard = ({ activity, isActive, user, changeDoing, socket }) => {
   const classes = useStyles();
 
   const handleActivateClick = e => {
-    changeDoing(user, activity._id, user.active, Date.now());
+    if (!isActive) {
+      let now = Date.now();
+      socket.emit('change doing', user._id, activity._id, user.active, now);
+      changeDoing(user, activity._id, user.active, now);
+    }
   };
 
   return (
@@ -149,7 +153,8 @@ ActivityCard.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  socket: state.auth.socket
 });
 
 export default connect(

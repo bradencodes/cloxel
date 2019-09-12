@@ -17,9 +17,9 @@ export const changeDoing = (
   );
   try {
     doNow.start.push(time);
-    doNow.end.push(time);
 
-    wasDoing.end[wasDoing.end.length - 1] = time;
+    wasDoing.end.pop();
+    wasDoing.end.push(time);
 
     user.active = doNowId;
     dispatch(tick(user));
@@ -55,12 +55,18 @@ export const tick = inputUser => dispatch => {
   // update active.end[active.end.length-1] to date.now
   if (breaktimeIsActive) {
     if (breaktime.end.length < breaktime.start.length) breaktime.end.push(now);
-    else breaktime.end[breaktime.end.length - 1] = now;
+    else {
+      breaktime.end.pop();
+      breaktime.end.push(now);
+    }
   } else {
     activeActivity = activities.find(activity => activity._id === active);
     if (activeActivity.end.length < activeActivity.start.length)
       activeActivity.end.push(now);
-    else activeActivity.end[activeActivity.end.length - 1] = now;
+    else {
+      activeActivity.end.pop();
+      activeActivity.end.push(now);
+    }
   }
 
   // check if date.now is past nextReset of any activities

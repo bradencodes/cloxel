@@ -63,7 +63,7 @@ router.post(
       let breaktime = new Breaktime({
         user: user.id,
         start: [now],
-        end: [now]
+        end: []
       });
 
       const work = new Activity({

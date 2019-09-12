@@ -8,23 +8,31 @@ module.exports = namespace => {
     socket.on('join room', room => {
       socket.join(room);
       socket.room = room;
-      console.log('user connected');
     });
 
     socket.on('change doing', async (userId, doNowId, wasDoingId, time) => {
       try {
         let user = await User.findById(userId);
         let doNow = await Activity.findById(doNowId);
+        if (!doNow) {
+          doNow = await Breaktime.findById(doNowId);
+        }
         let wasDoing = await Activity.findById(wasDoingId);
+        if (!wasDoing) {
+          wasDoing = await Breaktime.findById(wasDoingId);
+        }
 
         doNow.start.push(time);
-        doNow.end.push(time);
-        wasDoing.end[wasDoing.end.length - 1] = time;
+        wasDoing.end.push(time);
         user.active = doNowId;
 
         await doNow.save();
         await wasDoing.save();
         await user.save();
+
+        namespace
+          .to(socket.room)
+          .emit('change doing', userId, doNowId, wasDoingId, time);
       } catch (err) {
         console.error(err.message);
         namespace.to(socket.room).broadcast.emit('error', {

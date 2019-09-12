@@ -19,11 +19,11 @@ const ActivitySchema = new Schema({
     required: true
   },
   start: {
-    type: Array,
+    type: [Number],
     required: true
   },
   end: {
-    type: Array,
+    type: [Number],
     required: true
   },
   repeat: {

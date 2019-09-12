@@ -65,11 +65,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const BreaktimeCard = ({ breaktime, isActive, user, changeDoing }) => {
+const BreaktimeCard = ({ breaktime, isActive, user, changeDoing, socket }) => {
   const classes = useStyles();
 
   const handleActivateClick = e => {
-    changeDoing(user, breaktime._id, user.active, Date.now());
+    if (!isActive) {
+      let now = Date.now();
+      socket.emit('change doing', user._id, breaktime._id, user.active, now);
+      changeDoing(user, breaktime._id, user.active, now);
+    }
   };
 
   return (
@@ -127,7 +131,8 @@ BreaktimeCard.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  socket: state.auth.socket
 });
 
 export default connect(

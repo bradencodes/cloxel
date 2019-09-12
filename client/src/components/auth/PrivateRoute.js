@@ -10,11 +10,16 @@ const PrivateRoute = ({
   user,
   ...rest
 }) => {
-  if (socket) {
-    socket.on('change doing', (userId, doNowId, wasDoingId, time) => {
-      changeDoing(user, doNowId, wasDoingId, time);
-    });
-  }
+  // if (socket) {
+  //   socket.on('change doing', (userId, doNowId, wasDoingId, time) => {
+  //     console.log('change doing recieved and fired with params: ');
+  //     console.log('\tuserId: ', userId);
+  //     console.log('\tdoNowId: ', doNowId);
+  //     console.log('\twasDoingId: ', wasDoingId);
+  //     console.log('\ttime: ', time);
+  //     changeDoing(user, doNowId, wasDoingId, time);
+  //   });
+  // }
 
   return (
     <Route
