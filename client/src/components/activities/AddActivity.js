@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { clearAlerts } from '../../actions/alerts';
 import PropTypes from 'prop-types';
 import { Link as RouterLink, Redirect } from 'react-router-dom';
-import cloxelLogo from '../../resources/cloxelLogo.svg';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -16,6 +15,11 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormLabel from '@material-ui/core/FormLabel';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Switch from '@material-ui/core/Switch';
 import { getUnusedColors } from '../../utils/colors';
 
 const CustomTextField = withStyles({
@@ -29,9 +33,19 @@ const CustomTextField = withStyles({
   }
 })(TextField);
 
+const CustomSelect = withStyles({
+  root: {
+    '& label.Mui-focused': {
+      color: props => props.csscolor
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: props => props.csscolor
+    }
+  }
+})(Select);
+
 const useStyles = makeStyles(theme => ({
   paper: {
-    margin: theme.spacing(8, 0),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
@@ -54,19 +68,24 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 100,
     marginRight: theme.spacing(1)
   },
+  targetinputContainer: {
+    display: 'flex'
+  },
+  targetInputSection: {
+    margin: theme.spacing(0, 1),
+    width: '6.5rem'
+  },
+  earns: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginLeft: 0
+  },
   submit: {
     margin: theme.spacing(3, 0, 2)
   }
 }));
 
-const AddActivity = ({
-  login,
-  clearAlerts,
-  isAuthenticated,
-  alerts,
-  socket,
-  activities
-}) => {
+const AddActivity = ({ clearAlerts, alerts, socket, activities }) => {
   let colors = getUnusedColors(activities);
 
   useEffect(() => {
@@ -80,8 +99,8 @@ const AddActivity = ({
   const [formData, setFormData] = useState({
     name: '',
     color: colors[0],
-    target: [],
-    repeat: [],
+    target: '00:00:00',
+    repeat: 'weekly',
     earns: true
   });
 
@@ -94,8 +113,11 @@ const AddActivity = ({
 
   const onSubmit = async e => {
     e.preventDefault();
-    // login(email, password, socket);
     console.log('submitted');
+  };
+
+  const toggleEarns = () => {
+    setFormData(prev => ({ ...prev, earns: !prev.earns }));
   };
 
   return (
@@ -107,24 +129,27 @@ const AddActivity = ({
           onSubmit={e => onSubmit(e)}
           autoComplete='off'
         >
-          <Grid container spacing={2}>
+          <Grid container spacing={3}>
             <Grid item xs={12}>
-              <CustomTextField
+              <TextField
                 csscolor={color.hex}
                 fullWidth
                 id='name'
                 label='Name'
                 name='name'
+                value={name}
                 autoFocus
                 onChange={e => onChange(e)}
                 error={!!nameError}
                 helperText={nameError && nameError.msg}
               />
             </Grid>
+
             <Grid item xs={12}>
               <FormControl className={classes.formControl}>
                 <InputLabel htmlFor='color'>Color</InputLabel>
                 <Select
+                  csscolor={color.hex}
                   value={color}
                   onChange={e => onChange(e)}
                   inputProps={{
@@ -153,13 +178,63 @@ const AddActivity = ({
                 </Select>
               </FormControl>
             </Grid>
+
             <Grid item xs={12}>
               <TextField
+                csscolor={color.hex}
                 fullWidth
-                id='color'
-                label='Color'
-                name='color'
+                value={target}
+                id='target'
+                label='Target'
+                name='target'
                 onChange={e => onChange(e)}
+                helperText='hours : minutes : seconds'
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <FormControl component='fieldset' className={classes.formControl}>
+                <FormLabel component='legend'>Repeat</FormLabel>
+                <RadioGroup
+                  aria-label='repeat'
+                  name='repeat'
+                  value={repeat}
+                  onChange={e => onChange(e)}
+                >
+                  <FormControlLabel
+                    value='weekly'
+                    control={<Radio color='default' />}
+                    label='Weekly'
+                  />
+                  <FormControlLabel
+                    value='daily'
+                    control={<Radio color='default' />}
+                    label='Daily'
+                  />
+                  <FormControlLabel
+                    value='onDays'
+                    control={<Radio color='default' />}
+                    label='On days'
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12} style={{ paddingTop: '0' }}>
+              <FormControlLabel
+                className={classes.earns}
+                value={earns}
+                control={
+                  <Switch
+                    color='secondary'
+                    checked={earns}
+                    name='earns'
+                    value={earns}
+                    onChange={toggleEarns}
+                  />
+                }
+                label='Earns break time'
+                labelPlacement='start'
               />
             </Grid>
           </Grid>
@@ -167,6 +242,7 @@ const AddActivity = ({
             type='submit'
             variant='contained'
             color='primary'
+            fullWidth
             className={classes.submit}
           >
             Save
