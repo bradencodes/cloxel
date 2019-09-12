@@ -11,6 +11,7 @@ import {
   LOGOUT
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
+import { DateTime } from 'luxon';
 import io from 'socket.io-client';
 
 const urlpre = process.env.REACT_APP_API_URL;
@@ -48,7 +49,10 @@ export const register = ({ name, email, password }) => async dispatch => {
     }
   };
 
-  const body = JSON.stringify({ name, email, password });
+  const initBreaktimeStart = DateTime.local().startOf('week').minus({ days: 1 })
+    .ts;
+
+  const body = JSON.stringify({ name, email, password, initBreaktimeStart });
 
   try {
     const res = await axios.post(`${urlpre}/api/users`, body, config);

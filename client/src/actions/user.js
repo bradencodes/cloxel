@@ -93,10 +93,11 @@ const calcResetsOnBreaktime = (breaktime, timeZone, created) => {
   breaktime.nextReset = now
     .startOf('week')
     .plus({ days: 7 - weekStartOffset }).ts;
-  breaktime.lastReset = Math.max(
-    now.startOf('week').minus({ days: weekStartOffset }).ts,
-    created
-  );
+  // breaktime.lastReset = Math.max(
+  //   now.startOf('week').minus({ days: weekStartOffset }).ts,
+  //   created
+  // );
+  breaktime.lastReset = now.startOf('week').minus({ days: weekStartOffset }).ts;
   return breaktime;
 };
 
@@ -197,7 +198,7 @@ const calcBreaktime = (breaktime, activities) => {
   };
 
   const calcTarget = (nextReset, lastReset, activities) => {
-    const extraTime = activities.reduce(
+    const plannedTime = activities.reduce(
       (total, activity) =>
         (total += Math.max(
           activity.breaktimeTarget,
@@ -205,7 +206,7 @@ const calcBreaktime = (breaktime, activities) => {
         )),
       0
     );
-    return nextReset - lastReset - extraTime;
+    return nextReset - lastReset - plannedTime;
   };
 
   const calcEarned = (target, activities) => {

@@ -32,7 +32,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, password } = req.body;
+    const { name, email, password, initBreaktimeStart } = req.body;
 
     try {
       let user = await User.findOne({ email });
@@ -59,10 +59,9 @@ router.post(
 
       user.password = await bcrypt.hash(password, salt);
 
-      let now = Date.now();
       let breaktime = new Breaktime({
         user: user.id,
-        start: [now],
+        start: [initBreaktimeStart],
         end: []
       });
 
