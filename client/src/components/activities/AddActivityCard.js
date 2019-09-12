@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -71,12 +72,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AddActivityCard = () => {
+const AddActivityCard = ({ history }) => {
   const classes = useStyles();
+
+  const handleClick = () => {
+    history.push('/activities/create');
+  };
 
   return (
     <Card className={classes.card}>
-      <CardActionArea>
+      <CardActionArea onClick={handleClick}>
         <div className={classes.actions}>
           <AddCircleOutlineOutlinedIcon className={classes.add} />
           <Typography variant='h5' className={classes.name}>
@@ -103,4 +108,4 @@ const AddActivityCard = () => {
   );
 };
 
-export default AddActivityCard;
+export default withRouter(AddActivityCard);
