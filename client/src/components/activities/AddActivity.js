@@ -10,13 +10,24 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { getUnusedColors } from '../../utils/colors';
+
+const CustomTextField = withStyles({
+  root: {
+    '& label.Mui-focused': {
+      color: props => props.csscolor
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: props => props.csscolor
+    }
+  }
+})(TextField);
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -59,7 +70,6 @@ const AddActivity = ({
   let colors = getUnusedColors(activities);
 
   useEffect(() => {
-
     return () => {
       clearAlerts();
     };
@@ -99,7 +109,8 @@ const AddActivity = ({
         >
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField
+              <CustomTextField
+                csscolor={color.hex}
                 fullWidth
                 id='name'
                 label='Name'
@@ -121,24 +132,17 @@ const AddActivity = ({
                     id: 'color'
                   }}
                   renderValue={color => (
+                    <div className={classes.colorSelected} value={color.hex}>
                       <div
-                        className={classes.colorSelected}
-                        value={color.hex}
-                      >
-                        <div
-                          className={classes.colorPrev}
-                          style={{ backgroundColor: color.hex }}
-                        />
-                        {color.name}
-                      </div>
-                    )
-                  }
+                        className={classes.colorPrev}
+                        style={{ backgroundColor: color.hex }}
+                      />
+                      {color.name}
+                    </div>
+                  )}
                 >
                   {colors.map(color => (
-                    <MenuItem
-                      key={color.name}
-                      value={color}
-                    >
+                    <MenuItem key={color.name} value={color}>
                       <div
                         className={classes.colorPrev}
                         style={{ backgroundColor: color.hex }}
