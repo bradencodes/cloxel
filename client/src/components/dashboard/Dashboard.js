@@ -13,11 +13,9 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { mainListItems, secondaryListItems } from './ListItems';
 import { logout } from '../../actions/auth';
-import cloxelLogo from '../../resources/cloxelLogo.svg';
-import Activities from '../activities.js/Activities';
+import Activities from '../activities/Activities';
 
 const drawerWidth = 256;
 
@@ -145,19 +143,7 @@ const Dashboard = ({ auth: { loading }, user, logout }) => {
     return show ? classes.show : classes.hideAppBar;
   };
 
-  const userIsEmpty =
-    Object.keys(user).length === 0 && user.constructor === Object;
-
-  return loading || userIsEmpty ? (
-    <div className={classes.progress}>
-      <img
-        src={cloxelLogo}
-        alt='cloxelLogo'
-        style={{ width: '192px', height: '192px' }}
-      />
-      <CircularProgress />
-    </div>
-  ) : (
+  return (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar

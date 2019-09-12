@@ -11,6 +11,7 @@ import SignIn from './components/auth/SignIn';
 import TypographyTest from './components/test/TypographyTest';
 import PrivateRoute from './components/auth/PrivateRoute';
 import Activities from './components/dashboard/Dashboard';
+import AddActivity from './components/activities/AddActivity';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -101,6 +102,7 @@ const App = () => {
                 <Route exact path='/register' component={Register} />
                 <Route exact path='/signin' component={SignIn} />
                 <PrivateRoute exact path='/activities' component={Activities} />
+                <PrivateRoute exact path='/activities/create' component={AddActivity} />
                 <Route exact path='/type-test' component={TypographyTest} />
               </Switch>
             </ThemeProvider>
