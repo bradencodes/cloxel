@@ -19,6 +19,13 @@ import Select from '@material-ui/core/Select';
 import { colors } from '../../utils/colors';
 
 const useStyles = makeStyles(theme => ({
+  // overrides: {
+  //   MuiSelect: {
+  //     input: {
+  //       display: 'flex'
+  //     }
+  //   }
+  // },
   paper: {
     margin: theme.spacing(8, 0),
     display: 'flex',
@@ -38,6 +45,16 @@ const useStyles = makeStyles(theme => ({
   },
   colorSelect: {
     display: 'flex'
+  },
+  colorMenuItem: {
+    display: 'flex'
+  },
+  unsetColor: {
+    width: 12,
+    height: 12,
+    borderRadius: 100000,
+    border: '2px solid #a0a0a0',
+    marginRight: theme.spacing(1)
   },
   colorPrev: {
     width: 12,
@@ -119,9 +136,39 @@ const AddActivity = ({
                     name: 'color',
                     id: 'color'
                   }}
+                  displayEmpty
+                  renderValue={color => {
+                    console.log(color);
+                    return color ? (
+                      <MenuItem
+                        className={classes.colorMenuItem}
+                        value={color.hex}
+                      >
+                        <div
+                          className={classes.colorPrev}
+                          style={{ backgroundColor: color.hex }}
+                        />
+                        {color.name}
+                      </MenuItem>
+                    ) : (
+                      <MenuItem
+                        className={classes.colorMenuItem}
+                        value=''
+                      >
+                        <div
+                          className={classes.unsetColor}
+                        />
+                        Unset
+                      </MenuItem>
+                    )
+                  }}
                 >
                   {colors.map(color => (
-                    <MenuItem key={color.name} value={color.hex}>
+                    <MenuItem
+                      className={classes.colorMenuItem}
+                      key={color.name}
+                      value={color}
+                    >
                       <div
                         className={classes.colorPrev}
                         style={{ backgroundColor: color.hex }}
