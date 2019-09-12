@@ -28,21 +28,21 @@ const PrivateRoute = ({
   const userIsEmpty =
     Object.keys(user).length === 0 && user.constructor === Object;
 
-  return loading || userIsEmpty ? (
-    <div className={classes.progress}>
-      <img
-        src={cloxelLogo}
-        alt='cloxelLogo'
-        style={{ width: '192px', height: '192px' }}
-      />
-      <CircularProgress />
-    </div>
-  ) : (
+  return (
     <Route
       {...rest}
       render={props =>
         !isAuthenticated && !loading ? (
           <Redirect to='/signin' />
+        ) : loading || userIsEmpty ? (
+          <div className={classes.progress}>
+            <img
+              src={cloxelLogo}
+              alt='cloxelLogo'
+              style={{ width: '192px', height: '192px' }}
+            />
+            <CircularProgress />
+          </div>
         ) : (
           <Component {...props} />
         )

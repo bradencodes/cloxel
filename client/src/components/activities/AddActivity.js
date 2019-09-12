@@ -12,6 +12,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import { colors } from '../../utils/colors';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -28,12 +33,30 @@ const useStyles = makeStyles(theme => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3)
   },
+  formControl: {
+    width: '100%'
+  },
+  colorSelect: {
+    display: 'flex'
+  },
+  colorPrev: {
+    width: 12,
+    height: 12,
+    borderRadius: 100000,
+    marginRight: theme.spacing(1)
+  },
   submit: {
     margin: theme.spacing(3, 0, 2)
   }
 }));
 
-const AddActivity = ({ login, clearAlerts, isAuthenticated, alerts, socket }) => {
+const AddActivity = ({
+  login,
+  clearAlerts,
+  isAuthenticated,
+  alerts,
+  socket
+}) => {
   useEffect(() => {
     return () => {
       clearAlerts();
@@ -44,7 +67,7 @@ const AddActivity = ({ login, clearAlerts, isAuthenticated, alerts, socket }) =>
 
   const [formData, setFormData] = useState({
     name: '',
-    color: '#800000',
+    color: '',
     target: [],
     repeat: [],
     earns: true
@@ -64,10 +87,14 @@ const AddActivity = ({ login, clearAlerts, isAuthenticated, alerts, socket }) =>
   };
 
   return (
-    <Container component='main' >
+    <Container component='main'>
       <CssBaseline />
       <div className={classes.paper}>
-        <form className={classes.form} noValidate onSubmit={e => onSubmit(e)}>
+        <form
+          className={classes.form}
+          onSubmit={e => onSubmit(e)}
+          autoComplete='off'
+        >
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -75,7 +102,6 @@ const AddActivity = ({ login, clearAlerts, isAuthenticated, alerts, socket }) =>
                 id='name'
                 label='Name'
                 name='name'
-                variant='filled'
                 autoFocus
                 onChange={e => onChange(e)}
                 error={!!nameError}
@@ -83,14 +109,28 @@ const AddActivity = ({ login, clearAlerts, isAuthenticated, alerts, socket }) =>
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                id='color'
-                label='Color'
-                name='color'
-                variant='filled'
-                onChange={e => onChange(e)}
-              />
+              <FormControl className={classes.formControl}>
+                <InputLabel htmlFor='color'>Color</InputLabel>
+                <Select
+                  className={classes.colorSelect}
+                  value={color}
+                  onChange={e => onChange(e)}
+                  inputProps={{
+                    name: 'color',
+                    id: 'color'
+                  }}
+                >
+                  {colors.map(color => (
+                    <MenuItem key={color.name} value={color.hex}>
+                      <div
+                        className={classes.colorPrev}
+                        style={{ backgroundColor: color.hex }}
+                      />
+                      {color.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -98,7 +138,6 @@ const AddActivity = ({ login, clearAlerts, isAuthenticated, alerts, socket }) =>
                 id='color'
                 label='Color'
                 name='color'
-                variant='filled'
                 onChange={e => onChange(e)}
               />
             </Grid>
@@ -120,7 +159,7 @@ const AddActivity = ({ login, clearAlerts, isAuthenticated, alerts, socket }) =>
 AddActivity.propTypes = {
   alerts: PropTypes.object.isRequired,
   socket: PropTypes.object.isRequired,
-  clearAlerts: PropTypes.func.isRequired,
+  clearAlerts: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
