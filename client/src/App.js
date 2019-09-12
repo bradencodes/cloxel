@@ -20,7 +20,7 @@ import { changeDoing } from './actions/user';
 import setAuthToken from './utils/setAuthToken';
 
 import './App.css';
-import { USER_LOADED, INIT_SOCKET } from './actions/types';
+import { INIT_SOCKET } from './actions/types';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);

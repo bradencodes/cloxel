@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -6,10 +6,6 @@ import Paper from '@material-ui/core/Paper';
 import ActivityCard from './ActivityCard';
 import AddActivityCard from './AddActivityCard';
 import BreaktimeCard from './BreaktimeCard';
-import { changeDoing } from '../../actions/user';
-import io from 'socket.io-client';
-
-const urlpre = process.env.REACT_APP_API_URL;
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -47,16 +43,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Activities = ({ show, user, socket }) => {
-  useEffect(() => {
-    let socket = io(`${urlpre}/userRooms`);
-    socket.emit('join room', user._id);
-
-    socket.on('change doing', (userId, doNowId, wasDoingId, time) => {
-      console.log('change doing triggered')
-      changeDoing(user, doNowId, wasDoingId, time);
-    });
-  }, []);
+const Activities = ({ show, user }) => {
   const classes = useStyles();
 
   const activities = user.activities;
@@ -142,11 +129,7 @@ Activities.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  user: state.user,
-  socket: state.auth.socket
+  user: state.user
 });
 
-export default connect(
-  mapStateToProps,
-  { changeDoing }
-)(Activities);
+export default connect(mapStateToProps)(Activities);
