@@ -7,6 +7,9 @@ import ActivityCard from './ActivityCard';
 import AddActivityCard from './AddActivityCard';
 import BreaktimeCard from './BreaktimeCard';
 import { changeDoing } from '../../actions/user';
+import io from 'socket.io-client';
+
+const urlpre = process.env.REACT_APP_API_URL;
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -46,11 +49,14 @@ const useStyles = makeStyles(theme => ({
 
 const Activities = ({ show, user, socket }) => {
   useEffect(() => {
+    let socket = io(`${urlpre}/userRooms`);
+    socket.emit('join room', user._id);
+
     socket.on('change doing', (userId, doNowId, wasDoingId, time) => {
       console.log('change doing triggered')
       changeDoing(user, doNowId, wasDoingId, time);
     });
-  }, [socket]);
+  }, []);
   const classes = useStyles();
 
   const activities = user.activities;

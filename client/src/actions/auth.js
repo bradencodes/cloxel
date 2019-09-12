@@ -12,12 +12,11 @@ import {
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 import { DateTime } from 'luxon';
-import io from 'socket.io-client';
 
 const urlpre = process.env.REACT_APP_API_URL;
 
 // Load User
-export const loadUser = () => async dispatch => {
+export const loadUser = socket => async dispatch => {
   if (localStorage.token) {
     setAuthToken(localStorage.token);
   }
@@ -25,8 +24,8 @@ export const loadUser = () => async dispatch => {
   try {
     const res = await axios.get(`${urlpre}/api/auth`);
 
-    let socket = io(`${urlpre}/userRooms`);
     socket.emit('join room', res.data._id);
+
     res.data.socket = socket;
 
     dispatch({
@@ -42,7 +41,12 @@ export const loadUser = () => async dispatch => {
 };
 
 // Register User
-export const register = ({ name, email, password }) => async dispatch => {
+export const register = ({
+  name,
+  email,
+  password,
+  socket
+}) => async dispatch => {
   const config = {
     headers: {
       'Content-Type': 'application/json'
@@ -60,7 +64,7 @@ export const register = ({ name, email, password }) => async dispatch => {
 
     dispatch({ type: REGISTER_SUCCESS, payload: res.data });
 
-    dispatch(loadUser());
+    dispatch(loadUser(socket));
   } catch (err) {
     const errors = err.response.data.errors;
 
@@ -73,7 +77,7 @@ export const register = ({ name, email, password }) => async dispatch => {
 };
 
 // Login User
-export const login = (email, password) => async dispatch => {
+export const login = (email, password, socket) => async dispatch => {
   const config = {
     headers: {
       'Content-Type': 'application/json'
@@ -87,7 +91,7 @@ export const login = (email, password) => async dispatch => {
 
     dispatch({ type: LOGIN_SUCCESS, payload: res.data });
 
-    dispatch(loadUser());
+    dispatch(loadUser(socket));
   } catch (err) {
     const errors = err.response ? err.response.data.errors : null;
 

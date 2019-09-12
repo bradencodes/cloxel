@@ -5,7 +5,9 @@ const Breaktime = require('../../models/Breaktime');
 //route = '/userRooms'
 module.exports = namespace => {
   namespace.on('connect', socket => {
+    console.log('connected to namespace')
     socket.on('join room', room => {
+      console.log('connected to room')
       socket.join(room);
       socket.room = room;
     });

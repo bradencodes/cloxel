@@ -42,7 +42,8 @@ const Register = ({
   clearAlerts,
   register,
   isAuthenticated,
-  alerts
+  alerts,
+  socket
 }) => {
   useEffect(() => {
     return () => {
@@ -80,7 +81,7 @@ const Register = ({
         errors: [{ msg: 'Passwords do not match', param: 'password2' }]
       });
     } else {
-      register({ name, email, password });
+      register({ name, email, password, socket });
     }
   };
 
@@ -187,7 +188,8 @@ Register.propTypes = {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
-  alerts: state.alerts
+  alerts: state.alerts,
+  socket: state.auth.socket
 });
 
 export default connect(

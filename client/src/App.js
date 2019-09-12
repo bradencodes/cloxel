@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { lightBlue, yellow } from '@material-ui/core/colors';
+import io from 'socket.io-client';
 
 // My Components
 import Register from './components/auth/Register';
@@ -15,9 +16,11 @@ import Activities from './components/dashboard/Dashboard';
 import { Provider } from 'react-redux';
 import store from './store';
 import { loadUser } from './actions/auth';
+import { changeDoing } from './actions/user';
 import setAuthToken from './utils/setAuthToken';
 
 import './App.css';
+import { USER_LOADED, INIT_SOCKET } from './actions/types';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -68,9 +71,24 @@ const theme = createMuiTheme({
   }
 });
 
+const urlpre = process.env.REACT_APP_API_URL;
+
 const App = () => {
   useEffect(() => {
-    store.dispatch(loadUser());
+    async function initSocket() {
+      let socket = await io.connect(`${urlpre}/userRooms`);
+
+      store.dispatch({ type: INIT_SOCKET, payload: { socket } });
+
+      store.dispatch(loadUser(socket));
+
+      socket.on('change doing', (userId, doNowId, wasDoingId, time) => {
+        store.dispatch(
+          changeDoing(store.getState().user, doNowId, wasDoingId, time)
+        );
+      });
+    }
+    initSocket();
   }, []);
 
   return (

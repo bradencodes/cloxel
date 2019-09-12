@@ -1,4 +1,5 @@
 import {
+  INIT_SOCKET,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   USER_LOADED,
@@ -20,12 +21,17 @@ export default function(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
+    case INIT_SOCKET:
+      return {
+        ...state,
+        socket: payload.socket
+      };
+
     case USER_LOADED:
       return {
         ...state,
         isAuthenticated: true,
-        loading: false,
-        socket: payload.socket
+        loading: false
       };
 
     case REGISTER_SUCCESS:
@@ -48,8 +54,7 @@ export default function(state = initialState, action) {
         ...state,
         token: null,
         isAuthenticated: false,
-        loading: false,
-        socket: null
+        loading: false
       };
 
     default:

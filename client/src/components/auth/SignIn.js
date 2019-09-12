@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Login = ({ login, clearAlerts, isAuthenticated, alerts }) => {
+const Login = ({ login, clearAlerts, isAuthenticated, alerts, socket }) => {
   useEffect(() => {
     return () => {
       clearAlerts();
@@ -63,7 +63,7 @@ const Login = ({ login, clearAlerts, isAuthenticated, alerts }) => {
 
   const onSubmit = async e => {
     e.preventDefault();
-    login(email, password);
+    login(email, password, socket);
   };
 
   if (isAuthenticated) {
@@ -143,7 +143,8 @@ Login.propTypes = {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
-  alerts: state.alerts
+  alerts: state.alerts,
+  socket: state.auth.socket
 });
 
 export default connect(
