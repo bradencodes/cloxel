@@ -91,7 +91,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     margin: '.8rem 0 0 .8rem',
-    pointerEvents: 'auto'
+    pointerEvents: 'auto',
+    cursor: 'pointer',
+    transition: 'background-color .2s'
   },
   dayOn: {
     color: '#ffffff',
@@ -290,7 +292,12 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
                       control={<Radio color='default' />}
                       label='On days'
                     />
-                    <div className={classes.days}>
+                    <div
+                      className={classes.days}
+                      style={{
+                        opacity: repeatWord === 'onDays' ? '.87' : '.38'
+                      }}
+                    >
                       {days.map((day, i) => (
                         <div
                           key={i}
