@@ -8,7 +8,6 @@ export const changeDoing = (
   wasDoingId,
   time
 ) => async dispatch => {
-  console.log('changeDoing triggered')
   let user = cloneDeep(inputUser);
   let doNow = [...user.activities, user.breaktime].find(
     activity => activity._id === doNowId

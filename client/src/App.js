@@ -21,7 +21,7 @@ import { changeDoing } from './actions/user';
 import setAuthToken from './utils/setAuthToken';
 
 import './App.css';
-import { INIT_SOCKET, REQUEST_HANDLED } from './actions/types';
+import { INIT_SOCKET, ACTIVE_CHANGED } from './actions/types';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -84,7 +84,7 @@ const App = () => {
       store.dispatch(loadUser(socket));
 
       socket.on('change doing', (userId, doNowId, wasDoingId, time) => {
-        store.dispatch({ type: REQUEST_HANDLED });
+        store.dispatch({ type: ACTIVE_CHANGED });
         store.dispatch(
           changeDoing(store.getState().user, doNowId, wasDoingId, time)
         );

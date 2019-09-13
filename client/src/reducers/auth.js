@@ -7,9 +7,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
-  ACCOUNT_DELETED,
-  START_HANDLING_REQUEST,
-  REQUEST_HANDLED
+  ACCOUNT_DELETED
 } from '../actions/types';
 
 const initialState = {
@@ -45,18 +43,6 @@ export default function(state = initialState, action) {
         ...payload,
         isAuthenticated: true,
         loading: false
-      };
-
-    case START_HANDLING_REQUEST:
-      return {
-        ...state,
-        isHandlingRequest: true
-      };
-
-    case REQUEST_HANDLED:
-      return {
-        ...state,
-        isHandlingRequest: false
       };
 
     case REGISTER_FAIL:
