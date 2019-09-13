@@ -1,4 +1,9 @@
-import { CHANGE_ACTIVE, ACTIVE_CHANGED } from '../actions/types';
+import {
+  CHANGE_ACTIVE,
+  ACTIVE_CHANGED,
+  ADD_ACTIVITY,
+  ACTIVITY_ADDED
+} from '../actions/types';
 
 const initialState = {
   isChangingActive: false,
@@ -20,6 +25,18 @@ export default function(state = initialState, action) {
       return {
         ...state,
         isChangingActive: false
+      };
+
+    case ADD_ACTIVITY:
+      return {
+        ...state,
+        isAddingActivity: true
+      };
+
+    case ACTIVITY_ADDED:
+      return {
+        ...state,
+        isAddingActivity: false
       };
 
     default:

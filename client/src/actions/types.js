@@ -17,3 +17,5 @@ export const UPDATE_USER = 'UPDATE_USER';
 
 export const CHANGE_ACTIVE = 'CHANGE_ACTIVE';
 export const ACTIVE_CHANGED = 'ACTIVE_CHANGED';
+export const ADD_ACTIVITY = 'ADD_ACTIVITY';
+export const ACTIVITY_ADDED = 'ACTIVITY_ADDED';

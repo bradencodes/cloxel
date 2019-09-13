@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { setAlerts } from './alerts';
-import { calcActivities } from './user';
+import { calcActivities } from '../utils/calc';
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
