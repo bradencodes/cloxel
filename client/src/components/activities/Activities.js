@@ -16,11 +16,11 @@ const useStyles = makeStyles(theme => ({
   doing: {
     backgroundColor: theme.palette.secondary.light,
     width: '100%',
+    height: 'calc(100% + 10px)',
     padding: theme.spacing(2),
     position: 'sticky',
     zIndex: 1, //keeps on top
     top: 56
-    // top: 20
   },
   todo: {
     width: '100%',

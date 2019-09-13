@@ -53,8 +53,8 @@ const useStyles = makeStyles(theme => ({
     transition: 'transform .25s'
   },
   hideAppBar: {
-    transform: 'translate(0, -65px)',
-    transition: 'transform .27s'
+    transform: 'translate(0, -56px)',
+    transition: 'transform .25s'
   },
   drawerPaper: {
     position: 'relative',
@@ -154,6 +154,7 @@ const Dashboard = ({ auth: { loading }, user, logout, history }) => {
       <AppBar
         position='fixed'
         className={`${getScrollClassName()} ${classes.appBar}`}
+        elevation={show ? 4 : 0}
       >
         <Toolbar className={classes.toolbar}>
           <IconButton
