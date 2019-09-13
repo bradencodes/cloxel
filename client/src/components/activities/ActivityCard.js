@@ -9,6 +9,7 @@ import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { repeatToText, msToShortTime } from '../../utils/convert';
 import { changeDoing } from '../../actions/user';
+import { START_HANDLING_REQUEST } from '../../actions/types';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -73,17 +74,19 @@ const ActivityCard = ({
   activity,
   isActive,
   user,
-  changeDoing,
   socket,
-  isPreview
+  isPreview,
+  isHandlingRequest,
+  dispatch
 }) => {
   const classes = useStyles();
 
   const handleActivateClick = e => {
-    if (!isActive && !isPreview) {
+    if (!isActive && !isPreview && !isHandlingRequest) {
+      dispatch({ type: START_HANDLING_REQUEST });
       let now = Date.now();
       socket.emit('change doing', user._id, activity._id, user.active, now);
-      changeDoing(user, activity._id, user.active, now);
+      dispatch(changeDoing(user, activity._id, user.active, now));
     }
   };
 
@@ -94,7 +97,7 @@ const ActivityCard = ({
           className={classes.activate}
           aria-label='activate'
           onClick={handleActivateClick}
-          disabled={isPreview}
+          disabled={isPreview || isHandlingRequest}
         >
           <PlayArrowOutlinedIcon
             style={{ transform: `rotate(${isActive * 90}deg)` }}
@@ -106,7 +109,7 @@ const ActivityCard = ({
         <IconButton
           className={classes.edit}
           aria-label='edit'
-          disabled={isPreview}
+          disabled={isPreview || isHandlingRequest}
         >
           <EditOutlinedIcon />
         </IconButton>
@@ -166,10 +169,8 @@ ActivityCard.propTypes = {
 
 const mapStateToProps = state => ({
   user: state.user,
+  isHandlingRequest: state.auth.isHandlingRequest,
   socket: state.auth.socket
 });
 
-export default connect(
-  mapStateToProps,
-  { changeDoing }
-)(ActivityCard);
+export default connect(mapStateToProps)(ActivityCard);

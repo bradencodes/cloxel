@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
 import { msToShortTime } from '../../utils/convert';
 import { changeDoing } from '../../actions/user';
+import { START_HANDLING_REQUEST } from '../../actions/types';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -65,14 +66,22 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const BreaktimeCard = ({ breaktime, isActive, user, changeDoing, socket }) => {
+const BreaktimeCard = ({
+  breaktime,
+  isActive,
+  user,
+  socket,
+  dispatch,
+  isHandlingRequest
+}) => {
   const classes = useStyles();
 
   const handleActivateClick = e => {
-    if (!isActive) {
+    if (!isActive && !isHandlingRequest) {
+      dispatch({ type: START_HANDLING_REQUEST });
       let now = Date.now();
       socket.emit('change doing', user._id, breaktime._id, user.active, now);
-      changeDoing(user, breaktime._id, user.active, now);
+      dispatch(changeDoing(user, breaktime._id, user.active, now));
     }
   };
 
@@ -83,6 +92,7 @@ const BreaktimeCard = ({ breaktime, isActive, user, changeDoing, socket }) => {
           className={classes.activate}
           aria-label='activate'
           onClick={handleActivateClick}
+          disabled={isHandlingRequest}
         >
           <PlayArrowOutlinedIcon
             style={{ transform: `rotate(${isActive * 90}deg)` }}
@@ -132,10 +142,8 @@ BreaktimeCard.propTypes = {
 
 const mapStateToProps = state => ({
   user: state.user,
+  isHandlingRequest: state.auth.isHandlingRequest,
   socket: state.auth.socket
 });
 
-export default connect(
-  mapStateToProps,
-  { changeDoing }
-)(BreaktimeCard);
+export default connect(mapStateToProps)(BreaktimeCard);

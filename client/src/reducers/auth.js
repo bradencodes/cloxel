@@ -7,14 +7,17 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
-  ACCOUNT_DELETED
+  ACCOUNT_DELETED,
+  START_HANDLING_REQUEST,
+  REQUEST_HANDLED
 } from '../actions/types';
 
 const initialState = {
   token: localStorage.getItem('token'),
   isAuthenticated: null,
   loading: true,
-  socket: null
+  socket: null,
+  isHandlingRequest: false
 };
 
 export default function(state = initialState, action) {
@@ -42,6 +45,18 @@ export default function(state = initialState, action) {
         ...payload,
         isAuthenticated: true,
         loading: false
+      };
+
+    case START_HANDLING_REQUEST:
+      return {
+        ...state,
+        isHandlingRequest: true
+      };
+
+    case REQUEST_HANDLED:
+      return {
+        ...state,
+        isHandlingRequest: false
       };
 
     case REGISTER_FAIL:
