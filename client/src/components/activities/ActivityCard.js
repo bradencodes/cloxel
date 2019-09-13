@@ -92,7 +92,7 @@ const ActivityCard = ({ activity, isActive, user, changeDoing, socket, isPreview
             style={{ transform: `rotate(${isActive * 90}deg)` }}
           />
         </IconButton>
-        <Typography variant='h5' className={classes.name}>
+        <Typography variant='h5' noWrap className={classes.name}>
           {activity.name}
         </Typography>
         <IconButton className={classes.edit} aria-label='edit'>
