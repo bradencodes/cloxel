@@ -85,8 +85,6 @@ const useStyles = makeStyles(theme => ({
     opacity: '.87'
   },
   day: {
-    color: '#ffffff',
-    backgroundColor: '#000000',
     height: '2rem',
     width: '2.4rem',
     borderRadius: 4,
@@ -94,6 +92,13 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     margin: '.8rem 0 0 .8rem',
     pointerEvents: 'auto'
+  },
+  dayOn: {
+    color: '#ffffff',
+    backgroundColor: '#000000'
+  },
+  dayOff: {
+    opacity: '.38'
   },
   earns: {
     display: 'flex',
@@ -122,11 +127,12 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
     name: '',
     color: colors[0],
     target: '00:00:00',
-    repeat: 'weekly',
+    repeatWord: 'weekly',
+    repeatArray: [0],
     earns: true
   });
 
-  const { name, color, target, repeat, earns } = formData;
+  const { name, color, target, repeatWord, repeatArray, earns } = formData;
 
   const nameError = alerts.errors.filter(error => error.param === 'name')[0];
 
@@ -140,6 +146,27 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
   const onSubmit = async e => {
     e.preventDefault();
     console.log('submitted');
+  };
+
+  const handleDayClass = i => {
+    if (repeatWord === 'onDays' && repeatArray[i])
+      return `${classes.day} ${classes.dayOn}`;
+    else return `${classes.day} ${classes.dayOff}`;
+  };
+
+  const setRepeats = repeatWord => {
+    let newRepeatArray;
+    if (repeatWord === 'weekly') newRepeatArray = [0];
+    else if (repeatWord === 'daily') newRepeatArray = [1];
+    else newRepeatArray = [0, 0, 0, 0, 0, 0, 0];
+    setFormData(prev => ({ ...prev, repeatWord, repeatArray: newRepeatArray }));
+  };
+
+  const toggleDay = i => {
+    let newRepeatArray =
+      repeatArray.length === 7 ? repeatArray : [0, 0, 0, 0, 0, 0, 0];
+    newRepeatArray[i] = !newRepeatArray[i];
+    setFormData(prev => ({ ...prev, repeatArray: newRepeatArray }));
   };
 
   const toggleEarns = () => {
@@ -244,9 +271,9 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
                   <FormLabel component='legend'>Repeat</FormLabel>
                   <RadioGroup
                     aria-label='repeat'
-                    name='repeat'
-                    value={repeat}
-                    onChange={e => onChange(e)}
+                    name='repeatWord'
+                    value={repeatWord}
+                    onChange={e => setRepeats(e.target.value)}
                   >
                     <FormControlLabel
                       value='weekly'
@@ -265,7 +292,11 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
                     />
                     <div className={classes.days}>
                       {days.map((day, i) => (
-                        <div key={i} className={classes.day}>
+                        <div
+                          key={i}
+                          className={handleDayClass(i)}
+                          onClick={() => toggleDay(i)}
+                        >
                           {day}
                         </div>
                       ))}
