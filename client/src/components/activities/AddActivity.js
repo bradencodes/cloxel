@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { clearAlerts } from '../../actions/alerts';
 import PropTypes from 'prop-types';
@@ -7,7 +8,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -24,30 +25,34 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import ActivityCard from './ActivityCard';
+import { setAlerts } from '../../actions/alerts';
 import { getUnusedColors, stylingColors } from '../../utils/colors';
 import { shortTimeToMS } from '../../utils/convert';
+import { ADD_ACTIVITY, ACTIVITY_ADDED } from '../../actions/types';
+import { addActivityToRedux } from '../../actions/activities';
+const urlpre = process.env.REACT_APP_API_URL;
 
-const CustomTextField = withStyles({
-  root: {
-    '& label.Mui-focused': {
-      color: props => props.csscolor
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: props => props.csscolor
-    }
-  }
-})(TextField);
+// const CustomTextField = withStyles({
+//   root: {
+//     '& label.Mui-focused': {
+//       color: props => props.csscolor
+//     },
+//     '& .MuiInput-underline:after': {
+//       borderBottomColor: props => props.csscolor
+//     }
+//   }
+// })(TextField);
 
-const CustomSelect = withStyles({
-  root: {
-    '& label.Mui-focused': {
-      color: props => props.csscolor
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: props => props.csscolor
-    }
-  }
-})(Select);
+// const CustomSelect = withStyles({
+//   root: {
+//     '& label.Mui-focused': {
+//       color: props => props.csscolor
+//     },
+//     '& .MuiInput-underline:after': {
+//       borderBottomColor: props => props.csscolor
+//     }
+//   }
+// })(Select);
 
 const useStyles = makeStyles(theme => ({
   exitButton: {
@@ -128,14 +133,22 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
+const AddActivity = ({
+  dispatch,
+  alerts,
+  socket,
+  user,
+  activities,
+  history,
+  isAddingActivity
+}) => {
   let colors = getUnusedColors(activities);
 
   useEffect(() => {
     return () => {
-      clearAlerts();
+      dispatch(clearAlerts());
     };
-  }, [clearAlerts]);
+  }, [dispatch]);
 
   const classes = useStyles();
 
@@ -166,7 +179,7 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
     repeat: correctRepeatArray(repeatArray),
     name,
     color: color.hex,
-    displayTarget: shortTimeToMS(target) || 0,
+    displayTarget: shortTimeToMS(target) > 0 ? shortTimeToMS(target) : 0,
     displayProgress: 0,
     adds: earns
   };
@@ -174,15 +187,37 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
   const nameError = alerts.errors.filter(error => error.param === 'name')[0];
 
   const handleExit = () => {
+    if (isAddingActivity) return;
     history.push('/activities');
   };
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit = async e => {
-    e.preventDefault();
-    console.log('submitted');
+  const onSave = async () => {
+    if (isAddingActivity) return;
+    dispatch({ type: ADD_ACTIVITY });
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const body = JSON.stringify(activityPreview);
+
+    try {
+      const res = await axios.post(`${urlpre}/api/activities`, body, config);
+      let newActivity = res.data;
+      socket.emit('add activity', newActivity);
+      dispatch(addActivityToRedux(newActivity, user));
+      history.push('/activities');
+    } catch (err) {
+      const errors = err.response.data.errors;
+      dispatch({ type: ACTIVITY_ADDED });
+
+      dispatch(setAlerts({ errors }));
+    }
   };
 
   const handleDayClass = i => {
@@ -223,6 +258,7 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
             color='inherit'
             aria-label='exit'
             onClick={handleExit}
+            disabled={isAddingActivity}
           >
             <CloseIcon />
           </IconButton>
@@ -232,7 +268,8 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
           <IconButton
             color='inherit'
             aria-label='save'
-            // onClick={handleSave}
+            onClick={onSave}
+            disabled={isAddingActivity}
           >
             <SaveOutlinedIcon />
           </IconButton>
@@ -253,18 +290,14 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
         <CssBaseline />
 
         <div className={classes.paper}>
-          <form
-            className={classes.form}
-            onSubmit={e => onSubmit(e)}
-            autoComplete='off'
-          >
+          <div className={classes.form}>
             <Grid container spacing={4}>
               <Grid item xs={12}>
                 <TextField
                   csscolor={color.hex}
                   fullWidth
                   id='name'
-                  label='Name'
+                  label='Activity Name'
                   name='name'
                   value={name}
                   autoFocus
@@ -386,7 +419,7 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
                 />
               </Grid>
             </Grid>
-          </form>
+          </div>
         </div>
       </Container>
     </React.Fragment>
@@ -395,17 +428,15 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
 
 AddActivity.propTypes = {
   alerts: PropTypes.object.isRequired,
-  socket: PropTypes.object.isRequired,
-  clearAlerts: PropTypes.func.isRequired
+  socket: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
+  user: state.user,
   alerts: state.alerts,
   socket: state.auth.socket,
-  activities: state.user.activities
+  activities: state.user.activities,
+  isAddingActivity: state.requests.isAddingActivity
 });
 
-export default connect(
-  mapStateToProps,
-  { clearAlerts }
-)(withRouter(AddActivity));
+export default connect(mapStateToProps)(withRouter(AddActivity));

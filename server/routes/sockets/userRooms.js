@@ -35,10 +35,14 @@ module.exports = namespace => {
           .emit('change doing', userId, doNowId, wasDoingId, time);
       } catch (err) {
         console.error(err.message);
-        namespace.to(socket.room).broadcast.emit('error', {
+        namespace.to(socket.room).emit('error', {
           errors: [{ msg: 'Server Error', param: 'change doing' }]
         });
       }
+    });
+
+    socket.on('add activity', activity => {
+      namespace.to(socket.room).emit('add activity', activity);
     });
   });
 };

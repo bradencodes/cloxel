@@ -14,7 +14,7 @@ router.post(
   [
     auth,
     [
-      check('name', 'Name is required')
+      check('name', 'Activity name is required')
         .not()
         .isEmpty()
     ]
@@ -34,11 +34,13 @@ router.post(
         start: req.body.start,
         end: req.body.end,
         repeat: req.body.repeat,
-        adds: req.body.adds,
-        deleted: req.body.deleted
+        adds: req.body.adds
       });
 
       const activity = await newActivity.save();
+      let user = await User.findById(req.user.id);
+      user.activities.push(activity.id);
+      await user.save();
 
       res.json(activity);
     } catch (err) {

@@ -18,10 +18,11 @@ import { Provider } from 'react-redux';
 import store from './store';
 import { loadUser } from './actions/auth';
 import { changeDoing } from './actions/user';
+import { addActivityToRedux } from './actions/activities';
 import setAuthToken from './utils/setAuthToken';
 
 import './App.css';
-import { INIT_SOCKET, ACTIVE_CHANGED } from './actions/types';
+import { INIT_SOCKET, ACTIVE_CHANGED, ACTIVITY_ADDED } from './actions/types';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -90,6 +91,14 @@ const App = () => {
           );
         }
         store.dispatch({ type: ACTIVE_CHANGED });
+      });
+
+      socket.on('add activity', activity => {
+        if (!store.getState().requests.isAddingActivity) {
+          console.log('add activity triggered from socket');
+          store.dispatch(addActivityToRedux(activity, store.getState().user));
+        }
+        store.dispatch({ type: ACTIVITY_ADDED });
       });
     }
     initSocket();
