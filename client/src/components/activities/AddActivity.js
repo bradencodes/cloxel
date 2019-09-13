@@ -74,12 +74,26 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 100,
     marginRight: theme.spacing(1)
   },
-  targetinputContainer: {
-    display: 'flex'
+  days: {
+    display: 'flex',
+    flexFlow: 'row wrap',
+    margin: '-4rem 0 0 9.5rem',
+    justifyContent: 'space-around',
+    maxWidth: '25rem',
+    width: 'calc(100% - 9.5rem)',
+    pointerEvents: 'none',
+    opacity: '.87'
   },
-  targetInputSection: {
-    margin: theme.spacing(0, 1),
-    width: '6.5rem'
+  day: {
+    color: '#ffffff',
+    backgroundColor: '#000000',
+    height: '2rem',
+    width: '2.4rem',
+    borderRadius: 4,
+    display: 'flex',
+    justifyContent: 'center',
+    margin: '.8rem 0 0 .8rem',
+    pointerEvents: 'auto'
   },
   earns: {
     display: 'flex',
@@ -102,6 +116,8 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
 
   const classes = useStyles();
 
+  const days = ['M', 'Tu', 'W', 'Th', 'F', 'Sa', 'Su'];
+
   const [formData, setFormData] = useState({
     name: '',
     color: colors[0],
@@ -115,8 +131,8 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
   const nameError = alerts.errors.filter(error => error.param === 'name')[0];
 
   const handleExit = () => {
-    history.push('/activities')
-  }
+    history.push('/activities');
+  };
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -247,11 +263,18 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
                       control={<Radio color='default' />}
                       label='On days'
                     />
+                    <div className={classes.days}>
+                      {days.map((day, i) => (
+                        <div key={i} className={classes.day}>
+                          {day}
+                        </div>
+                      ))}
+                    </div>
                   </RadioGroup>
                 </FormControl>
               </Grid>
 
-              <Grid item xs={12} style={{ paddingTop: '0' }}>
+              <Grid item xs={12}>
                 <FormControlLabel
                   className={classes.earns}
                   value={earns}
