@@ -84,10 +84,12 @@ const App = () => {
       store.dispatch(loadUser(socket));
 
       socket.on('change doing', (userId, doNowId, wasDoingId, time) => {
+        if (!store.getState().requests.isChangingActive) {
+          store.dispatch(
+            changeDoing(store.getState().user, doNowId, wasDoingId, time)
+          );
+        }
         store.dispatch({ type: ACTIVE_CHANGED });
-        store.dispatch(
-          changeDoing(store.getState().user, doNowId, wasDoingId, time)
-        );
       });
     }
     initSocket();
@@ -103,7 +105,11 @@ const App = () => {
                 <Route exact path='/register' component={Register} />
                 <Route exact path='/signin' component={SignIn} />
                 <PrivateRoute exact path='/activities' component={Activities} />
-                <PrivateRoute exact path='/activities/create' component={AddActivity} />
+                <PrivateRoute
+                  exact
+                  path='/activities/create'
+                  component={AddActivity}
+                />
                 <Route exact path='/type-test' component={TypographyTest} />
               </Switch>
             </ThemeProvider>
