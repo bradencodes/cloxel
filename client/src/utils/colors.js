@@ -1,4 +1,8 @@
-export const colors = [
+export const stylingColors = {
+  white: '#fafafa'
+};
+
+export const activityColors = [
   { hex: '#EF9A9A', name: 'Light Red' },
   { hex: '#F48FB1', name: 'Light Pink' },
   { hex: '#B39DDB', name: 'Light Purple' },
@@ -38,5 +42,5 @@ export const colors = [
 
 export const getUnusedColors = activities => {
   let usedColors = activities.map(activity => activity.color);
-  return colors.filter(color => !usedColors.includes(color.hex));
+  return activityColors.filter(color => !usedColors.includes(color.hex));
 };

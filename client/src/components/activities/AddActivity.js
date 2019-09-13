@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { clearAlerts } from '../../actions/alerts';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -20,11 +19,12 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Switch from '@material-ui/core/Switch';
 import CloseIcon from '@material-ui/icons/Close';
+import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import ActivityCard from './ActivityCard';
-import { getUnusedColors } from '../../utils/colors';
+import { getUnusedColors, stylingColors } from '../../utils/colors';
 import { shortTimeToMS } from '../../utils/convert';
 
 const CustomTextField = withStyles({
@@ -53,10 +53,23 @@ const useStyles = makeStyles(theme => ({
   exitButton: {
     marginRight: theme.spacing(2)
   },
+  title: {
+    flexGrow: 1
+  },
+  appBarSpacer: theme.mixins.toolbar,
+  previewActivity: {
+    position: 'fixed',
+    width: '100%',
+    padding: theme.spacing(0, 2),
+    zIndex: 1,
+    backgroundColor: stylingColors.white
+  },
   paper: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: '9rem',
+    position: 'relative'
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -202,7 +215,7 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
 
   return (
     <React.Fragment>
-      <AppBar position='static'>
+      <AppBar>
         <Toolbar>
           <IconButton
             edge='start'
@@ -216,17 +229,28 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
           <Typography variant='h6' className={classes.title}>
             Add Activity
           </Typography>
+          <IconButton
+            color='inherit'
+            aria-label='save'
+            // onClick={handleSave}
+          >
+            <SaveOutlinedIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
 
-      <Container component='main'>
-        <CssBaseline />
+      <div className={classes.appBarSpacer} />
 
+      <div className={classes.previewActivity}>
         <ActivityCard
           isPreview={true}
           activity={activityPreview}
           isActive={false}
         />
+      </div>
+
+      <Container component='main'>
+        <CssBaseline />
 
         <div className={classes.paper}>
           <form
@@ -362,15 +386,6 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
                 />
               </Grid>
             </Grid>
-            <Button
-              type='submit'
-              variant='contained'
-              color='primary'
-              fullWidth
-              className={classes.submit}
-            >
-              Save
-            </Button>
           </form>
         </div>
       </Container>
