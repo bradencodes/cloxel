@@ -82,7 +82,8 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '25rem',
     width: 'calc(100% - 9.5rem)',
     pointerEvents: 'none',
-    opacity: '.87'
+    opacity: '.87',
+    transition: 'opacity .15s'
   },
   day: {
     height: '2rem',
@@ -93,14 +94,14 @@ const useStyles = makeStyles(theme => ({
     margin: '.8rem 0 0 .8rem',
     pointerEvents: 'auto',
     cursor: 'pointer',
-    transition: 'background-color .2s'
+    transition: 'background-color .15s'
   },
   dayOn: {
     color: '#ffffff',
     backgroundColor: '#000000'
   },
   dayOff: {
-    opacity: '.38'
+    opacity: '.62'
   },
   earns: {
     display: 'flex',
@@ -165,8 +166,11 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
   };
 
   const toggleDay = i => {
-    let newRepeatArray =
-      repeatArray.length === 7 ? repeatArray : [0, 0, 0, 0, 0, 0, 0];
+    let newRepeatArray;
+    if (repeatArray.length !== 7) {
+      setRepeats('onDays');
+      newRepeatArray = [0, 0, 0, 0, 0, 0, 0];
+    } else newRepeatArray = repeatArray;
     newRepeatArray[i] = !newRepeatArray[i];
     setFormData(prev => ({ ...prev, repeatArray: newRepeatArray }));
   };
