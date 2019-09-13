@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,7 +14,11 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { mainListItems, secondaryListItems } from './ListItems';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import { logout } from '../../actions/auth';
 import Activities from '../activities/Activities';
 
@@ -106,7 +111,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Dashboard = ({ auth: { loading }, user, logout }) => {
+const Dashboard = ({ auth: { loading }, user, logout, history }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const handleDrawerOpen = () => {
@@ -197,9 +202,20 @@ const Dashboard = ({ auth: { loading }, user, logout }) => {
           </Typography>
         </div>
         <Divider />
-        <List>{mainListItems}</List>
-        {/* <Divider /> */}
-        <List>{secondaryListItems}</List>
+        <List>
+          <ListItem button onClick={() => history.push('/activities/create')}>
+            <ListItemIcon>
+              <AddCircleOutlineIcon />
+            </ListItemIcon>
+            <ListItemText primary='Add activity' />
+          </ListItem>
+          <ListItem button>
+            <ListItemIcon>
+              <SettingsOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary='Settings' />
+          </ListItem>
+        </List>
       </SwipeableDrawer>
 
       <main className={classes.content}>
@@ -224,4 +240,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { logout }
-)(Dashboard);
+)(withRouter(Dashboard));
