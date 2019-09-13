@@ -23,7 +23,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
+import ActivityCard from './ActivityCard';
 import { getUnusedColors } from '../../utils/colors';
+import { shortTimeToMS } from '../../utils/convert';
 
 const CustomTextField = withStyles({
   root: {
@@ -137,6 +139,25 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
 
   const { name, color, target, repeatWord, repeatArray, earns } = formData;
 
+  const correctRepeatArray = array => {
+    if (array.length !== 7) return array;
+    let reduced = array.reduce((t, v) => (t += v), 0);
+    if (reduced === 0) return [0];
+    if (reduced === 7) return [1];
+    return array;
+  };
+
+  const activityPreview = {
+    start: [],
+    end: [],
+    repeat: correctRepeatArray(repeatArray),
+    name,
+    color: color.hex,
+    displayTarget: shortTimeToMS(target) || 0,
+    displayProgress: 0,
+    adds: earns
+  };
+
   const nameError = alerts.errors.filter(error => error.param === 'name')[0];
 
   const handleExit = () => {
@@ -200,13 +221,20 @@ const AddActivity = ({ clearAlerts, alerts, socket, activities, history }) => {
 
       <Container component='main'>
         <CssBaseline />
+
+        <ActivityCard
+          isPreview={true}
+          activity={activityPreview}
+          isActive={false}
+        />
+
         <div className={classes.paper}>
           <form
             className={classes.form}
             onSubmit={e => onSubmit(e)}
             autoComplete='off'
           >
-            <Grid container spacing={3}>
+            <Grid container spacing={4}>
               <Grid item xs={12}>
                 <TextField
                   csscolor={color.hex}

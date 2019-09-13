@@ -69,11 +69,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ActivityCard = ({ activity, isActive, user, changeDoing, socket }) => {
+const ActivityCard = ({ activity, isActive, user, changeDoing, socket, isPreview }) => {
   const classes = useStyles();
 
   const handleActivateClick = e => {
-    if (!isActive) {
+    if (!isActive && !isPreview) {
       let now = Date.now();
       socket.emit('change doing', user._id, activity._id, user.active, now);
       changeDoing(user, activity._id, user.active, now);
@@ -136,7 +136,7 @@ const ActivityCard = ({ activity, isActive, user, changeDoing, socket }) => {
             className={classes.breaktimeBar}
             style={{
               width: `calc(100% * (1 - ${Math.min(
-                activity.displayProgress / activity.displayTarget,
+                activity.displayProgress / (activity.displayTarget || 1),
                 1
               )}))`
             }}

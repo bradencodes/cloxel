@@ -23,3 +23,18 @@ export const msToShortTime = ms => {
 
   return sign + hours + ':' + minutes + ':' + seconds;
 };
+
+export const shortTimeToMS = shortTime => {
+  let timeParts = shortTime.split(':');
+  let sign = 1;
+  if (timeParts[0][0] === '-') {
+    sign = -1;
+    timeParts[0] = timeParts[0].substring(1);
+  }
+  return (
+    (+timeParts[0] * (1000 * 60 * 60) +
+      +timeParts[1] * 1000 * 60 +
+      +timeParts[2] * 1000) *
+    sign
+  );
+};
