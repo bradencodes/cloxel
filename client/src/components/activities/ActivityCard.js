@@ -69,7 +69,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ActivityCard = ({ activity, isActive, user, changeDoing, socket, isPreview }) => {
+const ActivityCard = ({
+  activity,
+  isActive,
+  user,
+  changeDoing,
+  socket,
+  isPreview
+}) => {
   const classes = useStyles();
 
   const handleActivateClick = e => {
@@ -87,6 +94,7 @@ const ActivityCard = ({ activity, isActive, user, changeDoing, socket, isPreview
           className={classes.activate}
           aria-label='activate'
           onClick={handleActivateClick}
+          disabled={isPreview}
         >
           <PlayArrowOutlinedIcon
             style={{ transform: `rotate(${isActive * 90}deg)` }}
@@ -95,7 +103,11 @@ const ActivityCard = ({ activity, isActive, user, changeDoing, socket, isPreview
         <Typography variant='h5' noWrap className={classes.name}>
           {activity.name}
         </Typography>
-        <IconButton className={classes.edit} aria-label='edit'>
+        <IconButton
+          className={classes.edit}
+          aria-label='edit'
+          disabled={isPreview}
+        >
           <EditOutlinedIcon />
         </IconButton>
       </div>
