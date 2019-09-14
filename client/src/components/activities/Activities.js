@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import ActivityCard from './ActivityCard';
 import AddActivityCard from './AddActivityCard';
 import BreaktimeCard from './BreaktimeCard';
+import { msToShortTime } from '../../utils/convert';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -77,7 +78,19 @@ const Activities = ({ show, user }) => {
         elevation={12}
         square
       >
-        <div>Doing</div>
+        <div>
+          Doing (for{' '}
+          {doing.length
+            ? msToShortTime(
+                doing[0].end[doing[0].end.length - 1] -
+                  doing[0].start[doing[0].start.length - 1]
+              )
+            : msToShortTime(
+                user.breaktime.end[user.breaktime.end.length - 1] -
+                  user.breaktime.start[user.breaktime.start.length - 1]
+              )}
+          )
+        </div>
         {doing.map(activity => (
           <ActivityCard
             key={activity._id}
