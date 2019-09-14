@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
+import activate_icon from '../../resources/icons/activate_icon.svg';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { repeatToText, msToShortTime } from '../../utils/convert';
 import { changeDoing } from '../../actions/user';
@@ -22,6 +22,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     margin: '-4px -4px -8px'
+  },
+  activate: {
+    height: 48,
+    width: 48
   },
   name: {
     fontWeight: 'bold',
@@ -99,8 +103,13 @@ const ActivityCard = ({
           onClick={handleActivateClick}
           disabled={isPreview || isChangingActive}
         >
-          <PlayArrowOutlinedIcon
-            style={{ transform: `rotate(${isActive * 90}deg)` }}
+          <img
+            src={activate_icon}
+            alt='activate'
+            style={{
+              transform: `rotate(${isActive * 90}deg)`,
+              opacity: isPreview || isChangingActive ? '.38' : '.54'
+            }}
           />
         </IconButton>
         <Typography variant='h5' noWrap className={classes.name}>
