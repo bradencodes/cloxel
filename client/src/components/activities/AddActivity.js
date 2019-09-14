@@ -300,7 +300,6 @@ const AddActivity = ({
                   label='Activity Name'
                   name='name'
                   value={name}
-                  autoFocus
                   onChange={e => onChange(e)}
                   error={!!nameError}
                   helperText={nameError && nameError.msg}
