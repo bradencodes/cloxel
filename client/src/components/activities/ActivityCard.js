@@ -152,7 +152,7 @@ const ActivityCard = ({
           className={classes.progressBar}
           style={{
             width: `calc(100% * ${Math.min(
-              activity.displayProgress / activity.displayTarget,
+              activity.displayProgress / (activity.displayTarget || 1),
               1
             )})`,
             backgroundColor: activity.color
