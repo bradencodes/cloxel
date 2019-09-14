@@ -1,5 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
+import SandTexture from './SandTexture';
 
 const TypographyTest = props => {
   return (
@@ -19,6 +20,15 @@ const TypographyTest = props => {
       <Typography variant='button'>Abcdefg button</Typography>
       <div className=''></div>
       <Typography variant='overline'>Abcdefg overline</Typography>
+
+      <div
+        style={{
+          width: 'calc(30px)',
+          height: 'calc(30px)'
+        }}
+      >
+        <SandTexture color='#fd8411' width='100%' height='100%'/>
+      </div>
     </div>
   );
 };
