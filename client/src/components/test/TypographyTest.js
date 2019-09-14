@@ -1,6 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import SandTexture from './SandTexture';
+import InverseSandTexture from './InverseSandTexture';
 
 const TypographyTest = props => {
   return (
@@ -23,11 +23,11 @@ const TypographyTest = props => {
 
       <div
         style={{
-          width: 'calc(30px)',
-          height: 'calc(30px)'
+          width: 'calc(2 * 1.15px + 30px)',
+          height: 'calc(2 * 1.15px + 30px)'
         }}
       >
-        <SandTexture color='#fd8411' width='100%' height='100%'/>
+        <InverseSandTexture color='#fd8411' width='100%' height='100%' />
       </div>
     </div>
   );

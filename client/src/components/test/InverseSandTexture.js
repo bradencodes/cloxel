@@ -7,7 +7,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     width: '100%',
     height: '100%',
-    fill: 'currentColor'
+    fill: '#fafafa'
   },
 
   r1: {
@@ -74,7 +74,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SandTexture = ({ color, width, height, id }) => {
+const InverseSandTexture = ({ width, height }) => {
   const classes = useStyles();
 
   return (
@@ -84,14 +84,14 @@ const SandTexture = ({ color, width, height, id }) => {
           <svg width='1.15px' height='1.15px'>
             <defs>
               <pattern
-                id={`${id}tl`}
+                id={`tl`}
                 x='0'
                 y='0'
                 width='1.15'
                 height='1.15'
                 patternUnits='userSpaceOnUse'
               >
-                <path d='M1.15,0V1.15H0A1.14,1.14,0,0,1,1.15,0Z' />
+                <path d='M0,1.15V0H1.15A1.14,1.14,0,0,0,0,1.15Z' />
               </pattern>
             </defs>
             <rect
@@ -99,7 +99,7 @@ const SandTexture = ({ color, width, height, id }) => {
               y='0'
               width='1.15px'
               height='1.15px'
-              fill={`url(#${id}tl)`}
+              fill={`url(#tl)`}
             />
           </svg>
         </div>
@@ -107,31 +107,24 @@ const SandTexture = ({ color, width, height, id }) => {
           <svg width={width} height='1.15px'>
             <defs>
               <pattern
-                id={`${id}t`}
+                id={`t`}
                 x='0'
                 y='0'
                 width='3'
                 height='1.15'
                 patternUnits='userSpaceOnUse'
               >
-                <path d='M1.15,1.15H0V0A1.14,1.14,0,0,1,1.15,1.15Z' />
-                <path d='M3,0V1.15H1.85A1.14,1.14,0,0,1,3,0Z' />
+                <path d='M0,0H3A1.14,1.14,0,0,0,1.85,1.15h-.7A1.14,1.14,0,0,0,0,0Z' />
               </pattern>
             </defs>
-            <rect
-              x='0'
-              y='0'
-              width={width}
-              height='1.15px'
-              fill={`url(#${id}t)`}
-            />
+            <rect x='0' y='0' width={width} height='1.15px' fill={`url(#t)`} />
           </svg>
         </div>
         <div className={classes.tr}>
           <svg width='1.15px' height='1.15px'>
             <defs>
               <pattern
-                id={`${id}tr`}
+                id={`tr`}
                 x='0'
                 y='0'
                 width='1.15'
@@ -139,7 +132,7 @@ const SandTexture = ({ color, width, height, id }) => {
                 patternUnits='userSpaceOnUse'
               >
                 <path
-                  d='M1.15,1.15H0V0A1.14,1.14,0,0,1,1.15,1.15Z'
+                  d='M0,0H1.15V1.15A1.14,1.14,0,0,0,0,0Z'
                   transform='translate(0 0)'
                 />
               </pattern>
@@ -149,7 +142,7 @@ const SandTexture = ({ color, width, height, id }) => {
               y='0'
               width='1.15px'
               height='1.15px'
-              fill={`url(#${id}tr)`}
+              fill={`url(#tr)`}
             />
           </svg>
         </div>
@@ -160,7 +153,7 @@ const SandTexture = ({ color, width, height, id }) => {
           <svg width='1.15px' height={height}>
             <defs>
               <pattern
-                id={`${id}l`}
+                id={`l`}
                 x='0'
                 y='0'
                 width='1.15px'
@@ -168,52 +161,39 @@ const SandTexture = ({ color, width, height, id }) => {
                 patternUnits='userSpaceOnUse'
               >
                 <path
-                  d='M1.15,1.85V3H0A1.14,1.14,0,0,1,1.15,1.85Z'
-                  transform='translate(0 0)'
-                />
-                <path
-                  d='M0,0H1.15V1.15A1.14,1.14,0,0,1,0,0Z'
+                  d='M0,3V0A1.14,1.14,0,0,0,1.15,1.15v.7A1.14,1.14,0,0,0,0,3Z'
                   transform='translate(0 0)'
                 />
               </pattern>
             </defs>
-            <rect
-              x='0'
-              y='0'
-              width='1.15px'
-              height={height}
-              fill={`url(#${id}l)`}
-            />
+            <rect x='0' y='0' width='1.15px' height={height} fill={`url(#l)`} />
           </svg>
         </div>
         <div className={classes.m}>
           <svg width={width} height>
             <defs>
               <pattern
-                id={`${id}m`}
+                id={`m`}
                 x='0'
                 y='0'
                 width='3'
                 height='3'
                 patternUnits='userSpaceOnUse'
               >
-                <path d='M3,1.15a1.08,1.08,0,0,1-.44-.09,1.08,1.08,0,0,1,.09.44,1.08,1.08,0,0,1-.09.44A1.08,1.08,0,0,1,3,1.85V3H1.85a1.08,1.08,0,0,1,.09-.44,1.08,1.08,0,0,1-.44.09,1.22,1.22,0,0,1-.43-.08A1.15,1.15,0,0,1,1.15,3V3H0V1.83a1.22,1.22,0,0,1,.43.08A1.11,1.11,0,0,1,.35,1.5a1.08,1.08,0,0,1,.09-.44A1.08,1.08,0,0,1,0,1.15V0H1.15a1.08,1.08,0,0,1-.09.44A1.08,1.08,0,0,1,1.5.35a1.08,1.08,0,0,1,.44.09A1.08,1.08,0,0,1,1.85,0H3Z' />
+                <path d='M1.94.44A1.08,1.08,0,0,0,1.5.35a1.08,1.08,0,0,0-.44.09A1.08,1.08,0,0,0,1.15,0h.7A1.08,1.08,0,0,0,1.94.44Z' />
+                <path d='M3,1.15v.7a1.08,1.08,0,0,0-.44.09,1.08,1.08,0,0,0,.09-.44,1.08,1.08,0,0,0-.09-.44A1.08,1.08,0,0,0,3,1.15Z' />
+                <path d='M1.94,2.56A1.08,1.08,0,0,0,1.85,3h-.7V3a1.15,1.15,0,0,0-.08-.41,1.22,1.22,0,0,0,.43.08A1.08,1.08,0,0,0,1.94,2.56Z' />
+                <path d='M.35,1.5a1.11,1.11,0,0,0,.08.41A1.22,1.22,0,0,0,0,1.83V1.15a1.08,1.08,0,0,0,.44-.09A1.08,1.08,0,0,0,.35,1.5Z' />
               </pattern>
             </defs>
-            <rect
-              x='0'
-              y='0'
-              width={width}
-              height={height}
-              fill={`url(#${id}m)`}
-            />
+            <rect x='0' y='0' width={width} height={height} fill={`url(#m)`} />
           </svg>
         </div>
         <div className={classes.r}>
           <svg width='1.15px' height={height}>
             <defs>
               <pattern
-                id={`${id}r`}
+                id={`r`}
                 x='0'
                 y='0'
                 width='1.15'
@@ -221,22 +201,12 @@ const SandTexture = ({ color, width, height, id }) => {
                 patternUnits='userSpaceOnUse'
               >
                 <path
-                  d='M0,1.15V0H1.15A1.14,1.14,0,0,1,0,1.15Z'
-                  transform='translate(0 0)'
-                />
-                <path
-                  d='M1.15,3H0V1.85A1.14,1.14,0,0,1,1.15,3Z'
+                  d='M1.15,0V3A1.14,1.14,0,0,0,0,1.85v-.7A1.14,1.14,0,0,0,1.15,0Z'
                   transform='translate(0 0)'
                 />
               </pattern>
             </defs>
-            <rect
-              x='0'
-              y='0'
-              width='1.15px'
-              height={height}
-              fill={`url(#${id}r)`}
-            />
+            <rect x='0' y='0' width='1.15px' height={height} fill={`url(#r)`} />
           </svg>
         </div>
       </div>
@@ -246,7 +216,7 @@ const SandTexture = ({ color, width, height, id }) => {
           <svg width='1.15px' height='1.15px'>
             <defs>
               <pattern
-                id={`${id}bl`}
+                id={`bl`}
                 x='0'
                 y='0'
                 width='1.15'
@@ -254,7 +224,7 @@ const SandTexture = ({ color, width, height, id }) => {
                 patternUnits='userSpaceOnUse'
               >
                 <path
-                  d='M0,0H1.15V1.15A1.14,1.14,0,0,1,0,0Z'
+                  d='M1.15,1.15H0V0A1.14,1.14,0,0,0,1.15,1.15Z'
                   transform='translate(0 0)'
                 />
               </pattern>
@@ -264,7 +234,7 @@ const SandTexture = ({ color, width, height, id }) => {
               y='0'
               width='1.15px'
               height='1.15px'
-              fill={`url(#${id}bl)`}
+              fill={`url(#bl)`}
             />
           </svg>
         </div>
@@ -272,7 +242,7 @@ const SandTexture = ({ color, width, height, id }) => {
           <svg width='100%' height='1.15px'>
             <defs>
               <pattern
-                id={`${id}b`}
+                id={`b`}
                 x='0'
                 y='0'
                 width='3'
@@ -280,29 +250,19 @@ const SandTexture = ({ color, width, height, id }) => {
                 patternUnits='userSpaceOnUse'
               >
                 <path
-                  d='M1.85,0H3V1.15A1.14,1.14,0,0,1,1.85,0Z'
-                  transform='translate(0 0)'
-                />
-                <path
-                  d='M0,1.15V0H1.15A1.14,1.14,0,0,1,0,1.15Z'
+                  d='M3,1.15H0A1.14,1.14,0,0,0,1.15,0h.7A1.14,1.14,0,0,0,3,1.15Z'
                   transform='translate(0 0)'
                 />
               </pattern>
             </defs>
-            <rect
-              x='0'
-              y='0'
-              width='100%'
-              height='1.15px'
-              fill={`url(#${id}b)`}
-            />
+            <rect x='0' y='0' width='100%' height='1.15px' fill={`url(#b)`} />
           </svg>
         </div>
         <div className={classes.br}>
           <svg width='1.15px' height='1.15px'>
             <defs>
               <pattern
-                id={`${id}br`}
+                id={`br`}
                 x='0'
                 y='0'
                 width='1.15'
@@ -310,7 +270,7 @@ const SandTexture = ({ color, width, height, id }) => {
                 patternUnits='userSpaceOnUse'
               >
                 <path
-                  d='M0,1.15V0H1.15A1.14,1.14,0,0,1,0,1.15Z'
+                  d='M1.15,0V1.15H0A1.14,1.14,0,0,0,1.15,0Z'
                   transform='translate(0 0)'
                 />
               </pattern>
@@ -320,7 +280,7 @@ const SandTexture = ({ color, width, height, id }) => {
               y='0'
               width='1.15px'
               height='1.15px'
-              fill={`url(#${id}br)`}
+              fill={`url(#br)`}
             />
           </svg>
         </div>
@@ -329,4 +289,4 @@ const SandTexture = ({ color, width, height, id }) => {
   );
 };
 
-export default SandTexture;
+export default InverseSandTexture;

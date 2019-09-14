@@ -10,6 +10,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { repeatToText, msToShortTime } from '../../utils/convert';
 import { changeDoing } from '../../actions/user';
 import { CHANGE_ACTIVE } from '../../actions/types';
+import InverseSandTexture from '../test/InverseSandTexture';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -66,10 +67,12 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'flex-end'
   },
   progressBar: {
-    height: '1.2rem'
+    height: '11.3px',
+    fill: 'currentColor'
   },
   breaktimeBar: {
-    height: '.6rem',
+    height: '5.3px',
+    fill: 'currentColor',
     backgroundColor: '#FDD835'
   }
 }));
@@ -154,7 +157,9 @@ const ActivityCard = ({
             )})`,
             backgroundColor: activity.color
           }}
-        />
+        >
+          <InverseSandTexture width='100%' height='100%' />
+        </div>
         {activity.adds && (
           <div
             className={classes.breaktimeBar}
@@ -164,7 +169,9 @@ const ActivityCard = ({
                 1
               )}))`
             }}
-          />
+          >
+            <InverseSandTexture width='100%' height='100%' />
+          </div>
         )}
       </div>
     </Paper>
