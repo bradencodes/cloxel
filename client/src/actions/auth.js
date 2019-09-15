@@ -28,6 +28,8 @@ export const loadUser = socket => async dispatch => {
 
     res.data.socket = socket;
 
+    console.log(res.data);
+
     dispatch({
       type: USER_LOADED,
       payload: res.data

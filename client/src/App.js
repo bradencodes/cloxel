@@ -12,6 +12,7 @@ import TypographyTest from './components/test/TypographyTest';
 import PrivateRoute from './components/auth/PrivateRoute';
 import Activities from './components/dashboard/Dashboard';
 import AddActivity from './components/activities/AddActivity';
+import CatchAll from './components/auth/CatchAll';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -119,6 +120,7 @@ const App = () => {
                   path='/activities/create'
                   component={AddActivity}
                 />
+                <Route component={CatchAll} />
                 <Route exact path='/type-test' component={TypographyTest} />
               </Switch>
             </ThemeProvider>
