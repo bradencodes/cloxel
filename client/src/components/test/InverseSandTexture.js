@@ -7,7 +7,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     width: '100%',
     height: '100%',
-    fill: '#fafafa'
+    fill: '#ffffff'
   },
 
   r1: {
