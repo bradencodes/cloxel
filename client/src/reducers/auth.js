@@ -14,8 +14,7 @@ const initialState = {
   token: localStorage.getItem('token'),
   isAuthenticated: null,
   loading: true,
-  socket: null,
-  isHandlingRequest: false
+  socket: null
 };
 
 export default function(state = initialState, action) {

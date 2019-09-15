@@ -2,18 +2,14 @@ import { DateTime } from 'luxon';
 import { cloneDeep } from 'lodash';
 import { tick } from '../actions/user';
 
-const weekStartOffset = 1; //start the week at Monday-weekStartOffset
-
 export const calcResetsOnBreaktime = (breaktime, timeZone, created) => {
   let now = DateTime.fromObject({ zone: timeZone });
-  breaktime.nextReset = now
-    .startOf('week')
-    .plus({ days: 7 - weekStartOffset }).ts;
+  breaktime.nextReset = now.startOf('week').plus({ days: 7 }).ts;
   // breaktime.lastReset = Math.max(
   //   now.startOf('week').minus({ days: weekStartOffset }).ts,
   //   created
   // );
-  breaktime.lastReset = now.startOf('week').minus({ days: weekStartOffset }).ts;
+  breaktime.lastReset = now.startOf('week').ts;
   return breaktime;
 };
 
@@ -37,7 +33,7 @@ export const calcActivity = (activity, timeZone, breaktime) => {
       }
       let daysDiff = i - day;
       let nextOnDay = now.startOf('day').plus({ days: daysDiff }).ts;
-      let nextWeek = now.startOf('week').plus({ days: 7 - weekStartOffset }).ts;
+      let nextWeek = now.startOf('week').plus({ days: 7 }).ts;
 
       return Math.min(nextOnDay, nextWeek);
     }
@@ -60,7 +56,7 @@ export const calcActivity = (activity, timeZone, breaktime) => {
       }
       let daysDiff = day - i;
       let lastOnDay = now.startOf('day').minus({ days: daysDiff }).ts;
-      let thisWeek = now.startOf('week').minus({ days: weekStartOffset }).ts;
+      let thisWeek = now.startOf('week').ts;
 
       return Math.max(lastOnDay, thisWeek);
     }
@@ -153,6 +149,7 @@ export const calcBreaktime = (breaktime, activities) => {
 };
 
 export const calcActivities = inputUser => dispatch => {
+  console.log('calcActivities started');
   let user = cloneDeep(inputUser);
   let { activities, timeZone, breaktime, created } = user;
   breaktime = calcResetsOnBreaktime(breaktime, timeZone, created);
@@ -160,5 +157,6 @@ export const calcActivities = inputUser => dispatch => {
     calcActivity(activity, timeZone, breaktime)
   );
   breaktime = calcBreaktime(breaktime, activities);
+  console.log('user: ', user);
   dispatch(tick(user));
 };

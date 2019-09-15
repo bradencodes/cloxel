@@ -32,15 +32,22 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PrivateRoute = ({ history }) => {
+const CatchAll = ({ history }) => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <Typography variant='h1' className={classes.code}>404</Typography>
+        <Typography variant='h1' className={classes.code}>
+          404
+        </Typography>
         <Typography variant='h4'>Page not found</Typography>
-        <Button variant='contained' color='primary' className={classes.button} onClick={() => history.push('/activities')}>
+        <Button
+          variant='contained'
+          color='primary'
+          className={classes.button}
+          onClick={() => history.push('/activities')}
+        >
           Return to Cloxel
         </Button>
       </Paper>
@@ -48,4 +55,4 @@ const PrivateRoute = ({ history }) => {
   );
 };
 
-export default withRouter(PrivateRoute);
+export default withRouter(CatchAll);
