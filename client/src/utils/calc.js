@@ -122,13 +122,19 @@ export const calcBreaktime = (breaktime, activities) => {
   };
 
   const calcEarned = (target, activities) => {
-    const percentDone = activities.reduce(
+    const msDone = activities.reduce(
       (total, activity) =>
-        (total +=
-          Math.min(activity.breaktimeTarget, activity.breaktimeProgress) /
-          activity.breaktimeTarget),
+        (total += Math.min(
+          activity.breaktimeTarget,
+          activity.breaktimeProgress
+        )),
       0
     );
+    const msTotal = activities.reduce(
+      (total, activity) => (total += activity.breaktimeTarget),
+      0
+    );
+    const percentDone = msDone / (msTotal || 1);
     return Math.round(target * percentDone);
   };
 
