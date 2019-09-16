@@ -2,7 +2,9 @@ import {
   CHANGE_ACTIVE,
   ACTIVE_CHANGED,
   ADD_ACTIVITY,
-  ACTIVITY_ADDED
+  ACTIVITY_ADDED,
+  EDIT_ACTIVITY,
+  ACTIVITY_EDITED
 } from '../actions/types';
 
 const initialState = {
@@ -37,6 +39,18 @@ export default function(state = initialState, action) {
       return {
         ...state,
         isAddingActivity: false
+      };
+
+    case EDIT_ACTIVITY:
+      return {
+        ...state,
+        isEditingActivity: true
+      };
+
+    case ACTIVITY_EDITED:
+      return {
+        ...state,
+        isEditingActivity: false
       };
 
     default:

@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -105,7 +106,8 @@ const ActivityCard = ({
   socket,
   isPreview,
   isChangingActive,
-  dispatch
+  dispatch,
+  history
 }) => {
   const classes = useStyles();
 
@@ -115,6 +117,12 @@ const ActivityCard = ({
       let now = Date.now();
       socket.emit('change doing', user._id, activity._id, user.active, now);
       dispatch(changeDoing(user, activity._id, user.active, now));
+    }
+  };
+
+  const handleEditClick = () => {
+    if (!isPreview && !isChangingActive) {
+      history.push(`/activities/edit/${activity._id}`);
     }
   };
 
@@ -168,6 +176,7 @@ const ActivityCard = ({
           className={classes.edit}
           aria-label='edit'
           disabled={isPreview || isChangingActive}
+          onClick={handleEditClick}
         >
           <EditOutlinedIcon />
         </IconButton>
@@ -235,4 +244,4 @@ const mapStateToProps = state => ({
   socket: state.auth.socket
 });
 
-export default connect(mapStateToProps)(ActivityCard);
+export default connect(mapStateToProps)(withRouter(ActivityCard));

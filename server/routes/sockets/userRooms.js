@@ -44,5 +44,9 @@ module.exports = namespace => {
     socket.on('add activity', activity => {
       namespace.to(socket.room).emit('add activity', activity);
     });
+
+    socket.on('edit activity', activity => {
+      namespace.to(socket.room).emit('edit activity', activity);
+    });
   });
 };

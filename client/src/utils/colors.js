@@ -40,7 +40,8 @@ export const activityColors = [
   { hex: '#263238', name: 'Dark Gray' }
 ];
 
-export const getUnusedColors = activities => {
+export const getUnusedColors = (activities, includeColor = null) => {
+  activities = activities.filter(activity => activity.color !== includeColor);
   let usedColors = activities.map(activity => activity.color);
   return activityColors.filter(color => !usedColors.includes(color.hex));
 };

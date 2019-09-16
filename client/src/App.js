@@ -12,6 +12,7 @@ import TypographyTest from './components/test/TypographyTest';
 import PrivateRoute from './components/auth/PrivateRoute';
 import Activities from './components/dashboard/Dashboard';
 import AddActivity from './components/activities/AddActivity';
+import EditActivity from './components/activities/EditActivity';
 import CatchAll from './components/auth/CatchAll';
 
 // Redux
@@ -19,11 +20,11 @@ import { Provider } from 'react-redux';
 import store from './store';
 import { loadUser } from './actions/auth';
 import { changeDoing } from './actions/user';
-import { addActivityToRedux } from './actions/activities';
+import { addActivityToRedux, editActivityInRedux } from './actions/activities';
 import setAuthToken from './utils/setAuthToken';
 
 import './App.css';
-import { INIT_SOCKET, ACTIVE_CHANGED, ACTIVITY_ADDED } from './actions/types';
+import { INIT_SOCKET, ACTIVE_CHANGED, ACTIVITY_ADDED, ACTIVITY_EDITED } from './actions/types';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -96,10 +97,16 @@ const App = () => {
 
       socket.on('add activity', activity => {
         if (!store.getState().requests.isAddingActivity) {
-          console.log('add activity triggered from socket');
           store.dispatch(addActivityToRedux(activity, store.getState().user));
         }
         store.dispatch({ type: ACTIVITY_ADDED });
+      });
+
+      socket.on('edit activity', activity => {
+        if (!store.getState().requests.isEditingActivity) {
+          store.dispatch(editActivityInRedux(activity, store.getState().user));
+        }
+        store.dispatch({ type: ACTIVITY_EDITED });
       });
     }
     initSocket();
@@ -120,8 +127,13 @@ const App = () => {
                   path='/activities/create'
                   component={AddActivity}
                 />
-                <Route component={CatchAll} />
+                <PrivateRoute
+                  exact
+                  path='/activities/edit/:id'
+                  component={EditActivity}
+                />
                 <Route exact path='/type-test' component={TypographyTest} />
+                <Route component={CatchAll} />
               </Switch>
             </ThemeProvider>
           </section>

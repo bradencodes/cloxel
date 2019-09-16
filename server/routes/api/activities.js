@@ -116,48 +116,68 @@ router.get('/:id', auth, async (req, res) => {
 // @route   PUT api/activities/:id
 // @desc    Update an activity
 // @access  Private
-router.put('/:id', auth, async (req, res) => {
-  try {
-    const activity = await Activity.findById(req.params.id);
-
-    if (!activity) {
-      return res.status(404).json({ errors: [{ msg: 'Activity not found' }] });
+router.put(
+  '/:id',
+  [
+    auth,
+    [
+      check('name', 'Activity name is required')
+        .not()
+        .isEmpty()
+    ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
 
-    if (req.user.id !== activity.user.toString()) {
-      return res
-        .status(403)
-        .json({ errors: [{ msg: 'Activity does not belong to user' }] });
+    try {
+      const activity = await Activity.findById(req.params.id);
+
+      if (!activity) {
+        return res
+          .status(404)
+          .json({ errors: [{ msg: 'Activity not found' }] });
+      }
+
+      if (req.user.id !== activity.user.toString()) {
+        return res
+          .status(403)
+          .json({ errors: [{ msg: 'Activity does not belong to user' }] });
+      }
+
+      const changedActivity = ({
+        name,
+        color,
+        displayTarget,
+        start,
+        end,
+        repeat,
+        adds,
+        deleted
+      } = req.body);
+
+      const updatedActivity = await Activity.findByIdAndUpdate(
+        req.params.id,
+        changedActivity,
+        { new: true }
+      );
+
+      return res.json(updatedActivity);
+    } catch (err) {
+      console.error(err.message);
+
+      if (err.kind === 'ObjectId') {
+        return res
+          .status(404)
+          .json({ errors: [{ msg: 'Activity not found' }] });
+      }
+
+      res.status(500).send('Server error');
     }
-
-    const changedActivity = ({
-      name,
-      color,
-      displayTarget,
-      start,
-      end,
-      repeat,
-      adds,
-      deleted
-    } = req.body);
-
-    const updatedActivity = await Activity.findByIdAndUpdate(
-      req.params.id,
-      changedActivity,
-      { new: true }
-    );
-
-    return res.json(updatedActivity);
-  } catch (err) {
-    console.error(err.message);
-
-    if (err.kind === 'ObjectId') {
-      return res.status(404).json({ errors: [{ msg: 'Activity not found' }] });
-    }
-
-    res.status(500).send('Server error');
   }
-});
+);
 
 // @route   DELETE api/activities/:id
 // @desc    Remove an activity
