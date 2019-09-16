@@ -2,6 +2,32 @@ import { DateTime } from 'luxon';
 import { cloneDeep } from 'lodash';
 import { tick } from '../actions/user';
 
+export const sortActivities = (activities, timeZone) => {
+  let toDoToday = [];
+  let toDoThisWeek = [];
+  let notToDoToday = [];
+
+  activities.forEach(activity => {
+    if (activity.repeat.length === 1) {
+      if (activity.repeat[0]) toDoToday.push(activity);
+      else toDoThisWeek.push(activity);
+    } else {
+      let today = DateTime.fromObject({ zone: timeZone }).weekday - 1;
+      if (activity.repeat[today]) toDoToday.push(activity);
+      else notToDoToday.push(activity);
+    }
+  });
+
+  const sortFunc = (a, b) =>
+    a.displayProgress / a.displayTarget - b.displayProgress / b.displayTarget;
+
+  toDoToday = toDoToday.sort(sortFunc);
+  toDoThisWeek = toDoThisWeek.sort(sortFunc);
+  notToDoToday = notToDoToday.sort(sortFunc);
+
+  return [...toDoToday, ...toDoThisWeek, ...notToDoToday];
+};
+
 export const calcResetsOnBreaktime = (breaktime, timeZone, created) => {
   let now = DateTime.fromObject({ zone: timeZone });
   breaktime.nextReset = now.startOf('week').plus({ days: 7 }).ts;
