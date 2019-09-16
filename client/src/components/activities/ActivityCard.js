@@ -31,19 +31,23 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  activateIcon: {
-    zIndex: '1'
+  activateContainer: {
+    zIndex: '1',
+    width: '12.73px',
+    height: '17.83px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   activateSvg: {},
   activateSand: {
-    height: '30px',
-    width: '30px',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    overflow: 'hidden',
-    zIndex: '-1',
-    clipPath: 'polygon(1.05 2.02 1.05 16.02 11.05 9.03 1.05 2.02)'
+    height: '13px',
+    width: '16px',
+    zIndex: '-1'
+  },
+  sand: {
+    width: 30,
+    height: 30
   },
   name: {
     fontWeight: 'bold',
@@ -123,21 +127,37 @@ const ActivityCard = ({
           onClick={handleActivateClick}
           disabled={isPreview || isChangingActive}
         >
-          <div className={classes.activateIcon}>
+          <div
+            className={classes.activateContainer}
+            style={{ opacity: isPreview || isChangingActive ? '.38' : '.87' }}
+          >
             <img
               src={activate_icon}
               alt='activate'
-              style={{
-                transform: `rotate(${isActive * 90}deg)`,
-                opacity: isPreview || isChangingActive ? '.38' : '.54'
-              }}
               className={classes.activateSvg}
+              style={{ transform: `rotate(${isActive * 90}deg)` }}
             />
             <div
               className={classes.activateSand}
-              style={{ backgroundColor: activity.color }}
+              style={{
+                clipPath: isActive
+                  ? 'polygon(0% 0%, 100% 0%, 50% 90%)'
+                  : 'polygon(0% 0%, 50% 50%, 0% 100%)',
+                marginLeft: isActive ? '-14px' : '-11px'
+              }}
             >
-              <InverseSandTexture width='100%' height='100%' />
+              <div
+                className={classes.sand}
+                style={{
+                  backgroundColor: activity.color,
+                  margin: `calc(12px * ${Math.min(
+                    activity.displayProgress / (activity.displayTarget || 1),
+                    1
+                  )}) 0 0 -1px`
+                }}
+              >
+                <InverseSandTexture width='100%' height='100%' />
+              </div>
             </div>
           </div>
         </IconButton>

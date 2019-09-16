@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     height: 'calc(100% + 10px)',
     padding: theme.spacing(2),
     position: 'sticky',
-    zIndex: 1, //keeps on top
+    zIndex: 10, //keeps on top
     top: 56
   },
   todo: {
