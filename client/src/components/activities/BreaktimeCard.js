@@ -9,6 +9,7 @@ import activate_icon from '../../resources/icons/activate_icon.svg';
 import { msToShortTime } from '../../utils/convert';
 import { changeDoing } from '../../actions/user';
 import { CHANGE_ACTIVE } from '../../actions/types';
+import InverseSandTexture from '../test/InverseSandTexture';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -24,7 +25,28 @@ const useStyles = makeStyles(theme => ({
   },
   activate: {
     height: 48,
-    width: 48
+    width: 48,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  activateContainer: {
+    zIndex: '1',
+    width: '12.73px',
+    height: '17.83px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  activateSvg: {},
+  activateSand: {
+    height: '13px',
+    width: '16px',
+    zIndex: '-1'
+  },
+  sand: {
+    width: 30,
+    height: 30
   },
   name: {
     fontWeight: 'bold',
@@ -98,14 +120,39 @@ const BreaktimeCard = ({
           onClick={handleActivateClick}
           disabled={isChangingActive}
         >
-          <img
-            src={activate_icon}
-            alt='activate'
-            style={{
-              transform: `rotate(${isActive * 90}deg)`,
-              opacity: isChangingActive ? '.38' : '.54'
-            }}
-          />
+          <div
+            className={classes.activateContainer}
+            style={{ opacity: isChangingActive ? '.38' : '.87' }}
+          >
+            <img
+              src={activate_icon}
+              alt='activate'
+              className={classes.activateSvg}
+              style={{ transform: `rotate(${isActive * 90}deg)` }}
+            />
+            <div
+              className={classes.activateSand}
+              style={{
+                clipPath: isActive
+                  ? 'polygon(0% 0%, 100% 0%, 50% 90%)'
+                  : 'polygon(0% 0%, 50% 50%, 0% 100%)',
+                marginLeft: isActive ? '-14px' : '-11px'
+              }}
+            >
+              <div
+                className={classes.sand}
+                style={{
+                  backgroundColor: '#FDD835',
+                  margin: `calc(12px * (1 - ${Math.min(
+                    (breaktime.earned - breaktime.used) / 1800000,
+                    1
+                  )}) ) 0 0 -1px`
+                }}
+              >
+                <InverseSandTexture width='100%' height='100%' />
+              </div>
+            </div>
+          </div>
         </IconButton>
         <Typography variant='h5' className={classes.name}>
           {breaktime.name}
@@ -138,7 +185,9 @@ const BreaktimeCard = ({
               1
             )})`
           }}
-        />
+        >
+          <InverseSandTexture width='100%' height='100%' />
+        </div>
       </div>
     </Paper>
   );
