@@ -156,7 +156,7 @@ const ActivityCard = ({
                   )}) 0 0 -1px`
                 }}
               >
-                <InverseSandTexture width='100%' height='100%' />
+                <InverseSandTexture />
               </div>
             </div>
           </div>
@@ -204,7 +204,7 @@ const ActivityCard = ({
             backgroundColor: activity.color
           }}
         >
-          <InverseSandTexture width='100%' height='100%' />
+          <InverseSandTexture />
         </div>
         {activity.adds && (
           <div
@@ -216,7 +216,7 @@ const ActivityCard = ({
               )}))`
             }}
           >
-            <InverseSandTexture width='100%' height='100%' />
+            <InverseSandTexture />
           </div>
         )}
       </div>

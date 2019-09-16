@@ -119,6 +119,7 @@ const Login = ({ login, clearAlerts, isAuthenticated, alerts, socket }) => {
             variant='contained'
             color='primary'
             className={classes.submit}
+            onClick={() => window.navigator.vibrate(10)}
           >
             Sign In
           </Button>

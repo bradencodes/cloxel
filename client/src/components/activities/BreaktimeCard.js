@@ -149,7 +149,7 @@ const BreaktimeCard = ({
                   )}) ) 0 0 -1px`
                 }}
               >
-                <InverseSandTexture width='100%' height='100%' />
+                <InverseSandTexture />
               </div>
             </div>
           </div>
@@ -186,7 +186,7 @@ const BreaktimeCard = ({
             )})`
           }}
         >
-          <InverseSandTexture width='100%' height='100%' />
+          <InverseSandTexture />
         </div>
       </div>
     </Paper>

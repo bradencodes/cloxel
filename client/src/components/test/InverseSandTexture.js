@@ -74,7 +74,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const InverseSandTexture = ({ width, height }) => {
+const InverseSandTexture = () => {
   const classes = useStyles();
 
   return (
@@ -104,7 +104,7 @@ const InverseSandTexture = ({ width, height }) => {
           </svg>
         </div>
         <div className={classes.t}>
-          <svg width={width} height='1.15px'>
+          <svg width='100%' height='1.15px'>
             <defs>
               <pattern
                 id={`t`}
@@ -117,7 +117,7 @@ const InverseSandTexture = ({ width, height }) => {
                 <path d='M0,0H3A1.14,1.14,0,0,0,1.85,1.15h-.7A1.14,1.14,0,0,0,0,0Z' />
               </pattern>
             </defs>
-            <rect x='0' y='0' width={width} height='1.15px' fill={`url(#t)`} />
+            <rect x='0' y='0' width='100%' height='1.15px' fill={`url(#t)`} />
           </svg>
         </div>
         <div className={classes.tr}>
@@ -150,7 +150,7 @@ const InverseSandTexture = ({ width, height }) => {
 
       <div className={classes.r2}>
         <div className={classes.l}>
-          <svg width='1.15px' height={height}>
+          <svg width='1.15px' height='100%'>
             <defs>
               <pattern
                 id={`l`}
@@ -166,11 +166,11 @@ const InverseSandTexture = ({ width, height }) => {
                 />
               </pattern>
             </defs>
-            <rect x='0' y='0' width='1.15px' height={height} fill={`url(#l)`} />
+            <rect x='0' y='0' width='1.15px' height='100%' fill={`url(#l)`} />
           </svg>
         </div>
         <div className={classes.m}>
-          <svg width={width} height>
+          <svg width='100%' height='100%'>
             <defs>
               <pattern
                 id={`m`}
@@ -186,11 +186,11 @@ const InverseSandTexture = ({ width, height }) => {
                 <path d='M.35,1.5a1.11,1.11,0,0,0,.08.41A1.22,1.22,0,0,0,0,1.83V1.15a1.08,1.08,0,0,0,.44-.09A1.08,1.08,0,0,0,.35,1.5Z' />
               </pattern>
             </defs>
-            <rect x='0' y='0' width={width} height={height} fill={`url(#m)`} />
+            <rect x='0' y='0' width='100%' height='100%' fill={`url(#m)`} />
           </svg>
         </div>
         <div className={classes.r}>
-          <svg width='1.15px' height={height}>
+          <svg width='1.15px' height='100%'>
             <defs>
               <pattern
                 id={`r`}
@@ -206,7 +206,7 @@ const InverseSandTexture = ({ width, height }) => {
                 />
               </pattern>
             </defs>
-            <rect x='0' y='0' width='1.15px' height={height} fill={`url(#r)`} />
+            <rect x='0' y='0' width='1.15px' height='100%' fill={`url(#r)`} />
           </svg>
         </div>
       </div>

@@ -181,7 +181,6 @@ export const calcBreaktime = (breaktime, activities) => {
 };
 
 export const calcActivities = inputUser => dispatch => {
-  console.log('calcActivities started');
   let user = cloneDeep(inputUser);
   let { activities, timeZone, breaktime, created } = user;
   breaktime = calcResetsOnBreaktime(breaktime, timeZone, created);
@@ -189,6 +188,5 @@ export const calcActivities = inputUser => dispatch => {
     calcActivity(activity, timeZone, breaktime)
   );
   breaktime = calcBreaktime(breaktime, activities);
-  console.log('user: ', user);
   dispatch(tick(user));
 };
