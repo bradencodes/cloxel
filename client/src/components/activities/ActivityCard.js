@@ -26,7 +26,24 @@ const useStyles = makeStyles(theme => ({
   },
   activate: {
     height: 48,
-    width: 48
+    width: 48,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  activateIcon: {
+    zIndex: '1'
+  },
+  activateSvg: {},
+  activateSand: {
+    height: '30px',
+    width: '30px',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    overflow: 'hidden',
+    zIndex: '-1',
+    clipPath: 'polygon(1.05 2.02 1.05 16.02 11.05 9.03 1.05 2.02)'
   },
   name: {
     fontWeight: 'bold',
@@ -106,14 +123,23 @@ const ActivityCard = ({
           onClick={handleActivateClick}
           disabled={isPreview || isChangingActive}
         >
-          <img
-            src={activate_icon}
-            alt='activate'
-            style={{
-              transform: `rotate(${isActive * 90}deg)`,
-              opacity: isPreview || isChangingActive ? '.38' : '.54'
-            }}
-          />
+          <div className={classes.activateIcon}>
+            <img
+              src={activate_icon}
+              alt='activate'
+              style={{
+                transform: `rotate(${isActive * 90}deg)`,
+                opacity: isPreview || isChangingActive ? '.38' : '.54'
+              }}
+              className={classes.activateSvg}
+            />
+            <div
+              className={classes.activateSand}
+              style={{ backgroundColor: activity.color }}
+            >
+              <InverseSandTexture width='100%' height='100%' />
+            </div>
+          </div>
         </IconButton>
         <Typography variant='h5' noWrap className={classes.name}>
           {activity.name}
