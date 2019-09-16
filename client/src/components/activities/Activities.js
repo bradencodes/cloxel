@@ -7,6 +7,7 @@ import ActivityCard from './ActivityCard';
 import AddActivityCard from './AddActivityCard';
 import BreaktimeCard from './BreaktimeCard';
 import { msToShortTime } from '../../utils/convert';
+import { sortActivities } from '../../utils/calc';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -49,16 +50,18 @@ const Activities = ({ show, user }) => {
 
   const activities = user.activities;
   const doing = activities.filter(activity => activity._id === user.active);
-  const todo = activities.filter(
+  let todo = activities.filter(
     activity =>
       activity._id !== user.active &&
       activity.displayProgress < activity.displayTarget
   );
-  const done = activities.filter(
+  todo = sortActivities(todo, user.timeZone);
+  let done = activities.filter(
     activity =>
       activity._id !== user.active &&
       activity.displayProgress >= activity.displayTarget
   );
+  done = sortActivities(done, user.timeZone);
 
   const breaktimePlace = (() => {
     let breaktime = user.breaktime;
