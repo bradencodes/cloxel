@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import InputLabel from '@material-ui/core/InputLabel';
+import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -20,6 +21,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Switch from '@material-ui/core/Switch';
 import CloseIcon from '@material-ui/icons/Close';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -195,11 +197,16 @@ const EditActivity = ({
     await history.push('/activities');
   };
 
+  const handleDelete = () => {
+
+  }
+
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSave = async () => {
     if (isEditingActivity) return;
+    
     dispatch({ type: EDIT_ACTIVITY });
 
     const config = {
@@ -256,6 +263,17 @@ const EditActivity = ({
     setFormData(prev => ({ ...prev, earns: !prev.earns }));
   };
 
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  function handleClickMore(event) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function handleCloseMore() {
+    setAnchorEl(null);
+  }
+
   return (
     <React.Fragment>
       <AppBar>
@@ -281,6 +299,31 @@ const EditActivity = ({
           >
             <SaveOutlinedIcon />
           </IconButton>
+          <IconButton
+            color='inherit'
+            aria-label='more'
+            aria-controls='long-menu'
+            aria-haspopup='true'
+            disabled={isEditingActivity}
+            onClick={handleClickMore}
+          >
+            <MoreVertIcon />
+          </IconButton>
+          <Menu
+            id='long-menu'
+            anchorEl={anchorEl}
+            keepMounted
+            open={open}
+            onClose={handleCloseMore}
+          >
+            <MenuItem
+              key='delete'
+              onClick={handleDelete}
+              style={{ color: '#B00020' }}
+            >
+              Delete
+            </MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
 
