@@ -17,7 +17,6 @@ import {
   ACTIVE_CHANGED,
   UPDATE_USER
 } from '../../actions/types';
-import { setAlerts } from '../../actions/alerts';
 import InverseSandTexture from '../test/InverseSandTexture';
 
 const useStyles = makeStyles(theme => ({
@@ -206,7 +205,7 @@ const ActivityCard = ({
         <IconButton
           className={classes.edit}
           aria-label='edit'
-          disabled={isPreview || isChangingActive}
+          disabled={isActive || isPreview || isChangingActive}
           onClick={handleEditClick}
         >
           <EditOutlinedIcon />

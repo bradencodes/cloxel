@@ -205,7 +205,9 @@ router.post('/changeDoing', auth, async (req, res) => {
     await doNow.save();
     await wasDoing.save();
     await user.save();
-    res.status(200).json({ successes: [{ msg: 'Doing changed', param: 'changeDoing' }] });
+    res
+      .status(200)
+      .json({ successes: [{ msg: 'Doing changed', param: 'changeDoing' }] });
   } catch (err) {
     console.error(err.message);
 
@@ -222,7 +224,7 @@ router.post('/changeDoing', auth, async (req, res) => {
 });
 
 // @route   DELETE api/activities/:id
-// @desc    Remove an activity
+// @desc    Mark an activity as deleted
 // @access  Private
 router.delete('/:id', auth, async (req, res) => {
   try {
@@ -238,19 +240,22 @@ router.delete('/:id', auth, async (req, res) => {
         .json({ errors: [{ msg: 'Activity does not belong to user' }] });
     }
 
-    if (activity.deleted) {
-      await User.findByIdAndUpdate(req.user.id, {
-        $pull: { deletedActivities: activity.id }
-      });
-    } else {
-      await User.findByIdAndUpdate(req.user.id, {
-        $pull: { activities: activity.id }
-      });
+    let user;
+
+    if (!activity.deleted) {
+      user = await User.findByIdAndUpdate(
+        req.user.id,
+        {
+          $pull: { activities: activity._id },
+          $push: { deletedActivities: activity._id }
+        },
+        { new: true }
+      );
+      activity.deleted = true;
+      await activity.save();
     }
 
-    await activity.remove();
-
-    res.json({ successes: [{ msg: 'Activity removed' }] });
+    res.json({ successes: [{ msg: 'Activity marked as deleted' }] });
   } catch (err) {
     console.error(err.message);
 

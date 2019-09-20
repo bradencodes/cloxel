@@ -17,3 +17,10 @@ export const editActivityInRedux = (activity, inputUser) => dispatch => {
   user.activities[oldActivityIndex] = activity;
   dispatch({ type: UPDATE_USER, payload: user });
 };
+
+export const deleteActivityInRedux = (activity, inputUser) => dispatch => {
+  let user = cloneDeep(inputUser);
+  user.activities = user.activities.filter(notDeleted => notDeleted._id !== activity._id);
+  user.deletedActivities.push(activity._id);
+  dispatch({ type: UPDATE_USER, payload: user });
+};

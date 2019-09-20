@@ -20,11 +20,16 @@ import { Provider } from 'react-redux';
 import store from './store';
 import { loadUser } from './actions/auth';
 import { changeDoing } from './actions/user';
-import { addActivityToRedux, editActivityInRedux } from './actions/activities';
+import { addActivityToRedux, editActivityInRedux, deleteActivityInRedux } from './actions/activities';
 import setAuthToken from './utils/setAuthToken';
 
 import './App.css';
-import { INIT_SOCKET, ACTIVE_CHANGED, ACTIVITY_ADDED, ACTIVITY_EDITED } from './actions/types';
+import {
+  INIT_SOCKET,
+  ACTIVE_CHANGED,
+  ACTIVITY_ADDED,
+  ACTIVITY_EDITED
+} from './actions/types';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -105,6 +110,13 @@ const App = () => {
       socket.on('edit activity', activity => {
         if (!store.getState().requests.isEditingActivity) {
           store.dispatch(editActivityInRedux(activity, store.getState().user));
+        }
+        store.dispatch({ type: ACTIVITY_EDITED });
+      });
+
+      socket.on('delete activity', activity => {
+        if (!store.getState().requests.isEditingActivity) {
+          store.dispatch(deleteActivityInRedux(activity, store.getState().user));
         }
         store.dispatch({ type: ACTIVITY_EDITED });
       });

@@ -31,7 +31,7 @@ import { setAlerts } from '../../actions/alerts';
 import { getUnusedColors, stylingColors } from '../../utils/colors';
 import { msToShortTime, shortTimeToMS } from '../../utils/convert';
 import { EDIT_ACTIVITY, ACTIVITY_EDITED } from '../../actions/types';
-import { editActivityInRedux } from '../../actions/activities';
+import { editActivityInRedux, deleteActivityInRedux } from '../../actions/activities';
 const urlpre = process.env.REACT_APP_API_URL;
 
 // const CustomTextField = withStyles({
@@ -197,16 +197,12 @@ const EditActivity = ({
     await history.push('/activities');
   };
 
-  const handleDelete = () => {
-
-  }
-
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSave = async () => {
     if (isEditingActivity) return;
-    
+
     dispatch({ type: EDIT_ACTIVITY });
 
     const config = {
@@ -273,6 +269,30 @@ const EditActivity = ({
   function handleCloseMore() {
     setAnchorEl(null);
   }
+
+  const handleDelete = async () => {
+    if (isEditingActivity) return;
+
+    dispatch({ type: EDIT_ACTIVITY });
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    try {
+      await axios.delete(`${urlpre}/api/activities/${activity._id}`, config );
+      socket.emit('delete activity', activity);
+      history.push('/activities');
+      dispatch(deleteActivityInRedux(activity, user));
+    } catch (err) {
+      const errors = err.response.data.errors;
+      dispatch({ type: ACTIVITY_EDITED });
+
+      dispatch(setAlerts({ errors }));
+    }
+  };
 
   return (
     <React.Fragment>
