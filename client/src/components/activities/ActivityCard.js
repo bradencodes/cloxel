@@ -142,24 +142,12 @@ const ActivityCard = ({
     try {
       dispatch(changeDoing(user, activity._id, user.active, now));
 
-      console.log('made it here');
+      await axios.post(`${urlpre}/api/activities/changeDoing`, body, config);
 
-      const res = await axios.put(
-        `${urlpre}/api/activities/changeDoing`,
-        body,
-        config
-      );
-
-      console.log('and then here');
-
-      if (res.data.user)
-        socket.emit('change doing', activity._id, user.active, now);
+      socket.emit('change doing', activity._id, user.active, now);
     } catch (err) {
-      const errors = err.response.data.errors;
       dispatch({ type: ACTIVE_CHANGED });
       dispatch({ type: UPDATE_USER, payload: oldUserCopy });
-
-      dispatch(setAlerts({ errors }));
     }
   };
 

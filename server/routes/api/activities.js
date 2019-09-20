@@ -180,16 +180,13 @@ router.put(
   }
 );
 
-// @route   PUT api/activities/changeDoing
+// @route   POST api/activities/changeDoing
 // @desc    Change which activity is being done
 // @access  Private
-router.put('/changeDoing', auth, async (req, res) => {
-  console.log('changeDoing reached');
+router.post('/changeDoing', auth, async (req, res) => {
   try {
-    const userId = req.params.id;
+    const userId = req.user.id;
     const { doNowId, wasDoingId, time } = req.body;
-
-    console.log(userId);
 
     let user = await User.findById(userId);
     let doNow = await Activity.findById(doNowId);
@@ -208,7 +205,7 @@ router.put('/changeDoing', auth, async (req, res) => {
     await doNow.save();
     await wasDoing.save();
     await user.save();
-    res.status(200);
+    res.status(200).json({ successes: [{ msg: 'Doing changed', param: 'changeDoing' }] });
   } catch (err) {
     console.error(err.message);
 
