@@ -5,6 +5,7 @@ const auth = require('../../middleware/auth');
 
 const Activity = require('../../models/Activity');
 const User = require('../../models/User');
+const Breaktime = require('../../models/Breaktime');
 
 // @route   POST api/activities
 // @desc    Create activity
@@ -178,6 +179,47 @@ router.put(
     }
   }
 );
+
+// @route   POST api/activities/changeDoing
+// @desc    Change which activity is being done
+// @access  Private
+router.post('/changeDoing', auth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { doNowId, wasDoingId, time } = req.body;
+
+    let user = await User.findById(userId);
+    let doNow = await Activity.findById(doNowId);
+    if (!doNow) {
+      doNow = await Breaktime.findById(doNowId);
+    }
+    let wasDoing = await Activity.findById(wasDoingId);
+    if (!wasDoing) {
+      wasDoing = await Breaktime.findById(wasDoingId);
+    }
+
+    doNow.start.push(time);
+    wasDoing.end.push(time);
+    user.active = doNowId;
+
+    await doNow.save();
+    await wasDoing.save();
+    await user.save();
+    res.status(200).json({ successes: [{ msg: 'Doing changed', param: 'changeDoing' }] });
+  } catch (err) {
+    console.error(err.message);
+
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({
+        errors: [
+          { msg: 'Activity or activities not found', param: 'changeDoing' }
+        ]
+      });
+    }
+
+    res.status(500).send('Server error');
+  }
+});
 
 // @route   DELETE api/activities/:id
 // @desc    Remove an activity

@@ -86,7 +86,7 @@ const App = () => {
 
       store.dispatch(loadUser(socket));
 
-      socket.on('change doing', (userId, doNowId, wasDoingId, time) => {
+      socket.on('change doing', (doNowId, wasDoingId, time) => {
         if (!store.getState().requests.isChangingActive) {
           store.dispatch(
             changeDoing(store.getState().user, doNowId, wasDoingId, time)

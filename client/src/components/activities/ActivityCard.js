@@ -1,4 +1,6 @@
 import React from 'react';
+import axios from 'axios';
+import { cloneDeep } from 'lodash';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -10,7 +12,12 @@ import activate_icon from '../../resources/icons/activate_icon.svg';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { repeatToText, msToShortTime } from '../../utils/convert';
 import { changeDoing } from '../../actions/user';
-import { CHANGE_ACTIVE } from '../../actions/types';
+import {
+  CHANGE_ACTIVE,
+  ACTIVE_CHANGED,
+  UPDATE_USER
+} from '../../actions/types';
+import { setAlerts } from '../../actions/alerts';
 import InverseSandTexture from '../test/InverseSandTexture';
 
 const useStyles = makeStyles(theme => ({
@@ -111,12 +118,36 @@ const ActivityCard = ({
 }) => {
   const classes = useStyles();
 
-  const handleActivateClick = e => {
-    if (!isActive && !isPreview && !isChangingActive) {
-      dispatch({ type: CHANGE_ACTIVE });
-      let now = Date.now();
-      socket.emit('change doing', user._id, activity._id, user.active, now);
+  const handleActivateClick = async () => {
+    if (isActive || isPreview || isChangingActive) return;
+
+    dispatch({ type: CHANGE_ACTIVE });
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    let now = Date.now();
+    let payload = {
+      doNowId: activity._id,
+      wasDoingId: user.active,
+      time: now
+    };
+    const body = JSON.stringify(payload);
+    const urlpre = process.env.REACT_APP_API_URL;
+    const oldUserCopy = cloneDeep(user);
+
+    try {
       dispatch(changeDoing(user, activity._id, user.active, now));
+
+      await axios.post(`${urlpre}/api/activities/changeDoing`, body, config);
+
+      socket.emit('change doing', activity._id, user.active, now);
+    } catch (err) {
+      dispatch({ type: ACTIVE_CHANGED });
+      dispatch({ type: UPDATE_USER, payload: oldUserCopy });
     }
   };
 
