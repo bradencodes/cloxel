@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import { cloneDeep } from 'lodash';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -8,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import activate_icon from '../../resources/icons/activate_icon.svg';
 import { msToShortTime } from '../../utils/convert';
 import { changeDoing } from '../../actions/user';
-import { CHANGE_ACTIVE } from '../../actions/types';
+import { CHANGE_ACTIVE, ACTIVE_CHANGED, UPDATE_USER } from '../../actions/types';
 import InverseSandTexture from '../test/InverseSandTexture';
 
 const useStyles = makeStyles(theme => ({
@@ -102,12 +104,36 @@ const BreaktimeCard = ({
 }) => {
   const classes = useStyles();
 
-  const handleActivateClick = e => {
-    if (!isActive && !isChangingActive) {
-      dispatch({ type: CHANGE_ACTIVE });
-      let now = Date.now();
-      socket.emit('change doing', user._id, breaktime._id, user.active, now);
+  const handleActivateClick = async () => {
+    if (isActive || isChangingActive) return;
+
+    dispatch({ type: CHANGE_ACTIVE });
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    let now = Date.now();
+    let payload = {
+      doNowId: breaktime._id,
+      wasDoingId: user.active,
+      time: now
+    };
+    const body = JSON.stringify(payload);
+    const urlpre = process.env.REACT_APP_API_URL;
+    const oldUserCopy = cloneDeep(user);
+
+    try {
       dispatch(changeDoing(user, breaktime._id, user.active, now));
+
+      await axios.post(`${urlpre}/api/activities/changeDoing`, body, config);
+
+      socket.emit('change doing', breaktime._id, user.active, now);
+    } catch (err) {
+      dispatch({ type: ACTIVE_CHANGED });
+      dispatch({ type: UPDATE_USER, payload: oldUserCopy });
     }
   };
 
