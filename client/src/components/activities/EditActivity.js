@@ -31,7 +31,10 @@ import { setAlerts } from '../../actions/alerts';
 import { getUnusedColors, stylingColors } from '../../utils/colors';
 import { msToShortTime, shortTimeToMS } from '../../utils/convert';
 import { EDIT_ACTIVITY, ACTIVITY_EDITED } from '../../actions/types';
-import { editActivityInRedux, deleteActivityInRedux } from '../../actions/activities';
+import {
+  editActivityInRedux,
+  deleteActivityInRedux
+} from '../../actions/activities';
 const urlpre = process.env.REACT_APP_API_URL;
 
 // const CustomTextField = withStyles({
@@ -203,6 +206,7 @@ const EditActivity = ({
   const onSave = async () => {
     if (isEditingActivity) return;
 
+    socket.emit('join room', user._id);
     dispatch({ type: EDIT_ACTIVITY });
 
     const config = {
@@ -273,6 +277,7 @@ const EditActivity = ({
   const handleDelete = async () => {
     if (isEditingActivity) return;
 
+    socket.emit('join room', user._id);
     dispatch({ type: EDIT_ACTIVITY });
 
     const config = {
@@ -282,7 +287,7 @@ const EditActivity = ({
     };
 
     try {
-      await axios.delete(`${urlpre}/api/activities/${activity._id}`, config );
+      await axios.delete(`${urlpre}/api/activities/${activity._id}`, config);
       socket.emit('delete activity', activity);
       history.push('/activities');
       dispatch(deleteActivityInRedux(activity, user));

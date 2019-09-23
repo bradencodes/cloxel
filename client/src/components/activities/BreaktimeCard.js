@@ -10,7 +10,11 @@ import IconButton from '@material-ui/core/IconButton';
 import activate_icon from '../../resources/icons/activate_icon.svg';
 import { msToShortTime } from '../../utils/convert';
 import { changeDoing } from '../../actions/user';
-import { CHANGE_ACTIVE, ACTIVE_CHANGED, UPDATE_USER } from '../../actions/types';
+import {
+  CHANGE_ACTIVE,
+  ACTIVE_CHANGED,
+  UPDATE_USER
+} from '../../actions/types';
 import InverseSandTexture from '../test/InverseSandTexture';
 
 const useStyles = makeStyles(theme => ({
@@ -107,6 +111,7 @@ const BreaktimeCard = ({
   const handleActivateClick = async () => {
     if (isActive || isChangingActive) return;
 
+    socket.emit('join room', user._id);
     dispatch({ type: CHANGE_ACTIVE });
 
     const config = {
