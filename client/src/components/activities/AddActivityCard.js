@@ -5,6 +5,7 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
+import { AddActivityIcon } from '../../resources/mySvgIcons';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -83,7 +84,7 @@ const AddActivityCard = ({ history }) => {
     <Card className={classes.card}>
       <CardActionArea onClick={handleClick}>
         <div className={classes.actions}>
-          <AddCircleOutlineOutlinedIcon className={classes.add} />
+          <AddActivityIcon className={classes.add} />
           <Typography variant='h5' className={classes.name}>
             Add Activity
           </Typography>

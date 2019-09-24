@@ -2,5 +2,10 @@
 <!-- Generator: Adobe Illustrator 22.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
-<path d="M6,20.9V3.1L18.7,12L6,20.9z M8,6.9v10.2l7.3-5.1L8,6.9z"/>
+<g>
+	<path d="M6,3.1v17.8L18.7,12L6,3.1z M15,14h-2v2H9.5L8,17.1V14H7v-4h1V6.9L9.5,8H13v2h2v1.8l0.3,0.2L15,12.2V14z"/>
+</g>
+<g>
+	<polygon points="14,11 14,13 12,13 12,15 10,15 10,13 8,13 8,11 10,11 10,9 12,9 12,11 	"/>
+</g>
 </svg>
