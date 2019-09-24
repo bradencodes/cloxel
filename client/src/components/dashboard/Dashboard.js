@@ -17,7 +17,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import { AddActivityIcon } from '../../resources/mySvgIcons';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import { logout } from '../../actions/auth';
 import Activities from '../activities/Activities';
@@ -206,7 +206,7 @@ const Dashboard = ({ auth: { loading }, user, logout, history }) => {
         <List>
           <ListItem button onClick={() => history.push('/activities/create')}>
             <ListItemIcon>
-              <AddCircleOutlineIcon />
+              <AddActivityIcon />
             </ListItemIcon>
             <ListItemText primary='Add activity' />
           </ListItem>
