@@ -269,7 +269,7 @@ const ActivityCard = ({
         <Typography
           color='textSecondary'
           className={classes.timeText}
-          style={{ fontWeight: 'bold' }}
+          style={{ fontWeight: 'bold', textAlign: 'right' }}
         >
           / {msToShortTime(activity.displayTarget)}
           <span className={classes.repeatText}>

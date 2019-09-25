@@ -14,15 +14,21 @@ export const ActivateIcon = props => (
   </SvgIcon>
 );
 
-export const DoneIcon = props => (
+export const DoingIcon = props => (
   <SvgIcon {...props}>
-    <path d='M10,4H8v17h2v-5l8.5-6L10,4z M10,6.5l5,3.5l-5,3.5V6.5z' />
+    <path d='M3.1,6l4.2,6l4.7,6.7l4.7-6.7l4.2-6H3.1z M14.3,12H9.7L6.9,8h10.2L14.3,12z' />
   </SvgIcon>
 );
 
 export const TodoIcon = props => (
   <SvgIcon {...props}>
     <path d='M15.9,10L15.9,10L6,3.1v17.8L18.7,12L15.9,10z M8,6.9l4.4,3.1H8V6.9z' />
+  </SvgIcon>
+);
+
+export const DoneIcon = props => (
+  <SvgIcon {...props}>
+    <path d='M10,4H8v17h2v-5l8.5-6L10,4z M10,6.5l5,3.5l-5,3.5V6.5z' />
   </SvgIcon>
 );
 

@@ -8,12 +8,31 @@ import AddActivityCard from './AddActivityCard';
 import BreaktimeCard from './BreaktimeCard';
 import { msToShortTime } from '../../utils/convert';
 import { sortActivities } from '../../utils/calc';
+import { DoingIcon, TodoIcon, DoneIcon } from '../../resources/mySvgIcons';
 
 const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     flexFlow: 'column',
     minHeight: 'calc(100vh - 56px)'
+  },
+  label: {
+    fontSize: '1.8rem',
+    fontWeight: 'bold',
+    display: 'flex',
+    alignItems: 'flex-end'
+  },
+  doingLabel: {
+    color: theme.palette.secondary.dark
+  },
+  todoLabel: {
+    opacity: 0.53
+  },
+  doneLabel: {
+    color: theme.palette.primary.main
+  },
+  labelIcon: {
+    marginRight: 4
   },
   doing: {
     backgroundColor: theme.palette.secondary.light,
@@ -32,7 +51,7 @@ const useStyles = makeStyles(theme => ({
   done: {
     width: '100%',
     padding: theme.spacing(2),
-    backgroundColor: '#e6e6e6',
+    backgroundColor: theme.palette.primary.light,
     flexGrow: '1'
   },
   show: {
@@ -81,18 +100,20 @@ const Activities = ({ show, user }) => {
         elevation={12}
         square
       >
-        <div>
-          Doing (for{' '}
-          {doing.length
-            ? msToShortTime(
-                doing[0].end[doing[0].end.length - 1] -
-                  doing[0].start[doing[0].start.length - 1]
-              )
-            : msToShortTime(
-                user.breaktime.end[user.breaktime.end.length - 1] -
-                  user.breaktime.start[user.breaktime.start.length - 1]
-              )}
-          )
+        <div className={`${classes.label} ${classes.doingLabel}`}>
+          <DoingIcon className={classes.labelIcon} />
+          <span style={{ fontWeight: '500' }}>
+            <strong>Doing </strong>for{' '}
+            {doing.length
+              ? msToShortTime(
+                  doing[0].end[doing[0].end.length - 1] -
+                    doing[0].start[doing[0].start.length - 1]
+                )
+              : msToShortTime(
+                  user.breaktime.end[user.breaktime.end.length - 1] -
+                    user.breaktime.start[user.breaktime.start.length - 1]
+                )}
+          </span>
         </div>
         {doing.map(activity => (
           <ActivityCard
@@ -105,8 +126,12 @@ const Activities = ({ show, user }) => {
           <BreaktimeCard breaktime={user.breaktime} isActive={true} />
         )}
       </Paper>
+
       <Paper className={classes.todo} elevation={4} square>
-        <div>To do</div>
+        <div className={`${classes.label} ${classes.todoLabel}`}>
+          <TodoIcon className={classes.labelIcon} />
+          <span>To do</span>
+        </div>
         {breaktimePlace === 'todo top' && (
           <BreaktimeCard breaktime={user.breaktime} isActive={false} />
         )}
@@ -122,8 +147,12 @@ const Activities = ({ show, user }) => {
         )}
         <AddActivityCard />
       </Paper>
+
       <Paper className={classes.done} elevation={0} square>
-        <div>Done</div>
+        <div className={`${classes.label} ${classes.doneLabel}`}>
+          <DoneIcon className={classes.labelIcon} />
+          <span>Done</span>
+        </div>
         {breaktimePlace === 'done' && (
           <BreaktimeCard breaktime={user.breaktime} isActive={false} />
         )}

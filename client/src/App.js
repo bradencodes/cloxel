@@ -20,7 +20,11 @@ import { Provider } from 'react-redux';
 import store from './store';
 import { loadUser } from './actions/auth';
 import { changeDoing } from './actions/user';
-import { addActivityToRedux, editActivityInRedux, deleteActivityInRedux } from './actions/activities';
+import {
+  addActivityToRedux,
+  editActivityInRedux,
+  deleteActivityInRedux
+} from './actions/activities';
 import setAuthToken from './utils/setAuthToken';
 
 import './App.css';
@@ -37,10 +41,13 @@ if (localStorage.token) {
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: lightBlue[800] },
+    primary: {
+      main: lightBlue[800],
+      light: lightBlue[100]
+    },
     secondary: {
       main: yellow[600],
-      light: yellow[50]
+      light: yellow[100]
     }
   },
   typography: {
@@ -116,7 +123,9 @@ const App = () => {
 
       socket.on('delete activity', activity => {
         if (!store.getState().requests.isEditingActivity) {
-          store.dispatch(deleteActivityInRedux(activity, store.getState().user));
+          store.dispatch(
+            deleteActivityInRedux(activity, store.getState().user)
+          );
         }
         store.dispatch({ type: ACTIVITY_EDITED });
       });
