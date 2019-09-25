@@ -88,13 +88,29 @@ export const calcActivity = (activity, timeZone, breaktime) => {
     }
   };
 
-  const calcProgress = (lastReset, start, end) => {
+  const calcBreaktimeProgress = (lastReset, start, end) => {
     let progress = 0;
     for (let i = end.length - 1; i >= 0; i--) {
       if (end[i] < lastReset) break;
       progress += end[i] - Math.max(start[i], lastReset);
     }
     return progress;
+  };
+
+  const calcDisplayProgress = (breaktimeProgress, repeat, displayTarget) => {
+    const numDays = (() => {
+      let weekday = DateTime.fromObject({ zone: timeZone }).weekday - 1;
+      if (repeat.length === 1) {
+        if (repeat[0]) return weekday;
+        else return 0;
+      } else {
+        return repeat
+          .slice(0, weekday)
+          .reduce((total, curr) => (total += curr), 0);
+      }
+    })();
+
+    return breaktimeProgress - displayTarget * numDays;
   };
 
   const calcBreaktimeTarget = (displayTarget, repeat) => {
@@ -105,15 +121,10 @@ export const calcActivity = (activity, timeZone, breaktime) => {
       return displayTarget * repeat.reduce((total, curr) => (total += curr), 0);
     }
   };
-
   activity.nextDisplayReset = calcNextDisplayReset(activity.repeat);
   activity.lastDisplayReset = calcLastDisplayReset(activity.repeat);
-  activity.displayProgress = calcProgress(
-    activity.lastDisplayReset,
-    activity.start,
-    activity.end
-  );
-  activity.breaktimeProgress = calcProgress(
+
+  activity.breaktimeProgress = calcBreaktimeProgress(
     breaktime.lastReset,
     activity.start,
     activity.end
@@ -121,6 +132,11 @@ export const calcActivity = (activity, timeZone, breaktime) => {
   activity.breaktimeTarget = calcBreaktimeTarget(
     activity.displayTarget,
     activity.repeat
+  );
+  activity.displayProgress = calcDisplayProgress(
+    activity.breaktimeProgress,
+    activity.repeat,
+    activity.displayTarget
   );
   return activity;
 };
