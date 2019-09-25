@@ -93,7 +93,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'flex-end'
   },
   progressBar: {
-    height: '1.2rem',
+    height: '.83rem',
     backgroundColor: '#FDD835'
   }
 }));

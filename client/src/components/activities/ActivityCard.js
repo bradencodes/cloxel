@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import activate_icon from '../../resources/icons/activate_icon.svg';
+import { ActivateIcon } from '../../resources/mySvgIcons';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { repeatToText, msToShortTime } from '../../utils/convert';
 import { changeDoing } from '../../actions/user';
@@ -28,39 +28,18 @@ const useStyles = makeStyles(theme => ({
   },
   actions: {
     display: 'flex',
-    alignItems: 'center',
-    margin: '-4px -4px -8px'
-  },
-  activate: {
-    height: 48,
-    width: 48,
-    display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center'
   },
-  activateContainer: {
-    zIndex: '1',
-    width: '12.73px',
-    height: '17.83px',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
+  iconButton: {
+    margin: -4
   },
-  activateSvg: {},
-  activateSand: {
-    height: '13px',
-    width: '16px',
-    zIndex: '-1'
-  },
-  sand: {
-    width: 30,
-    height: 30
+  activateIcon: {
+    color: 'rgba(0, 0, 0, .87)'
   },
   name: {
     fontWeight: 'bold',
     fontSize: '3.0rem',
     width: '100%',
-    marginLeft: -8
   },
   time: {
     display: 'flex',
@@ -95,12 +74,10 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'flex-end'
   },
   progressBar: {
-    height: '11.3px',
-    fill: 'currentColor'
+    height: '.83rem'
   },
   breaktimeBar: {
-    height: '5.3px',
-    fill: 'currentColor',
+    height: '.23rem',
     backgroundColor: '#FDD835'
   }
 }));
@@ -161,52 +138,23 @@ const ActivityCard = ({
     <Paper className={classes.card}>
       <div className={classes.actions}>
         <IconButton
-          className={classes.activate}
+          className={classes.iconButton}
           aria-label='activate'
           onClick={handleActivateClick}
           disabled={isPreview || isChangingActive}
         >
-          <div
-            className={classes.activateContainer}
-            style={{ opacity: isPreview || isChangingActive ? '.38' : '.87' }}
-          >
-            <img
-              src={activate_icon}
-              alt='activate'
-              className={classes.activateSvg}
-              style={{ transform: `rotate(${isActive * 90}deg)` }}
-            />
-            <div
-              className={classes.activateSand}
-              style={{
-                clipPath: isActive
-                  ? 'polygon(0% 0%, 100% 0%, 50% 90%)'
-                  : 'polygon(0% 0%, 50% 50%, 0% 100%)',
-                marginLeft: isActive ? '-14px' : '-11px'
-              }}
-            >
-              <div
-                className={classes.sand}
-                style={{
-                  backgroundColor: activity.color,
-                  margin: `calc(12px * ${Math.min(
-                    activity.displayProgress / (activity.displayTarget || 1),
-                    1
-                  )}) 0 0 -1px`
-                }}
-              >
-                <InverseSandTexture />
-              </div>
-            </div>
-          </div>
+          <ActivateIcon
+            className={classes.activateIcon}
+            style={{ transform: `rotate(${isActive * 90}deg)` }}
+          />
         </IconButton>
-        <Typography variant='h5' noWrap className={classes.name}>
+        <Typography noWrap className={classes.name}>
           {activity.name}
         </Typography>
         <IconButton
-          className={classes.edit}
+          className={classes.iconButton}
           aria-label='edit'
-          disabled={isActive || isPreview || isChangingActive}
+          disabled={isPreview || isChangingActive}
           onClick={handleEditClick}
         >
           <EditOutlinedIcon />
