@@ -39,6 +39,18 @@ const useStyles = makeStyles(theme => ({
   iconButton: {
     margin: -4
   },
+  toDoClip: {
+    position: 'absolute',
+    width: '1.36rem',
+    height: '1.906rem',
+    clipPath: 'polygon(10% 10%, 90% 50%, 10% 90%)'
+  },
+  doingClip: {
+    position: 'absolute',
+    width: '1.906rem',
+    height: '1.36rem',
+    clipPath: 'polygon(10% 10%, 90% 10%, 50% 90%)'
+  },
   name: {
     fontWeight: 'bold',
     fontSize: '3.0rem',
@@ -165,14 +177,51 @@ const ActivityCard = ({
       );
     else
       return (
-        <ActivateIcon
-          style={{
-            color: `rgba(0,0,0, ${
-              isPreview || isChangingActive ? '0.38' : '0.87'
-            }`,
-            transform: `rotate(${isActive * 90}deg)`
-          }}
-        />
+        <>
+          {isActive ? (
+            <div className={classes.doingClip}>
+              <div
+                style={{
+                  backgroundColor: activity.color,
+                  opacity: isChangingActive ? '0.38' : '0.87',
+                  marginTop: `${1.06 *
+                    Math.min(
+                      activity.displayProgress / (activity.displayTarget || 1),
+                      1
+                    )}rem`
+                }}
+                className={classes.doingFill}
+              >
+                <InverseSandTexture />
+              </div>
+            </div>
+          ) : (
+            <div className={classes.toDoClip}>
+              <div
+                style={{
+                  backgroundColor: activity.color,
+                  opacity: isChangingActive ? '0.38' : '0.87',
+                  marginTop: `${1.7 *
+                    Math.min(
+                      activity.displayProgress / (activity.displayTarget || 1),
+                      1
+                    )}rem`
+                }}
+                className={classes.toDoFill}
+              >
+                <InverseSandTexture />
+              </div>
+            </div>
+          )}
+          <ActivateIcon
+            style={{
+              color: `rgba(0,0,0, ${
+                isPreview || isChangingActive ? '0.38' : '0.87'
+              }`,
+              transform: `rotate(${isActive * 90}deg)`
+            }}
+          />
+        </>
       );
   };
 
@@ -184,6 +233,11 @@ const ActivityCard = ({
           aria-label='activate'
           onClick={handleActivateClick}
           disabled={isPreview || isChangingActive}
+          style={{
+            color: `rgba(0,0,0, ${
+              isPreview || isChangingActive ? '0.38' : '0.87'
+            }`
+          }}
         >
           {handleActivateIcon()}
         </IconButton>
