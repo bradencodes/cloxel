@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -77,6 +78,13 @@ const useStyles = makeStyles(theme => ({
   },
   accountSwitcher: {
     margin: theme.spacing(0, 2, 2)
+  },
+  user: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  userIcon: {
+    marginRight: 8
   },
   signout: {
     cursor: 'pointer',
@@ -193,7 +201,10 @@ const Dashboard = ({ auth: { loading }, user, logout, history }) => {
           </IconButton>
         </div>
         <div className={classes.accountSwitcher}>
-          <Typography variant='h6'>{user.name}</Typography>
+          <Typography variant='h6' className={classes.user}>
+            <AccountCircleIcon className={classes.userIcon} />
+            {user.name}
+          </Typography>
           <Typography
             variant='body2'
             className={classes.signout}
