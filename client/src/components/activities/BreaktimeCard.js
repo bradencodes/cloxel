@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     width: '3rem',
     height: '3rem',
-    margin: '1px 0 0 1px',
+    margin: '.1rem 0 0 .1rem',
     clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
   },
   breaktimeFill: {

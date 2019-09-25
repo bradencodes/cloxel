@@ -4,7 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
-import { AddActivityIcon } from '../../resources/mySvgIcons';
+import { AddActivityIcon, AddsIcon } from '../../resources/mySvgIcons';
+import InverseSandTexture from '../test/InverseSandTexture';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -15,59 +16,52 @@ const useStyles = makeStyles(theme => ({
   },
   actions: {
     display: 'flex',
-    alignItems: 'center',
-    margin: '-4px -4px -8px'
+    alignItems: 'center'
   },
-  add: {
-    color: 'rgba(0, 0, 0, 0.38)',
-    margin: 12
+  addActivityIcon: {
+    width: '2.57rem',
+    height: '2.57rem',
+    margin: `8px 8px`,
+    color: 'rgba(0, 0, 0, 0.38)'
   },
   name: {
     color: 'rgba(0, 0, 0, 0.38)',
     fontWeight: 'bold',
     fontSize: '3.0rem',
-    width: '100%',
-    marginLeft: -8
+    width: '100%'
   },
   time: {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'space-between',
     padding: theme.spacing(0, 1),
     marginBottom: -4
   },
-  times: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-    paddingRight: theme.spacing(1)
-  },
   timeText: {
     color: 'rgba(0, 0, 0, 0.38)',
-    fontSize: '2rem',
+    fontSize: '1.8rem',
     fontWeight: '500'
   },
-  repeatContainer: {
-    fontWeight: 'bold',
-    width: '4.7rem',
-    lineHeight: '0',
-    textAlign: 'center'
+  timeIcon: {
+    margin: `-4px 4px`,
+    color: 'rgba(0, 0, 0, 0.20)',
   },
   repeatText: {
-    fontSize: '1rem',
-    fontWeight: '600',
-    lineHeight: '1rem'
+    fontSize: '1.2rem',
+    fontWeight: 'bold',
+    lineHeight: '1rem',
+    marginLeft: 8
   },
   bars: {
     display: 'flex',
     alignItems: 'flex-end'
   },
   progressBar: {
-    height: '1.2rem'
+    height: '.83rem'
   },
   breaktimeBar: {
     width: '100%',
-    height: '.6rem',
+    height: '.23rem',
     backgroundColor: 'rgba(0, 0, 0, 0.38)'
   }
 }));
@@ -83,25 +77,32 @@ const AddActivityCard = ({ history }) => {
     <Card className={classes.card}>
       <CardActionArea onClick={handleClick}>
         <div className={classes.actions}>
-          <AddActivityIcon className={classes.add} />
-          <Typography variant='h5' className={classes.name}>
-            Add Activity
-          </Typography>
+          <AddActivityIcon className={classes.addActivityIcon} />
+          <Typography className={classes.name}>Add Activity</Typography>
         </div>
 
         <div className={classes.time}>
-          <div className={classes.times}>
-            <Typography className={classes.timeText}>00:00:00</Typography>
-            <Typography className={classes.timeText}>00:00:00</Typography>
-          </div>
-          <div className={classes.repeatContainer}>
-            <Typography variant='caption' className={classes.repeatText} />
-          </div>
+          <Typography
+            className={classes.timeText}
+            style={{ fontWeight: '500' }}
+          >
+            00:00:00
+            <AddsIcon className={classes.timeIcon} />
+          </Typography>
+          <Typography
+            className={classes.timeText}
+            style={{ fontWeight: 'bold', textAlign: 'right' }}
+          >
+            / 00:00:00
+            <span className={classes.repeatText}>PER WEEK</span>
+          </Typography>
         </div>
 
         <div className={classes.bars}>
           <div className={classes.progressBar} />
-          <div className={classes.breaktimeBar} />
+          <div className={classes.breaktimeBar}>
+            <InverseSandTexture />
+          </div>
         </div>
       </CardActionArea>
     </Card>
