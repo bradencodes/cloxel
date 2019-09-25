@@ -8,7 +8,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import { ActivateIcon } from '../../resources/mySvgIcons';
+import {
+  ActivateIcon,
+  AddsIcon,
+  SubtractsIcon,
+  PausesIcon,
+  DoneIcon
+} from '../../resources/mySvgIcons';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { repeatToText, msToShortTime } from '../../utils/convert';
 import { changeDoing } from '../../actions/user';
@@ -33,41 +39,29 @@ const useStyles = makeStyles(theme => ({
   iconButton: {
     margin: -4
   },
-  activateIcon: {
-    color: 'rgba(0, 0, 0, .87)'
-  },
   name: {
     fontWeight: 'bold',
     fontSize: '3.0rem',
-    width: '100%',
+    width: '100%'
   },
   time: {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'space-between',
     padding: theme.spacing(0, 1),
     marginBottom: -4
   },
-  times: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-    paddingRight: theme.spacing(1)
-  },
   timeText: {
-    fontSize: '2rem',
-    fontWeight: '500'
+    fontSize: '1.8rem'
   },
-  repeatContainer: {
-    fontWeight: 'bold',
-    width: '4.7rem',
-    lineHeight: '0',
-    textAlign: 'center'
+  timeIcon: {
+    margin: `-4px 4px`
   },
   repeatText: {
-    fontSize: '1.0rem',
-    fontWeight: '600',
-    lineHeight: '1rem'
+    fontSize: '1.2rem',
+    fontWeight: 'bold',
+    lineHeight: '1rem',
+    marginLeft: 8
   },
   bars: {
     display: 'flex',
@@ -134,6 +128,54 @@ const ActivityCard = ({
     }
   };
 
+  const handleTimeIcon = () => {
+    if (activity.breaktimeProgress >= activity.breaktimeTarget)
+      return (
+        <SubtractsIcon
+          className={classes.timeIcon}
+          color={isActive ? 'active' : 'disabled'}
+        />
+      );
+    else if (activity.adds)
+      return (
+        <AddsIcon
+          className={classes.timeIcon}
+          color={isActive ? 'active' : 'disabled'}
+        />
+      );
+    else
+      return (
+        <PausesIcon
+          className={classes.timeIcon}
+          color={isActive ? 'active' : 'disabled'}
+        />
+      );
+  };
+
+  const handleActivateIcon = () => {
+    if (activity.displayProgress >= activity.displayTarget)
+      return (
+        <DoneIcon
+          style={{
+            color: `rgba(0,0,0, ${
+              isPreview || isChangingActive ? '0.38' : '0.87'
+            }`
+          }}
+        />
+      );
+    else
+      return (
+        <ActivateIcon
+          style={{
+            color: `rgba(0,0,0, ${
+              isPreview || isChangingActive ? '0.38' : '0.87'
+            }`,
+            transform: `rotate(${isActive * 90}deg)`
+          }}
+        />
+      );
+  };
+
   return (
     <Paper className={classes.card}>
       <div className={classes.actions}>
@@ -143,10 +185,7 @@ const ActivityCard = ({
           onClick={handleActivateClick}
           disabled={isPreview || isChangingActive}
         >
-          <ActivateIcon
-            className={classes.activateIcon}
-            style={{ transform: `rotate(${isActive * 90}deg)` }}
-          />
+          {handleActivateIcon()}
         </IconButton>
         <Typography noWrap className={classes.name}>
           {activity.name}
@@ -162,23 +201,27 @@ const ActivityCard = ({
       </div>
 
       <div className={classes.time}>
-        <div className={classes.times}>
-          <Typography color='textSecondary' className={classes.timeText}>
-            {msToShortTime(activity.displayProgress)}
-          </Typography>
-          <Typography color='textSecondary' className={classes.timeText}>
-            {msToShortTime(activity.displayTarget)}
-          </Typography>
-        </div>
-        <div className={classes.repeatContainer}>
-          <Typography
-            variant='caption'
-            color='textSecondary'
-            className={classes.repeatText}
-          >
+        <Typography
+          color='textSecondary'
+          className={classes.timeText}
+          style={{
+            fontWeight:
+              activity.displayProgress < activity.displayTarget ? '500' : 'bold'
+          }}
+        >
+          {msToShortTime(activity.displayProgress)}
+          {handleTimeIcon()}
+        </Typography>
+        <Typography
+          color='textSecondary'
+          className={classes.timeText}
+          style={{ fontWeight: 'bold' }}
+        >
+          / {msToShortTime(activity.displayTarget)}
+          <span className={classes.repeatText}>
             {repeatToText(activity.repeat)}
-          </Typography>
-        </div>
+          </span>
+        </Typography>
       </div>
 
       <div className={classes.bars}>
