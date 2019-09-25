@@ -190,7 +190,6 @@ const ActivityCard = ({
                       1
                     )}rem`
                 }}
-                className={classes.doingFill}
               >
                 <InverseSandTexture />
               </div>
@@ -207,7 +206,6 @@ const ActivityCard = ({
                       1
                     )}rem`
                 }}
-                className={classes.toDoFill}
               >
                 <InverseSandTexture />
               </div>

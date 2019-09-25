@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import activate_icon from '../../resources/icons/activate_icon.svg';
+import BeachAccessOutlinedIcon from '@material-ui/icons/BeachAccessOutlined';
 import { msToShortTime } from '../../utils/convert';
 import { changeDoing } from '../../actions/user';
 import {
@@ -26,67 +26,46 @@ const useStyles = makeStyles(theme => ({
   },
   actions: {
     display: 'flex',
-    alignItems: 'center',
-    margin: '-4px -4px -8px'
-  },
-  activate: {
-    height: 48,
-    width: 48,
-    display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center'
   },
-  activateContainer: {
-    zIndex: '1',
-    width: '12.73px',
-    height: '17.83px',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
+  iconButton: {
+    margin: -4
   },
-  activateSvg: {},
-  activateSand: {
-    height: '13px',
-    width: '16px',
-    zIndex: '-1'
+  breaktimeClip: {
+    position: 'absolute',
+    width: '3rem',
+    height: '3rem',
+    margin: '1px 0 0 1px',
+    clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
   },
-  sand: {
-    width: 30,
-    height: 30
+  breaktimeFill: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 500
+  },
+  breaktimeIcon: {
+    zIndex: 1
   },
   name: {
     fontWeight: 'bold',
     fontSize: '3.0rem',
-    width: '100%',
-    marginLeft: -8
+    width: '100%'
   },
   time: {
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'baseline',
+    justifyContent: 'space-between',
     padding: theme.spacing(0, 1),
     marginBottom: -4
   },
-  times: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-    paddingRight: theme.spacing(1)
-  },
   timeText: {
-    fontSize: '2rem',
-    fontWeight: '500'
-  },
-  repeatContainer: {
-    fontWeight: 'bold',
-    width: '4.7rem',
-    lineHeight: '0',
-    textAlign: 'center'
+    fontSize: '1.8rem'
   },
   repeatText: {
-    fontSize: '1rem',
-    fontWeight: '600',
-    lineHeight: '1rem'
+    fontSize: '1.2rem',
+    fontWeight: 'bold',
+    lineHeight: '1rem',
+    marginLeft: 8
   },
   bars: {
     display: 'flex',
@@ -146,65 +125,52 @@ const BreaktimeCard = ({
     <Paper className={classes.card}>
       <div className={classes.actions}>
         <IconButton
-          className={classes.activate}
+          className={classes.iconButton}
           aria-label='activate'
           onClick={handleActivateClick}
           disabled={isChangingActive}
+          style={{
+            color: `rgba(0,0,0, ${isChangingActive ? '0.38' : '0.87'}`
+          }}
         >
-          <div
-            className={classes.activateContainer}
-            style={{ opacity: isChangingActive ? '.38' : '.87' }}
-          >
-            <img
-              src={activate_icon}
-              alt='activate'
-              className={classes.activateSvg}
-              style={{ transform: `rotate(${isActive * 90}deg)` }}
-            />
+          <div className={classes.breaktimeClip}>
             <div
-              className={classes.activateSand}
               style={{
-                clipPath: isActive
-                  ? 'polygon(0% 0%, 100% 0%, 50% 90%)'
-                  : 'polygon(0% 0%, 50% 50%, 0% 100%)',
-                marginLeft: isActive ? '-14px' : '-11px'
+                backgroundColor: breaktime.color,
+                opacity: isChangingActive ? '0.38' : '0.87',
+                marginTop: `${3 -
+                  3 *
+                    Math.min(
+                      (breaktime.earned - breaktime.used) / 1800000,
+                      1
+                    )}rem`
               }}
-            >
-              <div
-                className={classes.sand}
-                style={{
-                  backgroundColor: '#FDD835',
-                  margin: `calc(12px * (1 - ${Math.min(
-                    (breaktime.earned - breaktime.used) / 1800000,
-                    1
-                  )}) ) 0 0 -1px`
-                }}
-              >
-                <InverseSandTexture />
-              </div>
-            </div>
+              className={classes.breaktimeFill}
+            />
           </div>
+          <BeachAccessOutlinedIcon className={classes.breaktimeIcon} />
         </IconButton>
-        <Typography variant='h5' className={classes.name}>
-          {breaktime.name}
-        </Typography>
+        <Typography className={classes.name}>{breaktime.name}</Typography>
       </div>
 
       <div className={classes.time}>
-        <div className={classes.times}>
-          <Typography color='textSecondary' className={classes.timeText}>
-            {msToShortTime(breaktime.earned - breaktime.used)}
-          </Typography>
-        </div>
-        <div className={classes.repeatContainer}>
-          <Typography
-            variant='caption'
-            color='textSecondary'
-            className={classes.repeatText}
-          >
-            TO USE
-          </Typography>
-        </div>
+        <Typography
+          color='textSecondary'
+          className={classes.timeText}
+          style={{
+            fontWeight:
+              breaktime.earned - breaktime.used < 1800000 ? '500' : 'bold'
+          }}
+        >
+          {msToShortTime(breaktime.earned - breaktime.used)}
+        </Typography>
+        <Typography
+          variant='caption'
+          color='textSecondary'
+          className={classes.repeatText}
+        >
+          TO USE
+        </Typography>
       </div>
 
       <div className={classes.bars}>
