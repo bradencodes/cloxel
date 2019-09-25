@@ -145,21 +145,21 @@ const ActivityCard = ({
       return (
         <SubtractsIcon
           className={classes.timeIcon}
-          color={isActive ? 'active' : 'disabled'}
+          color={isActive ? 'action' : 'disabled'}
         />
       );
     else if (activity.adds)
       return (
         <AddsIcon
           className={classes.timeIcon}
-          color={isActive ? 'active' : 'disabled'}
+          color={isActive ? 'action' : 'disabled'}
         />
       );
     else
       return (
         <PausesIcon
           className={classes.timeIcon}
-          color={isActive ? 'active' : 'disabled'}
+          color={isActive ? 'action' : 'disabled'}
         />
       );
   };
