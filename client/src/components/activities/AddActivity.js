@@ -197,7 +197,6 @@ const AddActivity = ({
   const onSave = async () => {
     if (isAddingActivity) return;
 
-    socket.emit('join room', user._id);
     dispatch({ type: ADD_ACTIVITY });
 
     const config = {
