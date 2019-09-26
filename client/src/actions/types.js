@@ -21,3 +21,4 @@ export const ADD_ACTIVITY = 'ADD_ACTIVITY';
 export const ACTIVITY_ADDED = 'ACTIVITY_ADDED';
 export const EDIT_ACTIVITY = 'EDIT_ACTIVITY';
 export const ACTIVITY_EDITED = 'ACTIVITY_EDITED';
+export const ANIMATE = 'ANIMATE';

@@ -5,7 +5,7 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
 import { AddActivityIcon, AddsIcon } from '../../resources/mySvgIcons';
-import InverseSandTexture from '../test/InverseSandTexture';
+import InverseSandTexture from '../util/InverseSandTexture';
 
 const useStyles = makeStyles(theme => ({
   card: {

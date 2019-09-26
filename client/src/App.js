@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Flipper } from 'react-flip-toolkit';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { lightBlue, yellow } from '@material-ui/core/colors';
@@ -8,12 +9,13 @@ import io from 'socket.io-client';
 // My Components
 import Register from './components/auth/Register';
 import SignIn from './components/auth/SignIn';
-import TypographyTest from './components/test/TypographyTest';
+import TypographyTest from './components/util/TypographyTest';
 import PrivateRoute from './components/auth/PrivateRoute';
 import Activities from './components/dashboard/Dashboard';
 import AddActivity from './components/activities/AddActivity';
 import EditActivity from './components/activities/EditActivity';
 import CatchAll from './components/auth/CatchAll';
+import ScrollToTop from './components/util/ScrollToTop';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -136,29 +138,35 @@ const App = () => {
   return (
     <Provider store={store}>
       <Router>
-        <Fragment>
+        <ScrollToTop>
           <section className='container'>
             <ThemeProvider theme={theme}>
-              <Switch>
-                <Route exact path='/register' component={Register} />
-                <Route exact path='/signin' component={SignIn} />
-                <PrivateRoute exact path='/activities' component={Activities} />
-                <PrivateRoute
-                  exact
-                  path='/activities/create'
-                  component={AddActivity}
-                />
-                <PrivateRoute
-                  exact
-                  path='/activities/edit/:id'
-                  component={EditActivity}
-                />
-                <Route exact path='/type-test' component={TypographyTest} />
-                <Route component={CatchAll} />
-              </Switch>
+              <Flipper flipKey={store.getState().requests.animate}>
+                <Switch>
+                  <Route exact path='/register' component={Register} />
+                  <Route exact path='/signin' component={SignIn} />
+                  <PrivateRoute
+                    exact
+                    path='/activities'
+                    component={Activities}
+                  />
+                  <PrivateRoute
+                    exact
+                    path='/activities/create'
+                    component={AddActivity}
+                  />
+                  <PrivateRoute
+                    exact
+                    path='/activities/edit/:id'
+                    component={EditActivity}
+                  />
+                  <Route exact path='/type-test' component={TypographyTest} />
+                  <Route component={CatchAll} />
+                </Switch>
+              </Flipper>
             </ThemeProvider>
           </section>
-        </Fragment>
+        </ScrollToTop>
       </Router>
     </Provider>
   );

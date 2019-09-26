@@ -15,7 +15,7 @@ import {
   ACTIVE_CHANGED,
   UPDATE_USER
 } from '../../actions/types';
-import InverseSandTexture from '../test/InverseSandTexture';
+import InverseSandTexture from '../util/InverseSandTexture';
 
 const useStyles = makeStyles(theme => ({
   card: {

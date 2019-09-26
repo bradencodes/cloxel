@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
   },
   appBarSpacer: theme.mixins.toolbar,
   previewActivity: {
-    position: 'fixed',
+    // position: 'fixed',
     width: '100%',
     padding: theme.spacing(0, 2),
     zIndex: 1,
@@ -73,7 +73,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    marginTop: '9rem',
+    // marginTop: '9rem',
     position: 'relative'
   },
   form: {

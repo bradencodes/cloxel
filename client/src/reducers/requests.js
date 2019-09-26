@@ -4,13 +4,15 @@ import {
   ADD_ACTIVITY,
   ACTIVITY_ADDED,
   EDIT_ACTIVITY,
-  ACTIVITY_EDITED
+  ACTIVITY_EDITED,
+  ANIMATE
 } from '../actions/types';
 
 const initialState = {
   isChangingActive: false,
   isAddingActivity: false,
-  isEditingActivity: false
+  isEditingActivity: false,
+  animate: true
 };
 
 export default function(state = initialState, action) {
@@ -20,7 +22,8 @@ export default function(state = initialState, action) {
     case CHANGE_ACTIVE:
       return {
         ...state,
-        isChangingActive: true
+        isChangingActive: true,
+        animate: !state.animate
       };
 
     case ACTIVE_CHANGED:
@@ -32,7 +35,8 @@ export default function(state = initialState, action) {
     case ADD_ACTIVITY:
       return {
         ...state,
-        isAddingActivity: true
+        isAddingActivity: true,
+        animate: !state.animate
       };
 
     case ACTIVITY_ADDED:
@@ -44,13 +48,20 @@ export default function(state = initialState, action) {
     case EDIT_ACTIVITY:
       return {
         ...state,
-        isEditingActivity: true
+        isEditingActivity: true,
+        animate: !state.animate
       };
 
     case ACTIVITY_EDITED:
       return {
         ...state,
         isEditingActivity: false
+      };
+
+    case ANIMATE:
+      return {
+        ...state,
+        animate: !state.animate
       };
 
     default:
