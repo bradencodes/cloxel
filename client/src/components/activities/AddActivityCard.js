@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
   },
   timeIcon: {
     margin: `-4px 4px`,
-    color: 'rgba(0, 0, 0, 0.20)',
+    color: 'rgba(0, 0, 0, 0.20)'
   },
   repeatText: {
     fontSize: '1.2rem',
@@ -74,7 +74,7 @@ const AddActivityCard = ({ history }) => {
   };
 
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} elevation='1'>
       <CardActionArea onClick={handleClick}>
         <div className={classes.actions}>
           <AddActivityIcon className={classes.addActivityIcon} />
