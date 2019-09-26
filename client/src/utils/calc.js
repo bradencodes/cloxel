@@ -105,8 +105,8 @@ export const calcActivity = (activity, timeZone, breaktime) => {
         else return 0;
       } else {
         return repeat
-          .slice(0, weekday)
-          .reduce((total, curr) => (total += curr), 0);
+          .slice(0, weekday+1)
+          .reduce((total, curr) => (total += curr), 0)-1;
       }
     })();
 
