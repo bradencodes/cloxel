@@ -133,6 +133,18 @@ const App = () => {
       });
     }
     initSocket();
+
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        initSocket();
+      }
+    };
+
+    document.addEventListener(
+      'visibilitychange',
+      handleVisibilityChange,
+      false
+    );
   }, []);
 
   return (
