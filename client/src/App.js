@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Flipper } from 'react-flip-toolkit';
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -32,6 +32,7 @@ import setAuthToken from './utils/setAuthToken';
 import './App.css';
 import {
   INIT_SOCKET,
+  CHANGE_ACTIVE,
   ACTIVE_CHANGED,
   ACTIVITY_ADDED,
   ACTIVITY_EDITED
@@ -136,6 +137,7 @@ const App = () => {
 
     const handleVisibilityChange = () => {
       if (!document.hidden) {
+        store.dispatch({ type: CHANGE_ACTIVE });
         initSocket();
       }
     };

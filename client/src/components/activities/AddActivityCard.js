@@ -74,7 +74,7 @@ const AddActivityCard = ({ history }) => {
   };
 
   return (
-    <Card className={classes.card} elevation='1'>
+    <Card className={classes.card} elevation={1}>
       <CardActionArea onClick={handleClick}>
         <div className={classes.actions}>
           <AddActivityIcon className={classes.addActivityIcon} />

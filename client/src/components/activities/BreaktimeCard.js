@@ -122,7 +122,7 @@ const BreaktimeCard = ({
   };
 
   return (
-    <Paper className={classes.card} elevation='2'>
+    <Paper className={classes.card} elevation={2}>
       <div className={classes.actions}>
         <IconButton
           className={classes.iconButton}

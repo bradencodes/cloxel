@@ -8,7 +8,8 @@ import {
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
-  LOGOUT
+  LOGOUT,
+  ACTIVE_CHANGED
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 import { DateTime } from 'luxon';
@@ -33,6 +34,7 @@ export const loadUser = socket => async dispatch => {
       payload: res.data
     });
     dispatch(calcActivities(res.data));
+    dispatch({ type: ACTIVE_CHANGED });
   } catch (err) {
     dispatch({
       type: AUTH_ERROR
