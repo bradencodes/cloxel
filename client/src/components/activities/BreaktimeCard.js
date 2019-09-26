@@ -89,7 +89,8 @@ const BreaktimeCard = ({
 
   const handleActivateClick = async () => {
     if (isActive || isChangingActive) return;
-    
+
+    socket.emit('join room', user._id);
     dispatch({ type: CHANGE_ACTIVE });
 
     const config = {
