@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { Flipper } from 'react-flip-toolkit';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
@@ -157,6 +157,9 @@ const App = () => {
             <ThemeProvider theme={theme}>
               <Flipper flipKey={store.getState().requests.animate}>
                 <Switch>
+                  <Route exact path='/'>
+                    <Redirect to='/signin' />
+                  </Route>
                   <Route exact path='/register' component={Register} />
                   <Route exact path='/signin' component={SignIn} />
                   <PrivateRoute
