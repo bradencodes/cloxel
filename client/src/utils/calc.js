@@ -12,7 +12,7 @@ export const sortActivities = (activities, timeZone) => {
       if (activity.repeat[0]) toDoToday.push(activity);
       else toDoThisWeek.push(activity);
     } else {
-      let today = DateTime.fromObject({ zone: timeZone }).weekday - 1;
+      let today = DateTime.fromObject({ zone: timeZone }).weekday % 7;
       if (activity.repeat[today]) toDoToday.push(activity);
       else notToDoToday.push(activity);
     }
@@ -30,12 +30,12 @@ export const sortActivities = (activities, timeZone) => {
 
 export const calcResetsOnBreaktime = (breaktime, timeZone, created) => {
   let now = DateTime.fromObject({ zone: timeZone });
-  breaktime.nextReset = now.startOf('week').plus({ days: 7 }).ts;
+  breaktime.nextReset = now.startOf('week').plus({ days: 6 }).ts;
   // breaktime.lastReset = Math.max(
   //   now.startOf('week').minus({ days: weekStartOffset }).ts,
   //   created
   // );
-  breaktime.lastReset = now.startOf('week').ts;
+  breaktime.lastReset = now.startOf('week').minus({ days: 1 }).ts;
   return breaktime;
 };
 
@@ -51,7 +51,7 @@ export const calcActivity = (activity, timeZone, breaktime) => {
       else return breaktime.nextReset;
     } else {
       // return the start of Math.min(the next onDay, the next week)
-      let day = now.weekday - 1;
+      let day = now.weekday % 7;
       let repeatWrap = repeat.concat(repeat);
       let i;
       for (i = day + 1; i < repeatWrap.length; i++) {
@@ -59,7 +59,7 @@ export const calcActivity = (activity, timeZone, breaktime) => {
       }
       let daysDiff = i - day;
       let nextOnDay = now.startOf('day').plus({ days: daysDiff }).ts;
-      let nextWeek = now.startOf('week').plus({ days: 7 }).ts;
+      let nextWeek = breaktime.nextReset;
 
       return Math.min(nextOnDay, nextWeek);
     }
@@ -74,7 +74,7 @@ export const calcActivity = (activity, timeZone, breaktime) => {
       else return breaktime.lastReset;
     } else {
       // return the start of Math.max(the last onDay, this week)
-      let day = now.weekday - 1 + 7;
+      let day = (now.weekday % 7) + 7;
       let repeatWrap = repeat.concat(repeat);
       let i;
       for (i = day; i > 0; i--) {
@@ -82,7 +82,7 @@ export const calcActivity = (activity, timeZone, breaktime) => {
       }
       let daysDiff = day - i;
       let lastOnDay = now.startOf('day').minus({ days: daysDiff }).ts;
-      let thisWeek = now.startOf('week').ts;
+      let thisWeek = breaktime.lastReset;
 
       return Math.max(lastOnDay, thisWeek);
     }
@@ -99,14 +99,16 @@ export const calcActivity = (activity, timeZone, breaktime) => {
 
   const calcDisplayProgress = (breaktimeProgress, repeat, displayTarget) => {
     const numDays = (() => {
-      let weekday = DateTime.fromObject({ zone: timeZone }).weekday - 1;
+      let weekday = DateTime.fromObject({ zone: timeZone }).weekday % 7;
       if (repeat.length === 1) {
         if (repeat[0]) return weekday;
         else return 0;
       } else {
-        return repeat
-          .slice(0, weekday+1)
-          .reduce((total, curr) => (total += curr), 0)-1;
+        return (
+          repeat
+            .slice(0, weekday + 1)
+            .reduce((total, curr) => (total += curr), 0) - 1
+        );
       }
     })();
 

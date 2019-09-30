@@ -152,7 +152,7 @@ const AddActivity = ({
 
   const classes = useStyles();
 
-  const days = ['M', 'Tu', 'W', 'Th', 'F', 'Sa', 'Su'];
+  const days = ['Su', 'M', 'Tu', 'W', 'Th', 'F', 'Sa'];
 
   const [formData, setFormData] = useState({
     name: '',
@@ -167,7 +167,7 @@ const AddActivity = ({
 
   const correctRepeatArray = array => {
     if (array.length !== 7) return array;
-    let reduced = array.reduce((t, v) => (t += v), 0);
+    let reduced = array.reduce((total, val) => (total += val), 0);
     if (reduced === 0) return [0];
     if (reduced === 7) return [1];
     return array;

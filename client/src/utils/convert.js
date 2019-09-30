@@ -3,7 +3,7 @@ export const repeatToText = repeat => {
     if (repeat[0]) return 'PER DAY';
     else return 'PER WEEK';
   } else {
-    let days = ['M', 'Tu', 'W', 'Th', 'F', 'Sa', 'Su'];
+    let days = ['Su', 'M', 'Tu', 'W', 'Th', 'F', 'Sa'];
     return days.filter((day, i) => repeat[i]).join(' ');
   }
 };
