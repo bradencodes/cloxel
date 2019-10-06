@@ -72,9 +72,8 @@ router.post(
         displayTarget: 28800000,
         start: [],
         end: [],
-        repeat: [1, 1, 1, 1, 1, 0, 0],
-        adds: false,
-        deleted: false
+        repeat: [0, 1, 1, 1, 1, 1, 0],
+        adds: false
       });
 
       const sleep = new Activity({
@@ -85,8 +84,7 @@ router.post(
         start: [],
         end: [],
         repeat: [1],
-        adds: false,
-        deleted: false
+        adds: false
       });
 
       user.activities.push(work);
