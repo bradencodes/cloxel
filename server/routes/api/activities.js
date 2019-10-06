@@ -56,10 +56,13 @@ router.post(
 // @access  Private
 router.get('/', auth, async (req, res) => {
   try {
-    const activities = await Activity.find({
-      user: req.user.id,
-      deleted: false
+    let activities = await Activity.find({
+      user: req.user.id
     });
+
+    activities = activities.filter(
+      activity => activity.inserted.length > activity.removed.length
+    );
 
     res.json(activities);
   } catch (err) {
@@ -73,10 +76,13 @@ router.get('/', auth, async (req, res) => {
 // @access  Private
 router.get('/deleted', auth, async (req, res) => {
   try {
-    const activities = await Activity.find({
-      user: req.user.id,
-      deleted: true
+    let activities = await Activity.find({
+      user: req.user.id
     });
+
+    activities = activities.filter(
+      activity => activity.inserted.length === activity.removed.length
+    );
 
     res.json(activities);
   } catch (err) {
@@ -114,11 +120,11 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
-// @route   PUT api/activities/:id
+// @route   PUT api/activities/update/:id
 // @desc    Update an activity
 // @access  Private
 router.put(
-  '/:id',
+  'update/:id',
   [
     auth,
     [
@@ -156,7 +162,8 @@ router.put(
         end,
         repeat,
         adds,
-        deleted
+        inserted,
+        removed
       } = req.body);
 
       const updatedActivity = await Activity.findByIdAndUpdate(
@@ -180,10 +187,10 @@ router.put(
   }
 );
 
-// @route   POST api/activities/changeDoing
+// @route   PUT api/activities/changeDoing
 // @desc    Change which activity is being done
 // @access  Private
-router.post('/changeDoing', auth, async (req, res) => {
+router.put('/changeDoing', auth, async (req, res) => {
   try {
     const userId = req.user.id;
     const { doNowId, wasDoingId, time } = req.body;
@@ -242,7 +249,7 @@ router.delete('/:id', auth, async (req, res) => {
 
     let user;
 
-    if (!activity.deleted) {
+    if (activity.inserted.length > activity.removed.length) {
       user = await User.findByIdAndUpdate(
         req.user.id,
         {
@@ -251,11 +258,11 @@ router.delete('/:id', auth, async (req, res) => {
         },
         { new: true }
       );
-      activity.deleted = true;
+      activity.removed.push(Date.now());
       await activity.save();
     }
 
-    res.json({ successes: [{ msg: 'Activity marked as deleted' }] });
+    res.json({ successes: [{ msg: 'Activity marked as removed' }] });
   } catch (err) {
     console.error(err.message);
 

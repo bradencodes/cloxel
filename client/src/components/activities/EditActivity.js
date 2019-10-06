@@ -219,7 +219,7 @@ const EditActivity = ({
 
     try {
       const res = await axios.put(
-        `${urlpre}/api/activities/${activity._id}`,
+        `${urlpre}/api/activities/update/${activity._id}`,
         body,
         config
       );

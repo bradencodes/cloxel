@@ -30,12 +30,18 @@ export const sortActivities = (activities, timeZone) => {
 
 export const calcResetsOnBreaktime = (breaktime, timeZone, created) => {
   let now = DateTime.fromObject({ zone: timeZone });
-  breaktime.nextReset = now.startOf('week').plus({ days: 6 }).ts;
+  breaktime.lastReset = now
+    .plus({ days: 1 })
+    .startOf('week')
+    .minus({ days: 1 }).ts;
+  breaktime.nextReset = now
+    .plus({ days: 1 })
+    .startOf('week')
+    .plus({ days: 6 }).ts;
   // breaktime.lastReset = Math.max(
   //   now.startOf('week').minus({ days: weekStartOffset }).ts,
   //   created
   // );
-  breaktime.lastReset = now.startOf('week').minus({ days: 1 }).ts;
   return breaktime;
 };
 

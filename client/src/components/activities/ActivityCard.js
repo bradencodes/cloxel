@@ -125,7 +125,7 @@ const ActivityCard = ({
     try {
       dispatch(changeDoing(user, activity._id, user.active, now));
 
-      await axios.post(`${urlpre}/api/activities/changeDoing`, body, config);
+      await axios.put(`${urlpre}/api/activities/changeDoing`, body, config);
 
       socket.emit('change doing', activity._id, user.active, now);
     } catch (err) {

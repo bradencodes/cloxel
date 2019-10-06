@@ -34,10 +34,15 @@ const ActivitySchema = new Schema({
     type: Boolean,
     required: true
   },
-  deleted: {
-    type: Boolean,
+  inserted: {
+    type: [Number],
     required: true,
-    default: false
+    default: [Date.now()]
+  },
+  removed: {
+    type: [Number],
+    required: true,
+    default: []
   }
 });
 
