@@ -124,7 +124,7 @@ router.get('/:id', auth, async (req, res) => {
 // @desc    Update an activity
 // @access  Private
 router.put(
-  'update/:id',
+  '/update/:id',
   [
     auth,
     [

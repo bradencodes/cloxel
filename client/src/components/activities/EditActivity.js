@@ -217,6 +217,8 @@ const EditActivity = ({
 
     const body = JSON.stringify(activityPreview);
 
+    console.log(body);
+
     try {
       const res = await axios.put(
         `${urlpre}/api/activities/update/${activity._id}`,
