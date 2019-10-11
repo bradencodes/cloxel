@@ -25,7 +25,7 @@ import { changeDoing } from './actions/user';
 import {
   addActivityToRedux,
   editActivityInRedux,
-  deleteActivityInRedux
+  removeActivityInRedux
 } from './actions/activities';
 import setAuthToken from './utils/setAuthToken';
 
@@ -124,10 +124,10 @@ const App = () => {
         store.dispatch({ type: ACTIVITY_EDITED });
       });
 
-      socket.on('delete activity', activity => {
+      socket.on('remove activity', (activity, time) => {
         if (!store.getState().requests.isEditingActivity) {
           store.dispatch(
-            deleteActivityInRedux(activity, store.getState().user)
+            removeActivityInRedux(activity, store.getState().user, time)
           );
         }
         store.dispatch({ type: ACTIVITY_EDITED });

@@ -18,9 +18,10 @@ export const editActivityInRedux = (activity, inputUser) => dispatch => {
   dispatch({ type: UPDATE_USER, payload: user });
 };
 
-export const deleteActivityInRedux = (activity, inputUser) => dispatch => {
+export const removeActivityInRedux = (activity, inputUser, time) => dispatch => {
   let user = cloneDeep(inputUser);
   user.activities = user.activities.filter(notDeleted => notDeleted._id !== activity._id);
   user.deletedActivities.push(activity._id);
+  activity.removed.push(time);
   dispatch({ type: UPDATE_USER, payload: user });
 };

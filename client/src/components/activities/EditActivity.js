@@ -33,7 +33,7 @@ import { msToShortTime, shortTimeToMS } from '../../utils/convert';
 import { EDIT_ACTIVITY, ACTIVITY_EDITED } from '../../actions/types';
 import {
   editActivityInRedux,
-  deleteActivityInRedux
+  removeActivityInRedux
 } from '../../actions/activities';
 const urlpre = process.env.REACT_APP_API_URL;
 
@@ -217,8 +217,6 @@ const EditActivity = ({
 
     const body = JSON.stringify(activityPreview);
 
-    console.log(body);
-
     try {
       const res = await axios.put(
         `${urlpre}/api/activities/update/${activity._id}`,
@@ -288,11 +286,19 @@ const EditActivity = ({
       }
     };
 
+    let now = Date.now();
+
+    let body = JSON.stringify({ now: now });
+
     try {
-      await axios.delete(`${urlpre}/api/activities/${activity._id}`, config);
-      socket.emit('delete activity', activity);
+      await axios.put(
+        `${urlpre}/api/activities/remove/${activity._id}`,
+        body,
+        config
+      );
+      socket.emit('remove activity', activity, now);
       history.push('/activities');
-      dispatch(deleteActivityInRedux(activity, user));
+      dispatch(removeActivityInRedux(activity, user, now));
     } catch (err) {
       const errors = err.response.data.errors;
       dispatch({ type: ACTIVITY_EDITED });
@@ -348,7 +354,7 @@ const EditActivity = ({
               onClick={handleDelete}
               style={{ color: '#B00020' }}
             >
-              Delete
+              Remove
             </MenuItem>
           </Menu>
         </Toolbar>

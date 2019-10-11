@@ -230,10 +230,10 @@ router.put('/changeDoing', auth, async (req, res) => {
   }
 });
 
-// @route   DELETE api/activities/:id
-// @desc    Mark an activity as deleted
+// @route   PUT api/activities/remove/:id
+// @desc    Add current time to activity's as removed array
 // @access  Private
-router.delete('/:id', auth, async (req, res) => {
+router.put('/remove/:id', auth, async (req, res) => {
   try {
     const activity = await Activity.findById(req.params.id);
 
@@ -258,11 +258,11 @@ router.delete('/:id', auth, async (req, res) => {
         },
         { new: true }
       );
-      activity.removed.push(Date.now());
+      activity.removed.push(req.body.now);
       await activity.save();
     }
 
-    res.json({ successes: [{ msg: 'Activity marked as removed' }] });
+    res.json({ successes: [{ msg: 'Activity successfully removed' }] });
   } catch (err) {
     console.error(err.message);
 

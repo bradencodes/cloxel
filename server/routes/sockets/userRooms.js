@@ -22,8 +22,8 @@ module.exports = namespace => {
       namespace.to(socket.room).emit('edit activity', activity);
     });
 
-    socket.on('delete activity', activity => {
-      namespace.to(socket.room).emit('delete activity', activity);
+    socket.on('remove activity', (activity, time) => {
+      namespace.to(socket.room).emit('remove activity', activity, time);
     });
   });
 };
