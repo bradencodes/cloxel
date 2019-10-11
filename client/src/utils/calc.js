@@ -150,22 +150,29 @@ export const calcActivity = (activity, timeZone, breaktime) => {
 };
 
 export const calcBreaktime = (breaktime, activities) => {
-  const calcProgress = (lastReset, start, end) => {
+  const calcProgress = (lastReset, start, end, activities) => {
     let progress = 0;
+
+    //add the time spent on break time
     for (let i = end.length - 1; i >= 0; i--) {
       if (end[i] < lastReset) break;
       progress += end[i] - Math.max(start[i], lastReset);
     }
+
+    //add any time spent on an activity past the activity's target
+    progress += activities.reduce((total, activity) => {
+      let overtime = Math.max(
+        activity.breaktimeProgress - activity.breaktimeTarget,
+        0
+      );
+      return (total += overtime);
+    }, 0);
     return progress;
   };
 
   const calcTarget = (nextReset, lastReset, activities) => {
     const plannedTime = activities.reduce(
-      (total, activity) =>
-        (total += Math.max(
-          activity.breaktimeTarget,
-          activity.breaktimeProgress
-        )),
+      (total, activity) => (total += activity.breaktimeTarget),
       0
     );
     return nextReset - lastReset - plannedTime;
@@ -191,7 +198,8 @@ export const calcBreaktime = (breaktime, activities) => {
   breaktime.used = calcProgress(
     breaktime.lastReset,
     breaktime.start,
-    breaktime.end
+    breaktime.end,
+    activities
   );
   breaktime.target = calcTarget(
     breaktime.nextReset,
