@@ -19,7 +19,8 @@ import InverseSandTexture from '../util/InverseSandTexture';
 
 const useStyles = makeStyles(theme => ({
   card: {
-    margin: theme.spacing(2, 0, 0),
+    margin: '16px auto 0',
+    maxWidth: '420px',
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden'
