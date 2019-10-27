@@ -110,7 +110,8 @@ export const calcActivity = (activity, timeZone, breaktime) => {
         if (repeat[0]) return weekday;
         else return 0;
       } else {
-        return (
+        return Math.max(
+          0,
           repeat
             .slice(0, weekday + 1)
             .reduce((total, curr) => (total += curr), 0) - 1
