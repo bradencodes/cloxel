@@ -28,7 +28,7 @@ let io = require('socket.io')(server);
 // Init Middleware
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://cloxel.netlify.com'],
+    origin: ['http://localhost:3000', 'https://cloxel.netlify.app'],
     credentials: true
   })
 );
